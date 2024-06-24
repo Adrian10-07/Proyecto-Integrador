@@ -1,0 +1,52 @@
+.menu {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  height: 100vh;
+  background-color: #ffffff;
+}
+
+.menu .header {
+  background-color: rgba(31, 145, 168, 1);
+  margin: 2%;
+  padding: 10px 650px;
+}
+
+.menu h1 {
+  color: #ffffff;
+  font-size: 40px;
+  text-align: center;
+  width: 100%;
+  padding-top: 20px;
+}
+
+.menu-button {
+  background-color: rgba(31, 145, 168, 1);
+  color: #ffffff;
+  border: none;
+  padding: 15px 90px;
+  min-width: 350px;
+  margin: 10px;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  display: flex;
+  flex-direction: row; /* Para que el ícono y el texto estén en la misma línea */
+  align-items: center; /* Para alinear verticalmente íconos y texto */
+  justify-content: flex-start; /* Para alinear los íconos y texto hacia el inicio */
+}
+
+.menu-button:hover {
+  background-color: #3700b3;
+}
+
+.menu .icon {
+  margin-right: 10px;
+  font-size: 20px;
+  color: rgb(237, 229, 229);
+  width: 20px;
+  text-align: center; /* Centrar el ícono dentro de su contenedor */
+}
+
