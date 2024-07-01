@@ -1,0 +1,71 @@
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #ffffff;
+    margin:0;
+    padding: 0;
+}
+
+header.header {
+    background-color: rgba(31, 145, 168, 1);
+    color: white;
+    padding: 10px 0;
+    text-align: center;
+    font-size: 44px;
+    font-weight: bold;
+}
+
+.header-image-left{
+    width: 60px;
+    height: auto;
+    position: relative;
+}
+.header-image-left{
+    right: 300px;
+    }
+.header-image-rigth{
+    width: auto;
+    height: 60px;
+    position: relative;
+}
+.header-image-rigth{
+left: 300px;
+}
+.D-Alumno, .D-Tutor, .D-Diagnostico, .D-Velocidad {
+    background-color: #ffffff;
+    padding: 30px;
+}
+
+.D-Alumno input, .D-Tutor input, .D-Diagnostico input, .D-Velocidad input {
+    display: block;
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid rgba(224, 224, 224, 1);
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+h2, h4 {
+    color: #333;
+    font-weight: normal;
+    text-align: center;
+}
+
+label {
+    display: block;
+    margin: 10px 0;
+    font-weight: bold;
+    color: rgba(130, 130, 130, 1);
+}
+
+label input[type="date"] {
+    display: block;
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px  solid(224, 224, 224, 1);
+    border-radius: 4px;
+    font-size: 16px;
+    color: rgba(130, 130, 130, 1);
+}

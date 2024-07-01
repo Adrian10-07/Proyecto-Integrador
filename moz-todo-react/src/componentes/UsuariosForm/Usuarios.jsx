@@ -1,100 +1,59 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TablePagination from '@material-ui/core/TablePagination';
-import TableRow from '@material-ui/core/TableRow';
+import React, { useState } from 'react';
+import { IoMdPersonAdd } from "react-icons/io";
+import { FaUserEdit } from "react-icons/fa";
+import { LuHome } from "react-icons/lu";
+import { ImExit } from "react-icons/im";
+import './Usuarios.css';
 
-const columns = [
-  { id: 'name', label: 'Nombre', minWidth: 170 },
-  { id: 'code', label: 'ID\u00a0', minWidth: 100 },
-  { id: 'editar', label: 'Editar', minWidth: 10 },
-];
+const TableComponent = () => {
+  const [data, setData] = useState([
+    { id: 1, nombre: 'Juan' },
+    { id: 2, nombre: 'María' },
+    { id: 3, nombre: 'Carlos' },
+  ]);
 
-function createData(name, code, editar) {
-  return { name, code, editar };
-}
-
-const rows = [
-  createData('India', 'IN', <button>editar</button>),
-  createData('China', 'CN', <button>editar</button>),
-  createData('Italy', 'IT', <button>editar</button>),
-  createData('United States', 'US', <button>editar</button>),
-];
-
-const useStyles = makeStyles({
-  root: {
-    width: '100%',
-  },
-  container: {
-    maxHeight: 440,
-  },
-});
-
-const Usuarios = () => {
-  const classes = useStyles();
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
-
-  const handleChangePage = (_event, newPage) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
+  const handleEdit = (id) => {
+    // Implement your edit logic here
+    console.log('Edit item with id:', id);
   };
 
   return (
-    <Paper className={classes.root}>
-      <TableContainer className={classes.container}>
-        <Table stickyHeader aria-label="sticky table">
-          <TableHead>
-            <TableRow>
-              {columns.map((column) => (
-                <TableCell
-                  key={column.id}
-                  align={column.align}
-                  style={{ minWidth: column.minWidth }}
-                >
-                  {column.label}
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-              return (
-                <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
-                  {columns.map((column) => {
-                    const value = row[column.id];
-                    return (
-                      <TableCell key={column.id} align={column.align}>
-                        {column.format && typeof value === 'number' ? column.format(value) : value}
-                      </TableCell>
-                    );
-                  })}
-                </TableRow>
-              );
-            })}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <TablePagination
-        rowsPerPageOptions={[10, 100]}
-        component="div"
-        count={rows.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
-    </Paper>
+    <div>
+      <div className='header'>
+        <button className='header-left-button'><LuHome className='icon-home' /></button>
+        <div className='header-content'>Usuarios</div>
+        <button className='header-right-button'><ImExit className='icon-exit' /></button>
+      </div>
+
+      <div className='search-container'>
+        <input type="search" placeholder='nombre de usuario' />
+        <button className='add'><IoMdPersonAdd /></button>
+      </div>
+
+      <div className='table'>      
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nombre</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {data.map((item) => (
+              <tr key={item.id}>
+                <td>{item.id}</td>
+                <td>{item.nombre}</td>
+                <td>
+                  <button onClick={() => handleEdit(item.id)}><FaUserEdit /></button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
   );
 };
 
-export default Usuarios;
+export default TableComponent;

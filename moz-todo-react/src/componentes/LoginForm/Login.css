@@ -4,24 +4,41 @@
     color:rgba(23, 7, 91, 1);
     border-radius: 10px;
     padding: 30px 40px;
+    position: relative;
+    align-items: center;
+    align-items: center;
 }
-.login-image {
-    display: block;
-    margin: 0 auto 20px;
-    width: 100px; /* Ajusta el tamaño de la imagen según tus necesidades */
-    height: auto;
-  }
+.header-image{
+    height: 400px;
+    position: relative;
+}
+.header-image{
+    right: 13px;
+}
+/*cambiar el metodo para centrar xd*/
+.wrapper{
+    left: 500px;
+}
+
 
 .wrapper h1 {
     font-size: 36px;
     text-align: center;
     color: rgba(214, 159, 18, 1);
+    position: relative;
+}
+.wrapper h1{
+    left: 40px;
 }
 .wrapper h2{
     
     font-size: 13px;
     text-align: center;
     color: rgba(23, 7, 91, 1);
+    position: relative;
+}
+.wrapper h2{
+    left: 30px;
 }
 .wrapper .input-box{
     position: relative;
@@ -70,23 +87,9 @@
     font-size: 16px;
     color:rgba(255, 255, 255, 1);
     font-weight: 700;
+    position: relative;
+}
+.wrapper button{
+    left: 40px;
 }
 
-.wrapper .register-link{
-    font-size:14.5px ;
-    text-align: center;
-    margin: 20px 0 15px;
-    color: black;
-
-}
-
-.register-link p a {
-    color: #050505;
-    text-decoration: none;
-    font-weight: 600;
-}
-
-.register-link p a :hover{
-    text-decoration: underline;
-
-}
