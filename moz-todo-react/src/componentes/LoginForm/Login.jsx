@@ -3,7 +3,7 @@ import './Login.css';
 import { CiUser, CiLock } from "react-icons/ci";
 import LOGO from './AssetsLogin/LOGO.jpg'
 
-const Login = () => {
+function Login  ()  {
 
 
   return (
@@ -21,7 +21,11 @@ const Login = () => {
           <input type="password" placeholder='Contraseña' required />
           <CiLock className='icon' />
         </div>
-        <button type='submit'>Iniciar Sesion</button>      
+        
+        <a href={'/inicio'}>
+        <button>Iniciar Sesion</button>
+        </a>
+             
     </div>
   );
 };

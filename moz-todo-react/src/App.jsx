@@ -1,14 +1,12 @@
-import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Login from './componentes/LoginForm/Login.jsx';
-import Inicio from './componentes/InicioForm/Inicio.jsx';
-import Usuarios from './componentes/UsuariosForm/Usuarios.jsx';
+import React from 'react'
+import Login from './componentes/LoginForm/Login';
 
-const App = () => {
+
+export default function App() {
   return (
-
-  );
-};
-
-export default App;
+    <div>
+      <Login/>
+    </div>
+  )
+}
 

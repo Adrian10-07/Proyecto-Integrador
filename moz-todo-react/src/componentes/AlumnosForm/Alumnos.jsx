@@ -40,13 +40,20 @@ export default function Alumnos() {
     <div>
       <div className='header-Alumnos'>
         <button className='home-left-button'><LuHome className='icon-home' /></button>
+
         <div className='content'>Alumnos</div>
+
         <button className='exit-right-button'><ImExit className='icon-exit' /></button>
       </div>
 
       <div className='search-container-alumnos'>
+
         <input type="search-A" placeholder='nombre de Alumno' />
-        <button className='add-Alumno'><IoMdPersonAdd /></button>
+
+          <a href={'/agg'}>
+          <button className='add-Alumno'><IoMdPersonAdd /></button>
+          </a>
+        
       </div>
 
       <div className='table-Alumnos'>
@@ -77,9 +84,6 @@ export default function Alumnos() {
           </tbody>
         </table>
       </div>
-
-
-
       <EditModal
         isOpen={isEditModalOpen}
         onRequestClose={closeEditModal}

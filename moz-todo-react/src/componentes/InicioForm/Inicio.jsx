@@ -14,14 +14,31 @@ export default function Inicio() {
   return (
     <div className='menu'>
 
-        <div className='header'>
+      <div className='header'>
           <header>
-            <h1>Instituto Montebello</h1> <button className='menu-exit'><ImExit className='icon-exit' />Cerrar Sesion</button>
-          </header></div>
-      <div>      
+            <h1>Instituto Montebello</h1>
+
+            <a href={'/'}>
+              <button className='menu-exit'><ImExit className='icon-exit' /></button>
+            </a>
+
+          </header>
+      </div>
+
+      <div>
+      
+      <a href={'/usuarios'}>
       <button  className='menu-button'><FaRegUserCircle className='icon' />Usuarios</button>
+      </a>
+
+      <a href={'/alumnos'}>
       <button  className='menu-button'><PiStudentBold className='icon' />Alumnos</button>
+      </a>
+
+      <a href={'/empleados'}>
       <button  className='menu-button'><LiaUsersCogSolid className='icon' />Empleados</button>
+      </a>
+      
       <button  className='menu-button'><MdOutlinePayments className='icon' />Pagos de Tramite</button>
       <button  className='menu-button'><MdOutlinePayments className='icon' />Pago de Personal</button>
       

@@ -28,6 +28,13 @@
   font-size: 16px;
   cursor: pointer;
   display: inline-block;
+  position: relative;
+  align-items: center;
+  align-content: center;
+}
+.menu-exit{
+  left: 600px;
+  top: -60px;
 }
 .menu .icon-exit{
   margin-right: 10px;
@@ -64,6 +71,10 @@
   font-size: 20px;
   color: rgb(0, 0, 0);
   width: 20px;
-  text-align: center; /* Centrar el ícono dentro de su contenedor */
+  text-align: center;
+}
+
+.menu a {
+  color: transparent;
 }
 

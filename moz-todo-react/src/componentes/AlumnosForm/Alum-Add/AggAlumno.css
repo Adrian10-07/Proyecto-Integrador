@@ -40,10 +40,10 @@ left: 300px;
     display: block;
     width: calc(100% - 20px);
     padding: 10px;
-    margin: 10px 0;
+    margin: 10px 5px;
     border: 1px solid rgba(224, 224, 224, 1);
-    border-radius: 4px;
-    font-size: 16px;
+    border-radius: 8px;
+    font-size: 20px;
 }
 
 h2, h4 {
@@ -68,4 +68,36 @@ label input[type="date"] {
     border-radius: 4px;
     font-size: 16px;
     color: rgba(130, 130, 130, 1);
+}
+.con1, .con2, .con3, .con4, .con5, .con6, .con7 {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    align-content: center;
+}
+
+.D-Tutor{
+    display: flex;
+}
+
+.Inputsagg{
+    width: 100%;
+}
+
+.Inputsagg{
+    position: relative;
+    
+}
+
+.botones button {
+    position: relative;
+    align-content: center;
+    margin: 3em 18em;
+    padding: 1.5em 8em;
+    border-radius: 10px;
+    
+}
+
+.botones button:hover{
+    background-color: rgba(31, 145, 168, 1);
 }
