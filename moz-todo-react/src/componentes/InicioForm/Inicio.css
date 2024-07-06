@@ -4,11 +4,13 @@
   align-items: center;
   height: 100vh;
   background-color: #ffffff;
+  width: 100%;
 }
 
 .menu .header {
   background-color: rgba(31, 145, 168, 1);
   padding: 0px 650px;
+  width: 100%;
 }
 
 .menu h1 {
@@ -44,6 +46,20 @@
   text-align: center;
 }
 
+.content-cards{
+  width: 90%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.content-cards-link {
+  display: inline-block;
+  text-decoration: none;
+  
+}
+
+/*
 .menu-button {
   background-color: rgba(31, 145, 168, 1);
   color: #ffffff;
@@ -60,8 +76,10 @@
 }
 
 .menu-button:hover {
-  background-color: #3700b3;
+  
 }
+*/
+
 .menu-exit:hover{
   background-color: rgba(61, 179, 205, 0.73);
 }
