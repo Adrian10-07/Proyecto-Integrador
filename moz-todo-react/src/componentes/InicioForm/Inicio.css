@@ -34,7 +34,7 @@
   left: 600px;
   top: -60px;
 }
-.menu .icon-exit{
+.icon-exit{
   margin-right: 10px;
   font-size: 20px;
   color: rgb(237, 229, 229);
@@ -55,26 +55,7 @@
   
 }
 
-/*
-.menu-button {
-  background-color: rgba(31, 145, 168, 1);
-  color: #ffffff;
-  border: none;
-  padding: 15px 90px;
-  min-width: 350px;
-  margin: 10px;
-  border-radius: 5px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  display: flex;
-  align-items: center;
-}
 
-.menu-button:hover {
-  
-}
-*/
 
 .menu-exit:hover{
   background-color: rgba(61, 179, 205, 0.73);

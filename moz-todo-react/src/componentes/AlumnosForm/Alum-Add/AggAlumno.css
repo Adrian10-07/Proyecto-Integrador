@@ -16,8 +16,7 @@ header.header {
 }
 
 .header-image-left{
-    width: 60px;
-    height: auto;
+    height: 80px;
     position: relative;
 }
 .header-image-left{
@@ -25,7 +24,7 @@ header.header {
     }
 .header-image-rigth{
     width: auto;
-    height: 60px;
+    height: 80px;
     position: relative;
 }
 .header-image-rigth{
@@ -54,20 +53,23 @@ h2, h4 {
 
 label {
     display: block;
-    margin: 10px 0;
+    margin: 0px 0;
     font-weight: bold;
     color: rgba(130, 130, 130, 1);
+    
 }
 
 label input[type="date"] {
     display: block;
     width: calc(100% - 20px);
     padding: 10px;
-    margin-top: 5px;
+    margin-top: 2px;
     border: 1px  solid(224, 224, 224, 1);
     border-radius: 4px;
     font-size: 16px;
     color: rgba(130, 130, 130, 1);
+    position: relative;
+    bottom: 3px;
 }
 .con1, .con2, .con3, .con4, .con5, .con6, .con7 {
     display: flex;
@@ -92,12 +94,38 @@ label input[type="date"] {
 .botones button {
     position: relative;
     align-content: center;
-    margin: 3em 18em;
-    padding: 1.5em 8em;
+    padding: 1em 8em;
     border-radius: 10px;
+    border: none;
+    transition: background-color 0.3s;
+    left: 200px;
+    margin-top: 100PX;
+    margin-left: 190px;
+    margin-bottom: 50px;
+    color: rgba(224, 224, 224, 1);
+    font-size: medium;
     
 }
 
-.botones button:hover{
+.uno:hover{
+    background-color: rgb(224, 17, 17) ;
+}
+
+.uno{
+    background-color:rgb(255, 0, 0);
+}
+
+.dos{
+    background-color: rgba(23, 7, 91, 1);
+}
+
+.dos:hover{
     background-color: rgba(31, 145, 168, 1);
+}
+
+.icon-save{
+    font-size: 50px;
+}
+.icon-cancel{
+    font-size: 50px;
 }

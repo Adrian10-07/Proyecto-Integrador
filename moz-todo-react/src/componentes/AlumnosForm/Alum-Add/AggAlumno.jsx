@@ -1,6 +1,6 @@
 import React from 'react'
 import './AggAlumno.css'
-import LOGO from './AggAssets/LOGO.jpg'
+import Logo2 from './AggAssets/Logo2.png'
 import { FiSave } from "react-icons/fi";
 import { MdOutlineCancel } from "react-icons/md";
 
@@ -9,9 +9,9 @@ export default function AggAlumno() {
   return (
     <div>
         <header className='header'>
-            <img src={LOGO} alt="Left" className='header-image-left' />
+            <img src={Logo2} alt="Left" className='header-image-left' />
              Datos del Alumno
-             <img src={LOGO} alt="Left" className='header-image-rigth' />
+             <img src={Logo2} alt="Left" className='header-image-rigth' />
 
         </header>
 
@@ -32,6 +32,7 @@ export default function AggAlumno() {
             <div className='con3'>
                 <input type="text" placeholder='Grado al que ingresa'/>
                 <input type="text" placeholder='Grupo al que ingresa' />
+                <input type="" placeholder='Asignar Numero de Control'/>
                 <input type="text" placeholder='Turno' />
             </div>
             <div className='con4'>
@@ -90,8 +91,8 @@ export default function AggAlumno() {
 
             <div className='botones'>
 
-            <button><MdOutlineCancel /></button>
-            <button><FiSave /></button>
+            <button className='uno'><MdOutlineCancel className='icon-cancel' /></button>
+            <button className='dos'><FiSave className='icon-save'/></button>
 
             </div>
 
