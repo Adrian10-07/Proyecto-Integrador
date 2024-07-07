@@ -3,9 +3,42 @@ import './AggAlumno.css'
 import Logo2 from './AggAssets/Logo2.png'
 import { FiSave } from "react-icons/fi";
 import { MdOutlineCancel } from "react-icons/md";
+import Swal from 'sweetalert2'
 
+
+    const handleSaveClick = () => {
+        Swal.fire({
+          title: "Do you want to save the changes?",
+          showDenyButton: true,
+          showCancelButton: true,
+          confirmButtonText: "Save",
+          denyButtonText: `Don't save`
+        }).then((result) => {
+          if (result.isConfirmed) {
+            Swal.fire("Saved!", "", "success");
+          } else if (result.isDenied) {
+            Swal.fire("Changes are not saved", "", "info");
+          }
+        });
+    }
+
+    const handleCancelClick = () =>{
+        Swal.fire({
+            title: "Cancelar Registro ¿?",
+            text: "Se borraran los datos ingresados",
+            icon: "warning",
+            showCancelButton: true,
+            cancelButtonColor: "#3085d6",
+            confirmButtonColor: "#d33",
+            confirmButtonText: "Si, Cancelar Registro",
+            cancelButtonText: "Volver al Registro",
+          })
+    }
 
 export default function AggAlumno() {
+
+
+
   return (
     <div>
         <header className='header'>
@@ -91,8 +124,8 @@ export default function AggAlumno() {
 
             <div className='botones'>
 
-            <button className='uno'><MdOutlineCancel className='icon-cancel' /></button>
-            <button className='dos'><FiSave className='icon-save'/></button>
+            <button onClick={handleCancelClick} className='uno'><MdOutlineCancel className='icon-cancel' /></button>
+            <button onClick={handleSaveClick} className='dos'><FiSave className='icon-save'/></button>
 
             </div>
 
