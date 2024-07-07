@@ -9,8 +9,9 @@
 
 .menu .header {
   background-color: rgba(31, 145, 168, 1);
-  padding: 0px 650px;
-  width: 100%;
+  color: white;
+  padding: 0px 0;
+  text-align: center;
 }
 
 .menu h1 {
@@ -18,21 +19,16 @@
   font-size: 40px;
   text-align: center;
   width: 100%;
-  padding-top: 20px;
 }
 .menu-exit{
   background-color: rgba(23, 7, 91, 1);
   color: #ffffff;
   border: none;
-  padding: 10px 20px;
-  margin: 10px;
+  padding: 15px 60px;
   border-radius: 5px;
   font-size: 16px;
-  cursor: pointer;
-  display: inline-block;
   position: relative;
-  align-items: center;
-  align-content: center;
+  transition: background-color 0.3s;
 }
 .menu-exit{
   left: 600px;
