@@ -118,7 +118,10 @@ export default function Alumnos() {
         </Link>
         
         <div className='content'>Alumnos</div>
-        <button className='exit-right-button'><ImExit className='icon-exit' /></button>
+        <a href={'/'}>
+          <button className='exit-right-button'><ImExit className='icon-exit' /></button>
+        </a>
+        
       </div>
 
       <div className='search-container-alumnos'>
@@ -126,7 +129,7 @@ export default function Alumnos() {
         <input type="search-A" placeholder='Apell. Pat.' id='search-container-alumnos-inputSearchApellidoP'/>
         <input type='search-A' placeholder='Apell. Mat.' id='search-container-alumnos-inputSearchApellidoM'/>
         <input type='search-A' placeholder='No. Control.' id='search-container-alumnos-inputSearchNoControl'/>
-        <button id='search-container-alumnos-aplicarBusqueda' onClick={operacionDeImpresionBusquedaYFiltro}>Buscar</button>
+        <button className='search-container-alumnos-aplicarBusqueda' onClick={operacionDeImpresionBusquedaYFiltro}>Buscar</button>
 
         <a href={'/agg'}>
           <button className='add-Alumno'><IoMdPersonAdd /></button>
@@ -137,13 +140,13 @@ export default function Alumnos() {
         <input type='search-A' placeholder='Grado' id='search-container-alumnos-inputSearchGrade'/>
         <input type='search-A' placeholder='Grupo' id='search-container-alumnos-inputSearchGroup'/>
         <select id='search-container-alumnos-estatus'>
-          <option value="">--Seleccionar status--</option>
+          <option id='status' value="">Seleccionar status</option>
           <option value={1}>Activo</option>
           <option value={2}>Inactivo</option>
           <option value={3}>Dado de baja</option>
           <option value={4}>Egresado</option>
         </select>
-        <button onClick={operacionDeImpresionBusquedaYFiltro}>Filtrar</button>
+        <button id='filter' onClick={operacionDeImpresionBusquedaYFiltro}>Filtrar</button>
       </div>
 
       <div className='table-Alumnos'>

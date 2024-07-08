@@ -6,7 +6,7 @@
     bottom: auto;
     margin-right: -50%;
     transform: translate(-50%, -50%);
-    background: white;
+    background: transparent;
     padding: 20px;
     border-radius: 8px;
   }
