@@ -35,14 +35,16 @@ function ChildModal({ valueId }) {
 
     const imprimirDatoDeUnAlumno = async () => {
       const url = 'http://localhost:3000/alumnos';
+      /*
       try {
         const response = await fetch(`${url}/${valueId}`);
         const dato = await response.json();
         setData(dato);
       } catch (error) {
-        console.error('Error al leer las tareas:', error);
+        console.error('Error al recibir los datis:', error);
       }
-      /*
+        */
+      
         
 
         fetch(`${url}/${valueId}`)
@@ -59,7 +61,7 @@ function ChildModal({ valueId }) {
             console.error('Error fetching data:', error);
             setError(error.message);
         });
-      */
+      
     };
 
     useEffect(() => {
