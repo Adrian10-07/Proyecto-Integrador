@@ -36,6 +36,7 @@ const router = createBrowserRouter([
     path: "/empleados",
     element: <NestedModal/>,
   },
+
 ])
 
 
