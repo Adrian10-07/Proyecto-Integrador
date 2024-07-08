@@ -244,11 +244,7 @@ export default function AggAlumno() {
             <button onClick={handleSaveClick} className='dos'><FiSave className='icon-save'/></button>
 
             </div>
-
         </div>
-
-
-      
     </div>
   )
 }
