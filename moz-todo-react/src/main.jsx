@@ -1,7 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import Login from './componentes/LoginForm/Login';
 import Inicio from './componentes/InicioForm/Inicio';
 import Usuarios from './componentes/UsuariosForm/Usuarios';
 import Alumnos from './componentes/AlumnosForm/Alumnos';
