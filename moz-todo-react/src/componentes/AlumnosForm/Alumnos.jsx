@@ -11,9 +11,7 @@ import './Alumnos.css';
 
 export default function Alumnos() {
   const [data, setData] = useState([
-    { id: 1, nombre: 'Juan' },
-    { id: 2, nombre: 'María' },
-    { id: 3, nombre: 'Carlos' },
+
   ]);
 
   
@@ -56,7 +54,7 @@ export default function Alumnos() {
       estatusFiltro: ""
     };
 
-    //Obtiene objeto del elemento html, checha si tiene informacion, si la tiene, lo almacena en el objeto
+    //Obtiene objeto del elemento html, checa si tiene informacion, si la tiene, lo almacena en el objeto
     let searchName = document.getElementById("search-container-alumnos-inputSearchName").value;
     if (searchName) 
       data.nombre_busqueda = searchName;
@@ -160,6 +158,7 @@ export default function Alumnos() {
               <th>Grupo</th>
               <th>Turno</th>
               <th>Estatus</th>
+              
             </tr>
           </thead>
           <tbody>
@@ -170,9 +169,10 @@ export default function Alumnos() {
                 <td></td>
                 <td></td>
                 <td></td>
-                <td>
-                  <button onClick={() => handleEdit(item.id)}><FaUserEdit /></button>
-                </td>
+                <td></td>
+                <td></td>
+                
+
               </tr>
             ))}
             {//Imprime los datos del recurso obtenido, por for each
