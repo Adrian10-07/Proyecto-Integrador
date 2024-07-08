@@ -120,9 +120,9 @@ export default function AggAlumno() {
             data.apellido_m_tutor = registrarApellidoMTutor;
             data.telefono_tutor = registrarTelefonoTutor;
             data.nivelAcademico = registrarlvlAcademico;
-            if (registrarSchoolProcedente) data.escuelaProcedente = registrarSchoolProcedente;
-            if (registrarUniAspirada) data.colegioAspirado = registrarUniAspirada;
-            if (registrarCarreraAspirada) data.carreraAspirada = registrarCarreraAspirada;
+            if (registrarSchoolProcedente) data.escuelaProcedente = registrarSchoolProcedente; else data.escuelaProcedente = "N/A";
+            if (registrarUniAspirada) data.colegioAspirado = registrarUniAspirada; else data.colegioAspirado = "N/A";
+            if (registrarCarreraAspirada) data.carreraAspirada = registrarCarreraAspirada; else data.carreraAspirada = "N/A"
             if (registrarFechaCurso) data.fechaInicioCurso = registrarFechaCurso; else data.fechaInicioCurso = null;
             if (registrarFechaExamen) data.fechaExamenDiagnostico = registrarFechaExamen; else data.fechaExamenDiagnostico = null;
             if (registrarlvlMatematic) data.nivelMatematico = registrarlvlMatematic; else data.nivelMatematico = 0;
