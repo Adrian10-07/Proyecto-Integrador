@@ -6,7 +6,7 @@ body {
     padding: 0;
 }
 
-header.header {
+.header {
     background-color: rgba(31, 145, 168, 1);
     color: white;
     padding: 10px 0;

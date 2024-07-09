@@ -4,6 +4,12 @@ import { FaUserEdit } from "react-icons/fa";
 import { LuHome } from "react-icons/lu";
 import { ImExit, ImIcoMoon } from "react-icons/im";
 import FilaTram from './filasTramites/FilaTram';
+import { MdNoteAdd } from "react-icons/md";
+import { IoSearchSharp } from "react-icons/io5";
+import { FaFilter } from "react-icons/fa";
+
+
+
 
 import { Link } from 'react-router-dom';
 
@@ -63,15 +69,15 @@ export default function Tramites() {
     if (searchConcepto) 
       data.concepto_busqueda = searchConcepto;
 
-    let searchNombre = document.getElementById("search-container-alumnos-inputSearchNombre").value;
+    let searchNombre = document.getElementById("search-container-pagos-inputSearchNombre").value;
     if (searchNombre) 
       data.nombreBusqueda = searchNombre;
 
-    let SearchApellidoP = document.getElementById("search-container-alumnos-inputSearchApellidoP").value;
+    let SearchApellidoP = document.getElementById("search-container-pagos-inputSearchApellidoP").value;
     if (SearchApellidoP) 
       data.apellido_p_busqueda = SearchApellidoP;
 
-    let SearchApellidoM = document.getElementById("search-container-alumnos-inputSearchApellidoM").value;
+    let SearchApellidoM = document.getElementById("search-container-pagos-inputSearchApellidoM").value;
     if (SearchApellidoM) 
       data.apellido_m_busqueda = SearchApellidoM;
 
@@ -82,15 +88,15 @@ export default function Tramites() {
     } 
       
 
-    let searchEstatus = document.getElementById("search-container-alumnos-estatus").value;
+    let searchEstatus = document.getElementById("search-container-pagos-estatus").value;
     if (searchEstatus) 
       data.estatusFiltro = searchEstatus;
 
-    let SearchGrado = document.getElementById("search-container-alumnos-inputSearchGrade").value;
+    let SearchGrado = document.getElementById("search-container-pagos-inputSearchGrade").value;
     if (SearchGrado) 
       data.gradoFiltro = SearchGrado;
 
-    let SearchGrupo = document.getElementById("search-container-alumnos-inputSearchGroup").value;
+    let SearchGrupo = document.getElementById("search-container-pagos-inputSearchGroup").value;
     if (SearchGrado) 
       data.grupoFiltro = SearchGrupo;
 
@@ -119,44 +125,44 @@ export default function Tramites() {
 
   return (
     <div>
-      <div className='header-Alumnos'>
+      <div className='header-Pagos'>
         <Link to={'/inicio'}>
-          <button className='home-left-button'><LuHome className='icon-home' /></button>
+          <button className='home-left-button-pagos'><LuHome className='icon-home-pagos' /></button>
         </Link>
         
         <div className='content'>Trámites</div>
-        <button className='exit-right-button'><ImExit className='icon-exit' /></button>
+        <button className='exit-right-button-pagos'><ImExit className='icon-exit-pagos' /></button>
       </div>
 
-      <div className='search-container-alumnos'>
+      <div className='search-container-pagos'>
         <input type="search-A" placeholder='Folio' id='search-container-tramites-inputSearchFolio'/>
         <input type="search-A" placeholder='Concepto' id='search-container-tramites-inputSearchConcepto'/>
-        <input type='search-A' placeholder='Nombre' id='search-container-alumnos-inputSearchNombre'/>
-        <input type='search-A' placeholder='Ape. P.' id='search-container-alumnos-inputSearchApellidoP'/>
-        <input type="search-A" placeholder='Ape. M' id='search-container-alumnos-inputSearchApellidoM'/>
+        <input type='search-A' placeholder='Nombre' id='search-container-pagos-inputSearchNombre'/>
+        <input type='search-A' placeholder='Ape. P.' id='search-container-pagos-inputSearchApellidoP'/>
+        <input type="search-A" placeholder='Ape. M' id='search-container-pagos-inputSearchApellidoM'/>
         <input type="date" id='search-container-tramites-inputSearchFecha'/>
 
-        <button id='search-container-alumnos-aplicarBusqueda' onClick={operacionDeImpresionBusquedaYFiltro}>Buscar</button>
+        <button id='search-container-pagos-aplicarBusqueda' onClick={operacionDeImpresionBusquedaYFiltro}><IoSearchSharp /></button>
 
         <a href={'/addTra'}>
-          <button className='add-Alumno'>Agregar</button>
+          <button className='add-pago'>< MdNoteAdd /></button>
         </a>
       </div>
 
-      <div className='search-container-alumnos'>
-        <input type='search-A' placeholder='Grado' id='search-container-alumnos-inputSearchGrade'/>
-        <input type='search-A' placeholder='Grupo' id='search-container-alumnos-inputSearchGroup'/>
-        <select id='search-container-alumnos-estatus'>
-          <option value="">--Seleccionar estatus--</option>
+      <div className='search-container-pagos'>
+        <input type='search-A' placeholder='Grado' id='search-container-pagos-inputSearchGrade'/>
+        <input type='search-A' placeholder='Grupo' id='search-container-pagos-inputSearchGroup'/>
+        <select id='search-container-pagos-estatus'>
+          <option id='status-pago' value="">Seleccionar estatus</option>
           <option value={1}>Pendiente</option>
           <option value={2}>Por pagar</option>
           <option value={3}>Pagado</option>
           <option value={4}>Atrasado</option>
         </select>
-        <button onClick={operacionDeImpresionBusquedaYFiltro}>Filtrar</button>
+        <button id='filter-pago' onClick={operacionDeImpresionBusquedaYFiltro}><FaFilter /></button>
       </div>
 
-      <div className='table-Alumnos'>
+      <div className='table-tramites'>
         <table>
           <thead>
             <tr>

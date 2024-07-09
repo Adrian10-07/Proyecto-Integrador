@@ -5,6 +5,7 @@ import { MdOutlineCancel } from "react-icons/md";
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import './AddTramite.css'
 
 export default function AddTramite() {
     const [nameAlum, setNameAlum] = useState([]);

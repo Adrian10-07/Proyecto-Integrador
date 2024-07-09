@@ -199,7 +199,7 @@ export default function EditAlum() {
                 }, 1000);
             })
             .catch(error => {
-                console.error('Error: ', error);
+                
                 //Agregar lógica para manejar el error en la interfaz de usuario
             });
     }
