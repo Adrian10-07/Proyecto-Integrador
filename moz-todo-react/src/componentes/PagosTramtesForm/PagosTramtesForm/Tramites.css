@@ -1,0 +1,143 @@
+.header-Alumnos {
+    position: relative;
+    background-color: rgba(31, 145, 168, 1);
+    padding: 30px 20px;
+    width: 100%;
+    color: #ffffff;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .header-Alumnos {
+    font-size:30px;
+  }
+  
+  .home-left-button{
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(61, 179, 205, 0.73);
+    cursor: pointer;
+    color: #ffffff;
+    border: none;
+    padding: 5px 40px;
+    border-radius: 5px;
+  }
+  .exit-right-button{
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color:rgba(23, 7, 91, 1) ;
+    cursor: pointer;
+    color: #ffffff;
+    border: none;
+    padding: 5px 40px;
+    border-radius: 5px;
+  }
+  
+  .home-left-button {
+    left: 200px;
+  }
+  
+  .exit-right-button {
+    right: 200px;
+  }
+  
+  .icon-exit {
+    font-size: 20px;
+    color: rgb(237, 229, 229);
+  }
+  .icon-home {
+    font-size: 20px;
+    color: rgb(237, 229, 229);
+  }
+  
+  .search-container-alumnos {
+    display: flex;
+    margin: 20px;
+    position: relative;
+  }
+  .search-container-alumnos{
+    left: 100px;
+  }
+
+  .search input[type="search"] {
+    border: 1px solid #ccc;
+  }
+
+  
+  .add-Alumno {
+    background-color: rgba(31, 145, 168, 1);
+    color: #ffffff;
+    border: none;
+    padding: 5px 15px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    margin: 5px;
+  }
+  
+  .add:hover {
+    background-color: #3700b3;
+  }
+  
+  .table-Alumnos {
+    position: relative;
+    padding: 20px;
+    justify-content: center;
+
+    
+  }
+  
+  .table-Alumnos table {
+    width: 100%;
+  }
+  
+  .table-Alumnos th, .table-Alumnos td {
+    padding: 10px;
+    text-align: center;
+  }
+  
+  .table-Alumnos th {
+    background-color: transparent;
+    color: #3700b3;
+  }
+  
+  .table-Alumnos button {
+    background-color: rgba(31, 145, 168, 1);
+    color: #ffffff;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+  }
+  
+  .table-Alumnos button:hover {
+    background-color: #3700b3;
+  }
+  .modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    right: auto;
+    bottom: auto;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  }
+  
+  .overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.75);
+  }  
