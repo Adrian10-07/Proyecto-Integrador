@@ -12,21 +12,25 @@ export default function EditAlum() {
 
   const handleSaveClick = () => {
     Swal.fire({
-      title: "Do you want to save the changes?",
-      showDenyButton: true,
-      showCancelButton: true,
-      confirmButtonText: "Save",
-      denyButtonText: `Don't save`
+        title: "¿Desea guardar los cambios?",
+        showCancelButton: true,
+        confirmButtonText: "Guardar",
     }).then((result) => {
-      if (result.isConfirmed) {
-        mandarCambiosALaBaseDeDatos();
-        Swal.fire("Saved!", "", "success");
-      } else if (result.isDenied) {
-        Swal.fire("Changes are not saved", "", "info");
-      }
+        if (result.isConfirmed) {
+            mandarCambiosALaBaseDeDatos()
+                .then(success => {
+                    if (success) {
+                        Swal.fire("Cambios guardados!", "", "success");
+                    } else {
+                        Swal.fire("Error, asegurese de seleccionar el turno y el estatus del alumno", "", "error");
+                    }
+                })
+                .catch(error => {
+                    Swal.fire("Error al guardar los cambios", error.message, "error");
+                });
+        }
     });
   };
-
   const handleCancelClick = () => {
     Swal.fire({
       title: "Cancelar Registro ¿?",
@@ -37,7 +41,14 @@ export default function EditAlum() {
       confirmButtonColor: "#d33",
       confirmButtonText: "Si, Cancelar Registro",
       cancelButtonText: "Volver al Registro",
-    });
+    }).then((result) => {
+      if (result.isConfirmed) {
+        setTimeout(() => {
+            navigate('/alumnos');
+        }, 1000);
+      }
+    })
+
   };
 
   if (!data) {
@@ -47,8 +58,9 @@ export default function EditAlum() {
   const navigate = useNavigate();
 
   const mandarCambiosALaBaseDeDatos = () => {
-    const url = `http://localhost:3000/alumnos/update/${data.id}`;
-    let dato = {
+    return new Promise((resolve, reject) => {
+      const url = `http://localhost:3000/alumnos/update/${data.id}`;
+      let dato = {
         nombre: "", 
         apellido_p: "", 
         apellido_m: "", 
@@ -106,6 +118,7 @@ export default function EditAlum() {
 
     if (registrarTurno == 0 || registrarEstado == 0) {
         console.log("No olvide elegir el turno y estatus");
+        resolve(false)
         // Agregar logica del error
     } else {
         if(registrarNombre) dato.nombre = registrarNombre; else dato.nombre = data.nombre;
@@ -180,15 +193,18 @@ export default function EditAlum() {
             })
             .then(datos => {
                 console.log("Alumno registrado: ", datos);
+                resolve(true)
                 setTimeout(() => {
                     navigate('/alumnos');
-                }, 3000);
+                }, 1000);
             })
             .catch(error => {
                 console.error('Error: ', error);
                 //Agregar lógica para manejar el error en la interfaz de usuario
             });
     }
+    })
+    
 };
 
 

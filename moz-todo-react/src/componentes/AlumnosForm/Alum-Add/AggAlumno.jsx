@@ -12,20 +12,25 @@ import { useNavigate } from 'react-router-dom';
 export default function AggAlumno() {
     const handleSaveClick = () => {
         Swal.fire({
-          title: "Do you want to save the changes?",
-          showDenyButton: true,
-          showCancelButton: true,
-          confirmButtonText: "Save",
-          denyButtonText: `Don't save`
+            title: "¿Desea guardar los cambios?",
+            showCancelButton: true,
+            confirmButtonText: "Guardar",
         }).then((result) => {
-          if (result.isConfirmed) {
-            Swal.fire("Saved!", "", "success");
-            mandarALaBaseDeDatos();
-          } else if (result.isDenied) {
-            Swal.fire("Changes are not saved", "", "info");
-          }
+            if (result.isConfirmed) {
+                mandarALaBaseDeDatos()
+                    .then(success => {
+                        if (success) {
+                            Swal.fire("Cambios guardados!", "", "success");
+                        } else {
+                            Swal.fire("Error, asegurese de llenar los campos obligatorios", "", "error");
+                        }
+                    })
+                    .catch(error => {
+                        Swal.fire("Error al guardar los cambios", error.message, "error");
+                    });
+            }
         });
-    }
+    };
 
     const handleCancelClick = () =>{
         Swal.fire({
@@ -37,12 +42,19 @@ export default function AggAlumno() {
             confirmButtonColor: "#d33",
             confirmButtonText: "Si, Cancelar Registro",
             cancelButtonText: "Volver al Registro",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              setTimeout(() => {
+                  navigate('/alumnos');
+              }, 1000);
+            }
           })
     }
 
     const navigate = useNavigate();
 
     const mandarALaBaseDeDatos = () => {
+        return new Promise ((resolve, reject) => {
         const url = "http://localhost:3000/alumnos/addAlumno";
         let data = {
             nombre: "", 
@@ -102,6 +114,7 @@ export default function AggAlumno() {
 
         if (!registrarNoControl || !registrarNombre || !registrarApellidoP && !registrarApellidoM || !registrarGrado || !registrarGrupo || !registrarTurno || !registrarEstado || !registrarTelefono || !registrarCorreo || !registrarCurp || !registrarlvlAcademico || !registrarNombreTutor || !registrarApellidoPTutor || !registrarApellidoMTutor || !registrarTelefonoTutor) {
             console.log("Hay campos obligatorios sin llenar");
+            resolve(false)
             // Agregar logica del error
         } else {
             data.nombre = registrarNombre;
@@ -146,15 +159,17 @@ export default function AggAlumno() {
                 })
                 .then(data => {
                     console.log("Alumno registrado: ", data);
+                    resolve(true)
                     setTimeout(() => {
                         navigate('/alumnos');
-                    }, 2000);
+                    }, 1000);
                 })
                 .catch(error => {
                     console.error('Error: ', error);
                     //Agregar lógica para manejar el error en la interfaz de usuario
                 });
         }
+        });
     };
 
 
