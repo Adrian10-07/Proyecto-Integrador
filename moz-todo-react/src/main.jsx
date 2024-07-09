@@ -7,6 +7,7 @@ import Alumnos from './componentes/AlumnosForm/Alumnos';
 import AggAlumno from './componentes/AlumnosForm/Alum-Add/AggAlumno';
 import NestedModal from './componentes/PagosEmpleadoForm/ChildModal';
 import App from './App';
+import EditAlum from './componentes/PagosEmpleadoForm/EditAlum';
 
 const router = createBrowserRouter([
   {
@@ -34,6 +35,10 @@ const router = createBrowserRouter([
   {
     path: "/empleados",
     element: <NestedModal/>,
+  },
+  {
+    path: "/editAlumno",
+    element: <EditAlum/>,
   },
 
 ])

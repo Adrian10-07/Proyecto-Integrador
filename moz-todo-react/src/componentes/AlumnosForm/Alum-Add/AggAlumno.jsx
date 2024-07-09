@@ -148,7 +148,7 @@ export default function AggAlumno() {
                     console.log("Alumno registrado: ", data);
                     setTimeout(() => {
                         navigate('/alumnos');
-                    }, 3000);
+                    }, 2000);
                 })
                 .catch(error => {
                     console.error('Error: ', error);
@@ -244,11 +244,7 @@ export default function AggAlumno() {
             <button onClick={handleSaveClick} className='dos'><FiSave className='icon-save'/></button>
 
             </div>
-
         </div>
-
-
-      
     </div>
   )
 }
