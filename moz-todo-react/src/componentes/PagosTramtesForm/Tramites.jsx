@@ -76,8 +76,11 @@ export default function Tramites() {
       data.apellido_m_busqueda = SearchApellidoM;
 
     let searchFecha = document.getElementById("search-container-tramites-inputSearchFecha").value;
-    if (searchFecha) 
+    if (searchFecha){
+      console.log(searchFecha)
       data.fechaDeCorteFiltro = searchFecha;
+    } 
+      
 
     let searchEstatus = document.getElementById("search-container-alumnos-estatus").value;
     if (searchEstatus) 

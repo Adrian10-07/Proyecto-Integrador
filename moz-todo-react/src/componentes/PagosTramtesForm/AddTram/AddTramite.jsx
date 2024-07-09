@@ -1,12 +1,24 @@
 import React, { useState, useEffect } from 'react';
-import Logo2 from './AddAssets/Logo2.png'
+import Logo2 from './AddAssets/Logo2.png';
 import { FiSave } from "react-icons/fi";
 import { MdOutlineCancel } from "react-icons/md";
-import Swal from 'sweetalert2'
+import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
-export default function AddTramite () {
+export default function AddTramite() {
+    const [nameAlum, setNameAlum] = useState([]);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        axios.get("http://localhost:3000/alumnos/")
+            .then(response => {
+                setNameAlum(response.data);
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    }, []);
 
     const mandarALaBaseDeDatos = () => {
         const url = 'http://localhost:3000/tramites/add';
@@ -47,7 +59,7 @@ export default function AddTramite () {
                 return response.json();
             })
             .then(data => {
-                Swal.fire('Trámite registrado', data);
+                Swal.fire('Trámite registrado', '', 'success');
                 setTimeout(() => {
                     navigate('/tramites');
                 }, 3000);
@@ -64,7 +76,7 @@ export default function AddTramite () {
           showDenyButton: true,
           showCancelButton: true,
           confirmButtonText: "Save",
-          denyButtonText: `Don't save`
+          denyButtonText: "Don't save"
         }).then((result) => {
           if (result.isConfirmed) {
             Swal.fire("Saved!", "", "success");
@@ -75,7 +87,7 @@ export default function AddTramite () {
         });
     };
 
-   const handleCancelClick = () => {
+    const handleCancelClick = () => {
         Swal.fire({
             title: "Cancelar Registro ¿?",
             text: "Se borraran los datos ingresados",
@@ -92,7 +104,7 @@ export default function AddTramite () {
         <div>
             <header className='header'>
                 <img src={Logo2} alt="Left" className='header-image-left' />
-            Pago de trámites
+                Pago de trámites
                 <img src={Logo2} alt="Right" className='header-image-right' />
             </header>
 
@@ -103,8 +115,10 @@ export default function AddTramite () {
                         <input type="text" placeholder='concepto' id='inputConcepto' />
                         <input type="text" placeholder='monto' id='inputMonto' />
                         <input type="date" id='inputFecha' />
-                        <select id="inputId_alumno">
-                            {/* Populate options here */}
+                        <select name='nombre' id="inputId_alumno">
+                            {nameAlum.map(elemento => (
+                                <option key={elemento.id} value={elemento.id}>{elemento.nombre}</option>
+                            ))}
                         </select>
                     </div>
                 </div>
@@ -116,5 +130,3 @@ export default function AddTramite () {
         </div>
     );
 }
-
-
