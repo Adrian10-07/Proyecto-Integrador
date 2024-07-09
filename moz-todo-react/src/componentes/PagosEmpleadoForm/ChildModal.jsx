@@ -2,6 +2,7 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
+
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -112,6 +113,7 @@ function ChildModal({ valueId }) {
   }
   
 export default function NestedModal({ valueId }) {
+
   const [open, setOpen] = useState(false);
   const handleOpen = () => {
     setOpen(true);
@@ -129,12 +131,17 @@ export default function NestedModal({ valueId }) {
         aria-labelledby="parent-modal-title"
         aria-describedby="parent-modal-description"
       >
+
         <Box sx={{ ...style, width: 400 }}>
+
           <h2 id="parent-modal-title">Text in a modal</h2>
           <p id="parent-modal-description">
             Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
           </p>
+
+
           <ChildModal valueId={valueId} />
+
         </Box>
       </Modal>
     </div>
