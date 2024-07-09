@@ -18,6 +18,26 @@ export default function FilaTram (
             // Puedes formatear la fecha como prefieras, por ejemplo:
     const fechaFormateada = `${dia}-${mes}-${anio}`;
 
+    const actualizarAPagado = () => {
+        const url = `http://localhost:3000/tramites/changePaid/${idT}`
+
+        fetch(url, {
+            method: "PUT"
+        })
+        .then(response => {
+            if(!response.ok){
+              throw new Error('Error al "Pagar tramite": ' + response.status);
+            }
+            return response.json();
+        })
+        .then(response => {
+           console.log("Tramite pagado") 
+        })
+        .catch(error => {
+            console.log("Error : ", error)
+        });
+    }
+
     return(
         <tr key={idT}>
             <td>{folioT}</td>

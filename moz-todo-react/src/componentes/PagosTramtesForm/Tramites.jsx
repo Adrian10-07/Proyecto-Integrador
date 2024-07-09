@@ -146,9 +146,9 @@ export default function Tramites() {
         <select id='search-container-alumnos-estatus'>
           <option value="">--Seleccionar estatus--</option>
           <option value={1}>Pendiente</option>
-          <option value={2}>Inactivo</option>
+          <option value={2}>Por pagar</option>
           <option value={3}>Pagado</option>
-          <option value={4}>Egresado</option>
+          <option value={4}>Atrasado</option>
         </select>
         <button onClick={operacionDeImpresionBusquedaYFiltro}>Filtrar</button>
       </div>
@@ -159,8 +159,8 @@ export default function Tramites() {
             <tr>
               <th>Folio</th>
               <th>Solicitante del trámite</th>
-              <th>Grado del solicitante</th>
-              <th>Grupo del solicitante</th>
+              <th>Grado</th>
+              <th>Grupo</th>
               <th>Concepto</th>
               <th>Monto</th>
               <th>Fecha</th>
