@@ -48,7 +48,7 @@ export default function FilaTram (
             <td>{montoT}</td>
             <td>{fechaFormateada}</td>
             <td>{estatusTramiteT}</td>
-            <td><button>Pagar</button></td>
+            <td><button onClick={actualizarAPagado}>Pagar</button></td>
         </tr>
     );
 }

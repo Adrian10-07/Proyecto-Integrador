@@ -170,7 +170,7 @@ export default function Tramites() {
           <tbody>
             {recursos.length > 0 ? (
               recursos.map((recurso) => (
-              <FilaTram idT={recurso.id} folioT={recurso.folio} nombreAlm={recurso.nombre} 
+              <FilaTram key={recurso.id} idT={recurso.id} folioT={recurso.folio} nombreAlm={recurso.nombre} 
                 apellidoP={recurso.apellido_p} apellidoM={recurso.apellido_m} gradoAlm={recurso.grado}
                 grupoAlm={recurso.grupo} conceptoT={recurso.concepto} montoT={recurso.monto}
                 fechaDeCorteT={recurso.fechaDeCorte} estatusTramiteT={recurso.tipo_estatus}
