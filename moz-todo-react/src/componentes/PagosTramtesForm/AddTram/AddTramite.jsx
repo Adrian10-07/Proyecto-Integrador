@@ -4,19 +4,26 @@ import { FiSave } from "react-icons/fi";
 import { MdOutlineCancel } from "react-icons/md";
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 
 export default function AddTramite() {
     const [nameAlum, setNameAlum] = useState([]);
     const navigate = useNavigate();
 
     useEffect(() => {
-        axios.get("http://localhost:3000/alumnos/")
+        fetch("http://localhost:3000/alumnos/")
             .then(response => {
-                setNameAlum(response.data);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('API response:', data); 
+                setNameAlum(data);
             })
             .catch(error => {
-                console.error(error);
+                console.error('Error fetching data:', error);
+                Swal.fire('Error fetching data', error.message, 'error');
             });
     }, []);
 
