@@ -187,14 +187,14 @@ export default function AggAlumno() {
         <div className='D-Alumno'>
                     <p>Siendo los campos con * obligatorios</p>
                     <div className='con1'>
-                        <input type='text' placeholder='No. Control' id='inputNoControl' />
-                        <input type="text" placeholder='Nombre*' id='inputNombre' />
-                        <input type="text" placeholder='Apellido Paterno*' id='inputApellidoP' />
-                        <input type="text" placeholder='Apellido Materno*' id='inputApellidoM' />
+                        <input type='text' placeholder='No. Control' id='inputNoControl' maxLength={10}/>
+                        <input type="text" placeholder='Nombre*' id='inputNombre' maxLength={45}/>
+                        <input type="text" placeholder='Apellido Paterno*' id='inputApellidoP' maxLength={45}/>
+                        <input type="text" placeholder='Apellido Materno*' id='inputApellidoM' maxLength={45}/>
                     </div>
                     <div className='con1'>
-                        <input type='number' placeholder='Grado*' id='inputGrado' />
-                        <input type='text' placeholder='Grupo*' id='inputGrupo' />
+                        <input type='number' placeholder='Grado*' id='inputGrado' maxLength={2}/>
+                        <input type='text' placeholder='Grupo*' id='inputGrupo' maxLength={1}/>
                         <select id='inputTurno'>
                             <option>--Seleccionar turno*--</option>
                             <option value={1}>Matutino</option>
@@ -209,21 +209,21 @@ export default function AggAlumno() {
                         </select>
                     </div>
                     <div className='con2'>
-                        <input type="number" placeholder='Telefono*' id='inputTelefono' />
-                        <input type="text" placeholder='Correo Electronico*' id='inputCorreo' />
-                        <input type="text" placeholder='CURP*' id='inputCurp' />
+                        <input type="tel" placeholder='Telefono*' id='inputTelefono' maxLength={12}/>
+                        <input type="email" placeholder='Correo Electronico*' id='inputCorreo' maxLength={45} />
+                        <input type="text" placeholder='CURP*' id='inputCurp' maxLength={18}/>
                     </div>
                     <div className='con4'>
-                        <input type="text" placeholder='Nivel académico actual' id='inputlvlAcademic' />
+                        <input type="text" placeholder='Nivel académico actual' id='inputlvlAcademic' maxLength={45}/>
                     </div>
                 </div>
                 <div>
                     <h2>Datos del Tutor</h2>
                     <div className='D-Tutor'>
-                        <input type="text" placeholder='Nombre*' id='inputNombreTutor' />
-                        <input type="text" placeholder='Apellido Paterno*' id='inputApellidoPTutor' />
-                        <input type="text" placeholder='Apellido Materno*' id='inputApellidoMTutor' />
-                        <input type="number" placeholder='Telefono*' id='inputTelefonoTutor' />
+                        <input type="text" placeholder='Nombre*' id='inputNombreTutor' maxLength={45}/>
+                        <input type="text" placeholder='Apellido Paterno*' id='inputApellidoPTutor' maxLength={45}/>
+                        <input type="text" placeholder='Apellido Materno*' id='inputApellidoMTutor' maxLength={45}/>
+                        <input type="tel" placeholder='Telefono*' id='inputTelefonoTutor' maxLength={12}/>
                     </div>
                 </div>
                 <div>
@@ -231,9 +231,9 @@ export default function AggAlumno() {
                     <div className='D-Diagnostico'>
                         <h4>Examen Diagnostico Ceneval "EXANII II"</h4>
                         <div className='con5'>
-                            <input type='text' placeholder='Colegio de proveniencia' id='inputColegioProveniente' />
-                            <input type="text" placeholder='Universidad a la que aplica' id='inputUniversidadAspira' />
-                            <input type="text" placeholder='Carrera a la que aplica' id='inputCarreraAspira' />
+                            <input type='text' placeholder='Colegio de proveniencia' id='inputColegioProveniente' maxLength={45}/>
+                            <input type="text" placeholder='Universidad a la que aplica' id='inputUniversidadAspira' maxLength={45}/>
+                            <input type="text" placeholder='Carrera a la que aplica' id='inputCarreraAspira' maxLength={45}/>
                         </div>
                         <div className='con1'>
                             <label>Fecha de inicio del curso</label>
@@ -243,13 +243,13 @@ export default function AggAlumno() {
                         </div>
                         <h4>Puntajes del examen</h4>
                         <div className='con5'>
-                            <input type="number" placeholder='Pensamiento Matematico' id='inputMatScore' />
-                            <input type="number" placeholder='Pensamiento Analitico' id='inputAnalitScore' />
-                            <input type="number" placeholder='Estructura de la lengua' id='inputLangScore' />
-                            <input type="number" placeholder='Comprension Lectora' id='inputLectScore' />
+                            <input type="number" placeholder='Pensamiento Matematico' id='inputMatScore' max={100} min={0}/>
+                            <input type="number" placeholder='Pensamiento Analitico' id='inputAnalitScore' max={100} min={0}/>
+                            <input type="number" placeholder='Estructura de la lengua' id='inputLangScore' max={100} min={0}/>
+                            <input type="number" placeholder='Comprension Lectora' id='inputLectScore' max={100} min={0}/>
                         </div>
                         <div className='con6'>
-                            <input type="number" placeholder='Puntaje general' id='inputGenScore' />
+                            <input type="number" placeholder='Puntaje general' id='inputGenScore' max={100} min={0}/>
                         </div>
                     </div>
                 </div>

@@ -78,10 +78,11 @@ function ChildModal({ valueId }) {
                   <li>Correo: {data.correo || "N/A"}</li>
                   <li>Tutor: {data.nombre_tutor || "N/A"} {data.apellidoP_tutor || "N/A"} {data.apellidoM_tutor || "N/A"}</li>
                   <li>Teléfono del tutor: {data.telefono_tutor || "N/A"}</li>
-                  <li>Escuela de procedencia: {data.nivelAcademico || "N/A"}</li>
+                  <li>Nivel académico: {data.nivelAcademico || "N/A"}</li>
                 </ul>
                 <p>Datos del Examen del Curso Pre-Universitario</p>
                 <ul>
+                  <li>Colegio de proveniencia: {data.escuelaProcedente}</li>
                   <li>Universidad a la que aspira: {data.colegioAspirado || "N/A"}</li>
                   <li>Carrera a la que aspira: {data.carreraAspirada || "N/A"}</li>
                   <li>Fecha de inicio del curso: {data.fechaInicioCurso || "N/A"}</li>
