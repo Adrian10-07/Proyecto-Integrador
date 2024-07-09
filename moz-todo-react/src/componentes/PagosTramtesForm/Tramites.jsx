@@ -83,8 +83,11 @@ export default function Tramites() {
 
     let searchFecha = document.getElementById("search-container-tramites-inputSearchFecha").value;
     if (searchFecha){
-      console.log(searchFecha)
-      data.fechaDeCorteFiltro = searchFecha;
+      console.log('Fecha seleccionada:', searchFecha)
+    const date = new Date(searchFecha);
+    const formattedDate = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+    data.fechaDeCorteFiltro = formattedDate;
+    console.log('Fecha formateada:', formattedDate);
     } 
       
 
