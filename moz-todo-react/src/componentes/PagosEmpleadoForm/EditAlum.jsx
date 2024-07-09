@@ -104,53 +104,61 @@ export default function EditAlum() {
     let registrarlvlCompren = document.getElementById("inputLectScore").value;
     let registrarlvlGeneral = document.getElementById("inputGenScore").value;
 
-    if (!registrarNoControl || !registrarNombre || !registrarApellidoP && !registrarApellidoM || !registrarGrado || !registrarGrupo || !registrarTurno || !registrarEstado || !registrarTelefono || !registrarCorreo || !registrarCurp || !registrarlvlAcademico || !registrarNombreTutor || !registrarApellidoPTutor || !registrarApellidoMTutor || !registrarTelefonoTutor) {
-        console.log("Hay campos obligatorios sin llenar");
+    if (registrarTurno == 0 || registrarEstado == 0) {
+        console.log("No olvide elegir el turno y estatus");
         // Agregar logica del error
     } else {
-        dato.nombre = registrarNombre;
-        dato.apellido_p = registrarApellidoP;
-        dato.apellido_m = registrarApellidoM;
-        dato.grado = registrarGrado;
-        dato.grupo = registrarGrupo;
+        if(registrarNombre) dato.nombre = registrarNombre; else dato.nombre = data.nombre;
+        if(registrarApellidoP) dato.apellido_p = registrarApellidoP; else dato.apellido_p = data.apellido_p;
+        if(registrarApellidoM) dato.apellido_m = registrarApellidoM; else dato.apellido_m = data.apellido_m;
+        if(registrarGrado) dato.grado = registrarGrado; else dato.grado = data.grado;
+        if(registrarGrupo) dato.grupo = registrarGrupo; else dato.grupo = data.grupo;
         dato.turno = registrarTurno;
-        dato.noControl = registrarNoControl;
+        if(registrarNoControl) dato.noControl = registrarNoControl; else dato.noControl = data.noControl;
         dato.estado = registrarEstado;
-        dato.curp = registrarCurp;
-        dato.telefono = registrarTelefono;
-        dato.correo = registrarCorreo;
-        dato.nombre_tutor = registrarNombreTutor;
-        dato.apellido_p_tutor = registrarApellidoPTutor;
-        dato.apellido_m_tutor = registrarApellidoMTutor;
-        dato.telefono_tutor = registrarTelefonoTutor;
-        dato.nivelAcademico = registrarlvlAcademico;
+        if(registrarCurp) dato.curp = registrarCurp; else dato.curp = data.curp;
+        if(registrarTelefono) dato.telefono = registrarTelefono; else dato.telefono = data.telefono;
+        if(registrarCorreo) dato.correo = registrarCorreo; else dato.correo = data.correo;
+        if(registrarNombreTutor) dato.nombre_tutor = registrarNombreTutor; else dato.nombre_tutor = data.nombre_tutor;
+        if(registrarApellidoPTutor) dato.apellido_p_tutor = registrarApellidoPTutor; else dato.apellido_p_tutor = data.apellidoP_tutor;
+        if(registrarApellidoMTutor) dato.apellido_m_tutor = registrarApellidoMTutor; else dato.apellido_m_tutor = data.apellidoM_tutor;
+        if(registrarTelefonoTutor) dato.telefono_tutor = registrarTelefonoTutor; else dato.telefono_tutor = data.telefono_tutor;
+        if(registrarlvlAcademico) dato.nivelAcademico = registrarlvlAcademico; else dato.nivelAcademico = data.nivelAcademico;
         if (registrarSchoolProcedente) dato.escuelaProcedente = registrarSchoolProcedente; else dato.escuelaProcedente = data.escuelaProcedente;
         if (registrarUniAspirada) dato.colegioAspirado = registrarUniAspirada; else dato.colegioAspirado = data.colegioAspirado;
         if (registrarCarreraAspirada) dato.carreraAspirada = registrarCarreraAspirada; else dato.carreraAspirada = data.carreraAspirada;
-        const fechaISO1 = data.fechaInicioCurso;
-        const fecha1 = new Date(fechaISO1);
-
-        // Obtener la fecha en formato deseado
-        const dia1 = fecha1.getDate(); // día del mes (1-31)
-        const mes1 = fecha1.getMonth() + 1; // mes (0-11, sumamos 1 para obtener el mes real)
-        const anio1 = fecha1.getFullYear(); // año
-
-        // Puedes formatear la fecha como prefieras, por ejemplo:
-        const newfecha1 = `${anio1}-${mes1}-${dia1}`;
-        console.log(newfecha1); // Ejemplo de formato: "24/7/2024"
-        if (registrarFechaCurso) dato.fechaInicioCurso = registrarFechaCurso; else dato.fechaInicioCurso = newfecha1;
-        const fechaISO2 = data.fechaExamenDiagnostico;
-        const fecha2 = new Date(fechaISO2);
-
-        // Obtener la fecha en formato deseado
-        const dia2 = fecha2.getDate(); // día del mes (1-31)
-        const mes2 = fecha2.getMonth() + 1; // mes (0-11, sumamos 1 para obtener el mes real)
-        const anio2 = fecha2.getFullYear(); // año
-
-        // Puedes formatear la fecha como prefieras, por ejemplo:
-        const newfecha2 = `${anio2}-${mes2}-${dia2}`;
-        console.log(newfecha1); // Ejemplo de formato: "24/7/2024"
-        if (registrarFechaExamen) dato.fechaExamenDiagnostico = registrarFechaExamen; else dato.fechaExamenDiagnostico = newfecha2;
+        
+        if (registrarFechaCurso) dato.fechaInicioCurso = registrarFechaCurso; 
+        else{
+          if(data.fechaInicioCurso == null)
+            dato.fechaInicioCurso = null;
+          else{
+            const fechaISO1 = data.fechaInicioCurso;
+            const fecha1 = new Date(fechaISO1);
+            const dia1 = fecha1.getDate();
+            const mes1 = fecha1.getMonth() + 1;
+            const anio1 = fecha1.getFullYear(); 
+            const newfecha1 = `${anio1}-${mes1}-${dia1}`;
+            console.log(newfecha1);
+            dato.fechaInicioCurso = newfecha1
+          }
+        }
+        
+        if (registrarFechaExamen) dato.fechaExamenDiagnostico = registrarFechaExamen; 
+        else {
+          if(data.fechaExamenDiagnostico == null)
+            dato.fechaExamenDiagnostico = null;
+          else{
+            const fechaISO2 = data.fechaExamenDiagnostico;
+            const fecha2 = new Date(fechaISO2);
+            const dia2 = fecha2.getDate();
+            const mes2 = fecha2.getMonth() + 1;
+            const anio2 = fecha2.getFullYear();
+            const newfecha2 = `${anio2}-${mes2}-${dia2}`;
+            console.log(newfecha2);
+            dato.fechaExamenDiagnostico = newfecha2;
+          }
+        }
         if (registrarlvlMatematic) dato.nivelMatematico = registrarlvlMatematic; else dato.nivelMatematico = data.nivelMatematico;
         if (registrarlvlAnalitic) dato.nivelAnalitico = registrarlvlAnalitic; else dato.nivelAnalitico = data.nivelAnalitico;
         if (registrarlvlLang) dato.nivelLinguistico = registrarlvlLang; else dato.nivelLinguistico = data.nivelLinguistico;
@@ -205,12 +213,12 @@ export default function EditAlum() {
             <input type='number' placeholder={data.grado || 'Grado*'} id='inputGrado'/>
             <input type='text' placeholder={data.grupo || 'Grupo*'} id='inputGrupo' />
             <select id='inputTurno'>
-              <option>--Seleccionar Turno*--</option>
+              <option value={0}>--Seleccionar Turno*--</option>
               <option value={1}>Matutino</option>
               <option value={2}>Vespertino</option>
             </select>
             <select id='inputEstatus'>
-              <option>--Seleccionar Estatus*--</option>
+              <option value={0}>--Seleccionar Estatus*--</option>
               <option value={1}>Activo</option>
               <option value={2}>Inactivo</option>
               <option value={3}>Dado de baja</option>

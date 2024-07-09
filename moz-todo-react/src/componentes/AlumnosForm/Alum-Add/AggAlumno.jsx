@@ -148,7 +148,7 @@ export default function AggAlumno() {
                     console.log("Alumno registrado: ", data);
                     setTimeout(() => {
                         navigate('/alumnos');
-                    }, 3000);
+                    }, 2000);
                 })
                 .catch(error => {
                     console.error('Error: ', error);
