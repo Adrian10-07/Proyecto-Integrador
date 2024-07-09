@@ -1,6 +1,6 @@
 import React from 'react'
 import './AggAlumno.css'
-import Logo2 from './AggAssets/Logo2.png'
+import Logo2 from './AggAssets/Logo2.png';
 import { FiSave } from "react-icons/fi";
 import { MdOutlineCancel } from "react-icons/md";
 import Swal from 'sweetalert2'
