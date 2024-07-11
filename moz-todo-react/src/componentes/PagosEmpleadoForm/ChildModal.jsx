@@ -7,6 +7,8 @@ import { useNavigate } from 'react-router-dom';
 import './ChildModal.css'; // Importa la hoja de estilos
 import Logo2 from './AssetsDAlumn/Logo2.png';
 import { FaUserEdit } from "react-icons/fa";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {faPenToSquare} from '@fortawesome/free-solid-svg-icons';
 import { IoCloseCircleSharp } from "react-icons/io5"; //<IoCloseCircleSharp />
 import { MdOutlineEditNote } from "react-icons/md";
   
@@ -95,11 +97,11 @@ export default function NestedModal({ valueId }) {
               <li>Puntaje General: {data.nivelGeneral || "N/A"}</li>
             </ul>
             <Button className='EditA' onClick={() => navigate('/editAlumno', { state: { data } })}>
-            Editar Alumno
+            Editar<FontAwesomeIcon icon="faPenToSquare" />
             </Button>
           </div>
           )}
-          <Button className='CloseA' onClick={handleClose}>Cancelar</Button>
+          <Button className='CloseA' onClick={handleClose}>Cerrar</Button>
         </Box>
       </Modal>
     </div>
