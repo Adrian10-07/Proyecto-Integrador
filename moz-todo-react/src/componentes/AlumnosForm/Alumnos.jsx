@@ -6,8 +6,9 @@ import { ImExit, ImIcoMoon } from "react-icons/im";
 import EditModal from './ModalesForm/EditAlumno/EditModal';
 import FilaDate from './filasAlumnos/FilaDate';
 import { Link } from 'react-router-dom';
-
+import { FaFilter } from "react-icons/fa";
 import './Alumnos.css';
+import { IoSearchSharp } from "react-icons/io5";
 
 export default function Alumnos() {
   const [data, setData] = useState([
@@ -129,7 +130,7 @@ export default function Alumnos() {
         <input type="search-A" placeholder='Apell. Pat.' id='search-container-alumnos-inputSearchApellidoP'/>
         <input type='search-A' placeholder='Apell. Mat.' id='search-container-alumnos-inputSearchApellidoM'/>
         <input type='search-A' placeholder='No. Control.' id='search-container-alumnos-inputSearchNoControl'/>
-        <button className='search-container-alumnos-aplicarBusqueda' onClick={operacionDeImpresionBusquedaYFiltro}>Buscar</button>
+        <button className='search-container-alumnos-aplicarBusqueda' onClick={operacionDeImpresionBusquedaYFiltro}><IoSearchSharp /></button>
 
         <a href={'/agg'}>
           <button className='add-Alumno'><IoMdPersonAdd /></button>
@@ -146,7 +147,7 @@ export default function Alumnos() {
           <option value={3}>Dado de baja</option>
           <option value={4}>Egresado</option>
         </select>
-        <button id='filter' onClick={operacionDeImpresionBusquedaYFiltro}>Filtrar</button>
+        <button id='filter' onClick={operacionDeImpresionBusquedaYFiltro}><FaFilter /></button>
       </div>
 
       <div className='table-Alumnos'>

@@ -1,9 +1,9 @@
 .modal-box {
   position: absolute;
-  top: 45%;
+  top: 40%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 90vw; /* Cambiar el tamaño del modal a 80% del ancho de la ventana */
+  width: 50vw; /* Cambiar el tamaño del modal a 80% del ancho de la ventana */
   max-width: 800px; /* Asegurarse de que no sea mayor de 600px */
   background-color: rgb(255, 255, 255);
   border: none;
@@ -32,7 +32,7 @@
 .image-left{
   right: 300px;
   top: 135px;
-  margin-bottom: 0px;
+  margin-bottom: -20px;
   }
 
 
@@ -45,5 +45,8 @@
 .image-right{
 left: 300px;
 bottom: 50px;
-margin-bottom: 0px;
+margin-top: 20px;
 }
+
+
+

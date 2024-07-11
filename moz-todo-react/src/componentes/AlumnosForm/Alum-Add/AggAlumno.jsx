@@ -178,14 +178,15 @@ export default function AggAlumno() {
     <div>
         <header className='header'>
             <img src={Logo2} alt="Left" className='header-image-left' />
-             Datos del Alumno
+            <h1>             Datos del Alumno
+            </h1>
              <img src={Logo2} alt="Left" className='header-image-rigth' />
 
         </header>
 
         <div className='Inputsagg'>
         <div className='D-Alumno'>
-                    <p>Siendo los campos con * obligatorios</p>
+                    <p id='CO'>Campos obligatorios:</p>
                     <div className='con1'>
                         <input type='text' placeholder='No. Control' id='inputNoControl' maxLength={10}/>
                         <input type="text" placeholder='Nombre*' id='inputNombre' maxLength={45}/>
@@ -196,12 +197,12 @@ export default function AggAlumno() {
                         <input type='number' placeholder='Grado*' id='inputGrado' maxLength={2}/>
                         <input type='text' placeholder='Grupo*' id='inputGrupo' maxLength={1}/>
                         <select id='inputTurno'>
-                            <option>--Seleccionar turno*--</option>
+                            <option> Seleccionar turno </option>
                             <option value={1}>Matutino</option>
                             <option value={2}>Vespertino</option>
                         </select>
                         <select id='inputEstatus'>
-                            <option>--Seleccionar Estatus*--</option>
+                            <option> Seleccionar Estatus </option>
                             <option value={1}>Activo</option>
                             <option value={2}>Inactivo</option>
                             <option value={3}>Dado de baja</option>

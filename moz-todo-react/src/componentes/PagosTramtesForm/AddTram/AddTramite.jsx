@@ -4,6 +4,7 @@ import { FiSave } from "react-icons/fi";
 import { MdOutlineCancel } from "react-icons/md";
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
+import './AddTramite.css'
 
 export default function AddTramite() {
     const [nameAlum, setNameAlum] = useState([]);
@@ -181,9 +182,9 @@ export default function AddTramite() {
     return (
         <div>
             <header className='header'>
-                <img src={Logo2} alt="Left" className='header-image-left' />
+                <img src={Logo2} alt="Left" className='image-add-left' />
                 Pago de trámites
-                <img src={Logo2} alt="Right" className='header-image-right' />
+                <img src={Logo2} alt="Right" className='image-add-right' />
             </header>
 
             <div className='Inputadd'>

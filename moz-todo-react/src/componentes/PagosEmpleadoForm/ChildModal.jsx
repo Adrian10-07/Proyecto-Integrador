@@ -6,6 +6,12 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './ChildModal.css'; // Importa la hoja de estilos
 import Logo2 from './AssetsDAlumn/Logo2.png';
+import { FaUserEdit } from "react-icons/fa";
+import { IoCloseCircleSharp } from "react-icons/io5"; //<IoCloseCircleSharp />
+import { MdOutlineEditNote } from "react-icons/md";
+
+
+
 
 function ChildModal({ valueId }) {
     const [data, setData] = useState(null);
@@ -65,7 +71,8 @@ function ChildModal({ valueId }) {
 
             {error && <p>Error: {error}</p>}
             {!error && data && (
-              <div>
+              <div >
+                <p>Datos del Alumno:</p>
                 <ul>
                   <li>Nombre: {data.nombre || "N/A"} {data.apellido_p || "N/A"} {data.apellido_m || "N/A"}</li>
                   <li>Grado: {data.grado || "N/A"}</li>
@@ -80,7 +87,7 @@ function ChildModal({ valueId }) {
                   <li>Teléfono del tutor: {data.telefono_tutor || "N/A"}</li>
                   <li>Nivel académico: {data.nivelAcademico || "N/A"}</li>
                 </ul>
-                <p>Datos del Examen del Curso Pre-Universitario</p>
+                <p id='pd'>Datos del Examen del Curso Pre-Universitari:</p>
                 <ul>
                   <li>Colegio de proveniencia: {data.escuelaProcedente}</li>
                   <li>Universidad a la que aspira: {data.colegioAspirado || "N/A"}</li>
@@ -93,12 +100,12 @@ function ChildModal({ valueId }) {
                   <li>Comprensión Lectora: {data.nivelComprension || "N/A"}</li>
                   <li>Puntaje General: {data.nivelGeneral || "N/A"}</li>
                 </ul>
-                <Button onClick={() => navigate('/editAlumno', { state: { data } })}>
-                  Editar Alumno
+                <Button className='EditA' onClick={() => navigate('/editAlumno', { state: { data } })}>
+                Editar Alumno
                 </Button>
               </div>
             )}
-            <Button onClick={handleClose}>Cerrar</Button>
+            <Button className='CloseA' onClick={handleClose}>Cancelar</Button>
           </Box>
         </Modal>
       </React.Fragment>
@@ -116,19 +123,15 @@ export default function NestedModal({ valueId }) {
 
   return (
     <div>
-      <Button onClick={handleOpen}>Open modal</Button>
+      <Button onClick={handleOpen}> <FaUserEdit /> </Button>
       <Modal
         open={open}
         onClose={handleClose}
-        aria-labelledby="parent-modal-title"
-        aria-describedby="parent-modal-description"
       >
         <Box className="modal-box">
-          <h2 id="parent-modal-title">Text in a modal</h2>
-          <p id="parent-modal-description">
-            Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-          </p>
+
           <ChildModal valueId={valueId} />
+
         </Box>
       </Modal>
     </div>
