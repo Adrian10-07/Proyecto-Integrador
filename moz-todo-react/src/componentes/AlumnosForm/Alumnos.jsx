@@ -11,9 +11,7 @@ import './Alumnos.css';
 import { IoSearchSharp } from "react-icons/io5";
 
 export default function Alumnos() {
-  const [data, setData] = useState([
-
-  ]);
+  const [data, setData] = useState([]);
 
   
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -166,19 +164,6 @@ export default function Alumnos() {
             </tr>
           </thead>
           <tbody>
-            {data.map((item) => (
-              <tr key={item.id}>
-                <td></td>
-                <td>{item.nombre}</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                
-
-              </tr>
-            ))}
             {//Imprime los datos del recurso obtenido, por for each
               recursos.length > 0 ? (
               recursos.map((recurso) => (

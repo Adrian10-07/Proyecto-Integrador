@@ -9,6 +9,7 @@ import NestedModal from './componentes/PagosEmpleadoForm/ChildModal';
 import Tramites from './componentes/PagosTramtesForm/Tramites';
 import AddTramite from './componentes/PagosTramtesForm/AddTram/AddTramite';
 import EditAlum from './componentes/PagosEmpleadoForm/EditAlum';
+import Personal from './componentes/PersonalForm/Personal';
 
 import App from './App';
 
@@ -37,7 +38,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/empleados",
-    element: <NestedModal/>,
+    element: <Personal/>,
   },
   {
     path:'/tramites',
