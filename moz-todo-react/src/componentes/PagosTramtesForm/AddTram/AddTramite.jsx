@@ -4,6 +4,7 @@ import { FiSave } from "react-icons/fi";
 import { MdOutlineCancel } from "react-icons/md";
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
+import { IoSearchSharp } from "react-icons/io5";
 import './AddTramite.css'
 
 export default function AddTramite() {
@@ -188,6 +189,7 @@ export default function AddTramite() {
             </header>
 
             <div className='Inputadd'>
+                    <p>Generar Folio</p>
                 <div className='tramite'>
                     <div className='con1'>
                         <input type="text" placeholder='folio' id='inputFolio' maxLength={32}/>
@@ -203,12 +205,12 @@ export default function AddTramite() {
                         <input type='text' placeholder='Apellido Paterno' id='inputAlumnoSearchApellidoP' maxLength={45}/>
                         <input type='text' placeholder='Apellido Materno' id='inputAlumnoSearchApellidoM' maxLength={45}/>
                         <input type='text' placeholder='No. Control' id='inputAlumnoSearchNoControl' maxLength={10}/>
-                        <button onClick={optionAlumnosAlumnos}>Buscar</button>
+                        <button onClick={optionAlumnosAlumnos}>< IoSearchSharp />Buscar</button>
                         
                     </div>
                     <div className='con1'>
                         <select name='nombre' id="inputId_alumno">
-                            <option value={"not valid"}>Seleccione Alumno*</option>
+                            <option value={"not valid"}>Seleccione Alumno</option>
                             {nameAlum.map(elemento => (
                                 <option key={elemento.id} value={elemento.id}>{elemento.noControl} : {elemento.nombre} {elemento.apellido_p} {elemento.apellido_m} {elemento.grado}-{elemento.grupo}</option>
                             ))}
