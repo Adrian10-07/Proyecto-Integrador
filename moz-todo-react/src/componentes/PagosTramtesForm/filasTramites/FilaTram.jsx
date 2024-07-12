@@ -7,39 +7,98 @@ export default function FilaTram (
     {idT, folioT, nombreAlm, apellidoP, apellidoM, gradoAlm, grupoAlm, conceptoT, montoT, 
         fechaDeCorteT, estatusTramiteT, }){
     
+    //Hace maromas para pasar la fecha tipo SQL a una fecha de JS
     const fechaISO = fechaDeCorteT;
     const fecha = new Date(fechaISO);
             
-            // Obtener la fecha en formato deseado
-    const dia = fecha.getDate(); // día del mes (1-31)
-    const mes = fecha.getMonth() + 1; // mes (0-11, sumamos 1 para obtener el mes real)
-    const anio = fecha.getFullYear(); // año
+    const dia = fecha.getDate();
+    const mes = fecha.getMonth() + 1;
+    const anio = fecha.getFullYear();
             
-            // Puedes formatear la fecha como prefieras, por ejemplo:
     const fechaFormateada = `${dia}-${mes}-${anio}`;
-    /*
+    const fechaAComparar = `${anio}-${String(mes).padStart(2, '0')}-${String(dia).padStart(2, '0')}`;
+    
+    
     const determinarEstatusDePago = () => {
         if (estatusTramiteT == "Pagado"){
+            //Si el estatus de pago ya esta pagado, no hace nada
             console.log("Tramite ya pagado");
         }
         else{
-            const fecha = new Date();
-            const dia = String(fecha.getDate()).padStart(2, '0');
-            const mes = String(fecha.getMonth() + 1).padStart(2, '0'); // Los meses empiezan en 0
-            const anio = fecha.getFullYear();
-            const fechaComparacion = `${anio}-${mes}-${dia}`;
-            const diferenciaMilisegundos = fechaFormateada - fechaComparacion;
+            //Si se cuentra pendiende, hace la operacion
+            //Extrae la fecha actual
+            const fechaActual = new Date();
+            const diaActual = String(fechaActual.getDate()).padStart(2, '0');
+            const mesActual = String(fechaActual.getMonth() + 1).padStart(2, '0');
+            const anioActual = fechaActual.getFullYear();
+            const fechaComparacion = `${anioActual}-${mesActual}-${diaActual}`;
+        
+            console.log("Hoy es " + fechaComparacion);
+
+            //Crea dis instancias de tipo Date para comparar las fechas
+            const fechaActualObj = new Date(fechaComparacion);
+            const fechaACompararObj = new Date(fechaAComparar);
+
+            //Compara ambas fechas, obtiene milisegundos, y los pasa a dias de diferencia
+            const diferenciaMilisegundos = fechaACompararObj - fechaActualObj;
             const diferenciaDias = diferenciaMilisegundos / (1000 * 60 * 60 * 24);
 
             console.log(`Diferencia en días: ${diferenciaDias}`);
+            if(diferenciaDias < 10){
+                //Si faltan 10 dias para que se venza el pago, lo marcara como proximo
+                actualizarAProximoAPagar();
+            }
+            if(diferenciaDias <= 0){
+                //Si faltan 0 dias o ya paso la fecha limite, lo marca como atrasado
+                actualizarAAtrasado();
+            }
         }
     }
 
     useEffect(()=>{
-        console.log(fechaFormateada);
         determinarEstatusDePago();
     }, []);
-    */
+
+    const actualizarAProximoAPagar = () => {
+        const url = `http://localhost:3000/tramites/changeNext/${idT}`;
+
+        fetch(url, {
+            method: "PUT"
+        })
+        .then(response => {
+            if(!response.ok){
+                throw new Error('Error al "Pagar cambiar estado de tramite a proximo": ' + response.status);
+              }
+              return response.json();
+        })
+        .then(response => {
+            console.log("Cambiando estado de tramite a proximo");
+        })
+        .catch(error => {
+            console.log("Error : ", error);
+        })
+    }
+
+    const actualizarAAtrasado = () => {
+        const url = `http://localhost:3000/tramites/changeArrears/${idT}`;
+
+        fetch(url, {
+            method: "PUT"
+        })
+        .then(response => {
+            if(!response.ok){
+                throw new Error('Error al "Pagar cambiar estado de tramite a atrasado": ' + response.status);
+              }
+              return response.json();
+        })
+        .then(response => {
+            console.log("Cambiando estado de tramite a atrasado");
+        })
+        .catch(error => {
+            console.log("Error : ", error);
+        })
+    }
+    
     const actualizarAPagado = () => {
         const url = `http://localhost:3000/tramites/changePaid/${idT}`
 
