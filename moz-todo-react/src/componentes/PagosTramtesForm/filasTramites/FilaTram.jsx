@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { SiGoogleforms } from "react-icons/si";
 import { MdEdit } from "react-icons/md";
 import DataTramite from "../ModalesForm/DataTramite/DataTramite";
@@ -17,16 +17,29 @@ export default function FilaTram (
             
             // Puedes formatear la fecha como prefieras, por ejemplo:
     const fechaFormateada = `${dia}-${mes}-${anio}`;
-    
+    /*
     const determinarEstatusDePago = () => {
         if (estatusTramiteT == "Pagado"){
             console.log("Tramite ya pagado");
         }
         else{
-            
+            const fecha = new Date();
+            const dia = String(fecha.getDate()).padStart(2, '0');
+            const mes = String(fecha.getMonth() + 1).padStart(2, '0'); // Los meses empiezan en 0
+            const anio = fecha.getFullYear();
+            const fechaComparacion = `${anio}-${mes}-${dia}`;
+            const diferenciaMilisegundos = fechaFormateada - fechaComparacion;
+            const diferenciaDias = diferenciaMilisegundos / (1000 * 60 * 60 * 24);
+
+            console.log(`Diferencia en días: ${diferenciaDias}`);
         }
     }
 
+    useEffect(()=>{
+        console.log(fechaFormateada);
+        determinarEstatusDePago();
+    }, []);
+    */
     const actualizarAPagado = () => {
         const url = `http://localhost:3000/tramites/changePaid/${idT}`
 
