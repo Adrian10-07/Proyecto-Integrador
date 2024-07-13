@@ -9,8 +9,8 @@ export default function FilaPersonal ({perId, perNombre, perApellidoP, perApelli
         <td>{perNombre}</td>
         <td>{perApellidoP}</td>
         <td>{perApellidoM}</td>
-        <td>{perArea}</td>
         <td>{perCargo}</td>
+        <td>{perArea}</td>
         <td>{perEstatus}</td>
         <td>Aquí va el botón modal</td>
     </tr>

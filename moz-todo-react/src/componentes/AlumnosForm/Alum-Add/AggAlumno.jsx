@@ -92,7 +92,7 @@ export default function AggAlumno() {
         let registrarGrupo = document.getElementById("inputGrupo").value;
         let registrarTurno = document.getElementById("inputTurno").value;
         let registrarNoControl = document.getElementById("inputNoControl").value;
-        let registrarEstado = document.getElementById("inputEstatus").value;
+        let registrarEstado = 1;
         let registrarCurp = document.getElementById("inputCurp").value;
         let registrarTelefono = document.getElementById("inputTelefono").value;
         let registrarCorreo = document.getElementById("inputCorreo").value;
@@ -200,13 +200,6 @@ export default function AggAlumno() {
                             <option> Seleccionar turno </option>
                             <option value={1}>Matutino</option>
                             <option value={2}>Vespertino</option>
-                        </select>
-                        <select id='inputEstatus'>
-                            <option> Seleccionar Estatus </option>
-                            <option value={1}>Activo</option>
-                            <option value={2}>Inactivo</option>
-                            <option value={3}>Dado de baja</option>
-                            <option value={4}>Egresado</option>
                         </select>
                     </div>
                     <div className='con2'>

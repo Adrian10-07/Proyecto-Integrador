@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
 export default function FilaProfesor ({proId, proNombre, proApellioP, proApellidoM, proEspecialidad, proEstatus}){
+    
     let profIdProp = proId;
 
     return (

@@ -10,6 +10,7 @@ import Tramites from './componentes/PagosTramtesForm/Tramites';
 import AddTramite from './componentes/PagosTramtesForm/AddTram/AddTramite';
 import EditAlum from './componentes/PagosEmpleadoForm/EditAlum';
 import Personal from './componentes/PersonalForm/Personal';
+import AddEmpleado from './componentes/PersonalForm/AddEmpleado/AddEmpleado';
 
 import App from './App';
 
@@ -39,6 +40,10 @@ const router = createBrowserRouter([
   {
     path: "/empleados",
     element: <Personal/>,
+  },
+  {
+    path: "/addEmpleado",
+    element: <AddEmpleado/>
   },
   {
     path:'/tramites',

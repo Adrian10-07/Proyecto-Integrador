@@ -14,7 +14,39 @@ export default function Personal (){
     const [recursos, setRecursos] = useState([]); //Necesario para obtener recursos
     const [error, setError] = useState(null); //Indica error al obtener recursos
     
-    const operacionDeImpresionBusquedaYFiltroDePersonal = () => {
+    const operacionDeImpresion = () => {
+
+        setDataPer([]);
+        setDataProf([]);
+    
+        //Obtiene objeto del elemento html, checa si tiene informacion, si la tiene, lo almacena en el objeto
+        let searchName = document.getElementById("search-container-personalMaestro-inputSearchName").value;
+    
+        let searchApellidoP = document.getElementById("search-container-personalMaestro-inputSearchApellidoP").value;
+    
+        let searchApellidoM = document.getElementById("search-container-personalMaestro-inputSearchApellidoM").value;
+    
+        let searchEstatus = document.getElementById("search-container-personalMaestro-estatus").value;
+
+        let searchArea = document.getElementById("search-container-personal-area").value;
+
+        let searchCargo = document.getElementById("search-container-personal-cargo").value;
+
+        let searchEspecialidad = document.getElementById("search-container-profesor-especialidad").value;
+
+        if(searchEspecialidad || searchCargo == 1)
+            operacionDeImpresionBusquedaYFiltroDeProfesores(searchName, searchApellidoP, searchApellidoM, searchEstatus, searchEspecialidad);
+
+        else if(searchArea || searchCargo)
+            operacionDeImpresionBusquedaYFiltroDeEmpleados(searchName, searchApellidoP, searchApellidoM, searchEstatus, searchArea, searchCargo);
+        
+        else{
+            operacionDeImpresionBusquedaYFiltroDeEmpleados(searchName, searchApellidoP, searchApellidoM, searchEstatus, searchArea, searchCargo);
+            operacionDeImpresionBusquedaYFiltroDeProfesores(searchName, searchApellidoP, searchApellidoM, searchEstatus, searchEspecialidad);
+        }
+      }
+
+    const operacionDeImpresionBusquedaYFiltroDeEmpleados = (buscarNombre, buscarApellidoP, buscarApellidoM, buscarEstatus, buscarArea, buscarCargo) => {
         const url = "http://localhost:3000/empleados/searchPer";
         //Inicia objeto que va a mandar los datos a la API
         let data = {
@@ -25,54 +57,47 @@ export default function Personal (){
             cargoFiltro : "", 
             areaFiltro : ""
         };
-    
-        //Obtiene objeto del elemento html, checa si tiene informacion, si la tiene, lo almacena en el objeto
-        let searchName = document.getElementById("search-container-personalMaestro-inputSearchName").value;
-        if (searchName) 
-          data.nombre_busqueda = searchName;
-    
-        let searchApellidoP = document.getElementById("search-container-personalMaestro-inputSearchApellidoP").value;
-        if (searchApellidoP) 
-          data.apellido_p_busqueda = searchApellidoP;
-    
-        let searchApellidoM = document.getElementById("search-container-personalMaestro-inputSearchApellidoM").value;
-        if (searchApellidoM) 
-          data.apellido_m_busqueda = searchApellidoM;
-    
-        let searchEstatus = document.getElementById("search-container-personalMaestro-estatus").value;
-        if (searchEstatus) 
-          data.estatusFiltro = searchEstatus;
 
-        let searchArea = document.getElementById("search-container-personal-area").value;
-        if (searchArea)
-            data.areaFiltro = searchArea;
+        if (buscarNombre)
+            data.nombre_busqueda = buscarNombre;
 
-        let searchCargo = document.getElementById("search-container-personal-cargo").value;
-        if (searchCargo)
-            data.cargoFiltro = searchCargo;
-        //Envia la consulta a la API
+        if(buscarApellidoP)
+            data.apellido_p_busqueda = buscarApellidoP;
+
+        if(buscarApellidoM)
+            data.apellido_m_busqueda = buscarApellidoM;
+
+        if(buscarEstatus)
+            data.estatusFiltro = buscarEstatus;
+
+        if(buscarArea)
+            data.areaFiltro = buscarArea;
+
+        if(buscarCargo)
+            data.cargoFiltro = buscarCargo;
+
         fetch(url, {
-          method: "POST",
-          headers: { "Content-Type": "application/json"},
-          body: JSON.stringify(data)
+            method: "POST",
+            headers: { "Content-Type": "application/json"},
+            body: JSON.stringify(data)
         })
-        //Si hay error, imprime esto
+          //Si hay error, imprime esto
         .then(response => {
-          if(!response.ok){
-            throw new Error('Error al imprimir los alumnos: ' + response.status);
-          }
-          return response.json();
+            if(!response.ok){
+                throw new Error('Error al imprimir los alumnos: ' + response.status);
+            }
+            return response.json();
         })
-        //Si todo esta bien, recibe la respuesta
+          //Si todo esta bien, recibe la respuesta
         .then(response => {
             setDataPer(response);
         })
-        .catch(error => {
+            .catch(error => {
             setError(error.message);
         });
-      }
+    }  
 
-    const operacionDeImpresionBusquedaYFiltroDeProfesores = (buscarNombre, buscarApellidoP, buscarApellidoM, buscarEstatus) => {
+    const operacionDeImpresionBusquedaYFiltroDeProfesores = (buscarNombre, buscarApellidoP, buscarApellidoM, buscarEstatus, buscarEspecialidad) => {
         const url = "http://localhost:3000/empleados/searchPro";
         //Inicia objeto que va a mandar los datos a la API
         let data = {
@@ -80,13 +105,46 @@ export default function Personal (){
             apellido_p_busqueda : "", 
             apellido_m_busqueda : "", 
             estatusFiltro : "", 
-            cargoFiltro : "", 
-            areaFiltro : ""
+            especialidadFiltro : ""
         };
+
+        if (buscarNombre)
+            data.nombre_busqueda = buscarNombre;
+
+        if(buscarApellidoP)
+            data.apellido_p_busqueda = buscarApellidoP;
+
+        if(buscarApellidoM)
+            data.apellido_m_busqueda = buscarApellidoM;
+
+        if(buscarEstatus)
+            data.estatusFiltro = buscarEstatus;
+
+        if(buscarEspecialidad)
+            data.especialidadFiltro = buscarEspecialidad;
+
+        fetch(url, {
+            method: "POST",
+            headers: { "Content-Type": "application/json"},
+            body: JSON.stringify(data)
+        })
+        .then(response => {
+          if(!response.ok){
+            throw new Error('Error al imprimir los alumnos: ' + response.status);
+          }
+          return response.json();
+        })
+          //Si todo esta bien, recibe la respuesta
+        .then(response => {
+            setDataProf(response);
+        })
+        .catch(error => {
+            setError(error.message);
+        });
     } 
     
       useEffect(()=>{
-        operacionDeImpresionBusquedaYFiltroDePersonal();
+        operacionDeImpresion();
       }, []);
 
     return(
@@ -107,21 +165,26 @@ export default function Personal (){
             <input type="search-A" placeholder='Nombre' id='search-container-personalMaestro-inputSearchName'/>
             <input type="search-A" placeholder='Apell. Pat.' id='search-container-personalMaestro-inputSearchApellidoP'/>
             <input type='search-A' placeholder='Apell. Mat.' id='search-container-personalMaestro-inputSearchApellidoM'/>
-            <button className='search-container-personalMaestro-aplicarBusqueda'><IoSearchSharp /></button>
+            <button className='search-container-personalMaestro-aplicarBusqueda' onClick={operacionDeImpresion}><IoSearchSharp /></button>
 
-            <a href={'/agg'}>
-                <button className='add-Alumno'><IoMdPersonAdd /></button>
-            </a>
+            <Link to={'/addEmpleado'}>
+                <button className='add-Alumno'>Añadir personal</button>
+            </Link>
+            <Link>
+                <button className="add-Alumno">Añadir maestro</button>
+            </Link>
         </div>
 
         <div className='search-container-alumnos'>
             <select id="search-container-personal-area">
                 <option value="">Seleccionar Area</option>
-                <option value={1}>Administrativa</option>
-                <option value={2}>Dirección</option>
-                <option value={3}>Financiera</option>
-                <option value={4}>Control Escolar</option>
-                <option value={5}>Recursos humanos</option>
+                <option value={1}>Dirección General</option>
+                <option value={2}>Dirección Administrativa</option>
+                <option value={3}>Dirección Académica</option>
+                <option value={4}>Dirección de Orientación Vocacional</option>
+                <option value={5}>Apoyo Contable y Administrativo</option>
+                <option value={6}>Cafetería</option>
+                <option value={7}>Limpieza y Servicios</option>
             </select>
             <select id="search-container-personal-cargo">
                 <option value="">Seleccionar Cargo</option>
@@ -133,11 +196,10 @@ export default function Personal (){
             </select>
             <select id="search-container-profesor-especialidad">
                 <option value="">Seleccionar especialidad</option>
-                <option value={1}>Humanidades</option>
-                <option value={2}>Matemáticas</option>
-                <option value={3}>Ciencias</option>
-                <option value={4}>Artes</option>
-                <option value={5}>Informática</option>
+                <option value={1}>Ciencias: Físico-Matemático</option>
+                <option value={2}>Ciencias: Químico-Biológicas</option>
+                <option value={3}>Ciencias Sociales y Humanidades</option>
+                <option value={4}>Lengua y Comunicación</option>
             </select>
             <select id='search-container-personalMaestro-estatus'>
                 <option id='status' value="">Seleccionar status</option>
@@ -165,11 +227,21 @@ export default function Personal (){
                     {//Imprime los datos del recurso obtenido, por for each
                         dataPer.length > 0 ? (
                         dataPer.map((recursoPer) => (//Falta poner el componente de la fila de personal
-                        <FilaPersonal perId={recursoPer.id} perNombre={recursoPer.nombre} perApellidoP={recursoPer.apellido_p} perApellidoM={recursoPer.apellido_m} perArea={recursoPer.nombre_area} perCargo={recursoPer.nombre_cargo} perEstatus={recursoPer.tipo_estatus} />
+                        <FilaPersonal key={recursoPer.id} perId={recursoPer.id} perNombre={recursoPer.nombre} perApellidoP={recursoPer.apellido_p} perApellidoM={recursoPer.apellido_m} perArea={recursoPer.nombre_area} perCargo={recursoPer.nombre_cargo} perEstatus={recursoPer.tipo_estatus} />
                     ))
                     ) : (
                     <tr>
-                        <td colSpan="8">No hay datos</td>
+                        <td colSpan="8">No hay datos de los empleados</td>
+                    </tr>
+                    )}
+                    {//Imprime los datos del recurso obtenido, por for each
+                        dataProf.length > 0 ? (
+                        dataProf.map((recursoProf) => (//Falta poner el componente de la fila de personal
+                        <FilaProfesor key={recursoProf.id} proId={recursoProf.id} proNombre={recursoProf.nombre} proApellioP={recursoProf.apellido_p} proApellidoM={recursoProf.apellido_m} proEspecialidad={recursoProf.nombre_especialidad} proEstatus={recursoProf.tipo_estatus} />
+                    ))
+                    ) : (
+                    <tr>
+                        <td colSpan="8">No hay datos de los profesores</td>
                     </tr>
                     )}
                 </tbody>

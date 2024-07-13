@@ -44,13 +44,13 @@ export default function FilaTram (
             const diferenciaDias = diferenciaMilisegundos / (1000 * 60 * 60 * 24);
 
             console.log(`Diferencia en días: ${diferenciaDias}`);
-            if(diferenciaDias < 10){
+            if(diferenciaDias < 10 && estatusTramiteT != "Por pagar"){
                 //Si faltan 10 dias para que se venza el pago, lo marcara como proximo
-                actualizarAProximoAPagar();
+                    actualizarAProximoAPagar();
             }
-            if(diferenciaDias <= 0){
+            if(diferenciaDias <= 0 && estatusTramiteT != "Atrasado"){
                 //Si faltan 0 dias o ya paso la fecha limite, lo marca como atrasado
-                actualizarAAtrasado();
+                    actualizarAAtrasado();
             }
         }
     }
