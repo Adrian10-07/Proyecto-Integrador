@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import ModalPersonal from "./ModalPersonal/ModalPersonal";
 
 export default function FilaPersonal ({perId, perNombre, perApellidoP, perApellidoM, perArea, perCargo, perEstatus}){
     
@@ -12,7 +13,7 @@ export default function FilaPersonal ({perId, perNombre, perApellidoP, perApelli
         <td>{perCargo}</td>
         <td>{perArea}</td>
         <td>{perEstatus}</td>
-        <td>Aquí va el botón modal</td>
+        <td><ModalPersonal idEmploye={idPropPersonal}/></td>
     </tr>
     );
 }

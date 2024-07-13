@@ -11,6 +11,7 @@ import AddTramite from './componentes/PagosTramtesForm/AddTram/AddTramite';
 import EditAlum from './componentes/PagosEmpleadoForm/EditAlum';
 import Personal from './componentes/PersonalForm/Personal';
 import AddEmpleado from './componentes/PersonalForm/AddEmpleado/AddEmpleado';
+import AddProfesor from './componentes/PersonalForm/AddProfesor/AddProfesor';
 
 import App from './App';
 
@@ -43,7 +44,11 @@ const router = createBrowserRouter([
   },
   {
     path: "/addEmpleado",
-    element: <AddEmpleado/>
+    element: <AddEmpleado/>,
+  },
+  {
+    path: "/addMaestro",
+    element: <AddProfesor/>,
   },
   {
     path:'/tramites',

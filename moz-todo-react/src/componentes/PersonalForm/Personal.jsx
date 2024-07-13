@@ -170,7 +170,7 @@ export default function Personal (){
             <Link to={'/addEmpleado'}>
                 <button className='add-Alumno'>Añadir personal</button>
             </Link>
-            <Link>
+            <Link to={'/addMaestro'}>
                 <button className="add-Alumno">Añadir maestro</button>
             </Link>
         </div>
@@ -206,9 +206,8 @@ export default function Personal (){
                 <option value={1}>Activo</option>
                 <option value={2}>Inactivo</option>
                 <option value={3}>Dado de baja</option>
-                <option value={4}>Egresado</option>
             </select>
-            <button id='filter' ><FaFilter /></button>
+            <button id='filter' onClick={operacionDeImpresion}><FaFilter /></button>
         </div>
 
         <div className='table-Alumnos'>
