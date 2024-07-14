@@ -1,12 +1,16 @@
 import * as React from 'react';
+import { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { FiSave } from "react-icons/fi";
 import { MdOutlineCancel } from "react-icons/md";
+import FilaMateria from './FilaMateria/FilaMateria';
 //import Logo2 from '../AlumnosForm/Alum-Add/AggAssets/Logo2.png';
 import Swal from 'sweetalert2';
 
 export default function EditProfesor (){
     const location = useLocation();
+    const [dataMat, setDataMat] = useState([]);
+    const [error, setError] = useState(null);
     const { data } = location.state || {};
     console.log(data.id)
 
@@ -123,8 +127,68 @@ export default function EditProfesor (){
                 });
             }
 
+        });    
+    }
+
+    const imprimirMateriasDelProfesor = () => {
+        const url = `http://localhost:3000/empleados/showMat`
+
+        fetch(`${url}/${data.id}`)
+        .then(response => {
+            if (!response.ok) {
+              throw new Error('Error al imprimir los datos del profesor: ' + response.status);
+            }
+            return response.json();
+        })
+        .then(response => {
+            setDataMat(response);
+        })
+        .catch(error => {
+            console.error('Error fetching data:', error);
+            setError(error.message);
         });
     }
+
+    const agregarMateria = () => {
+        const url = `http://localhost:3000/empleados/materias`
+
+        let dataMateria = {
+            idMateria : "",
+            idMaestro : data.id
+        }
+
+        let registrarMateria = document.getElementById("selectMateria").value;
+        if(!registrarMateria)
+            console.log("Seleccione una materia")
+        else{
+
+            dataMateria.idMateria = registrarMateria;
+
+            fetch(url, {
+                method: "POST",
+                headers: { "Content-Type": "application/json"},
+                body: JSON.stringify(dataMateria)
+            })
+            .then(response => {
+              if(!response.ok){
+                throw new Error('Error al imprimir los alumnos: ' + response.status);
+              }
+              return response.json();
+            })
+              //Si todo esta bien, recibe la respuesta
+            .then(response => {
+                console.log("Se agrego la materia : ", response)
+                imprimirMateriasDelProfesor();
+            })
+            .catch(error => {
+                setError(error.message);
+            });
+        }
+    }
+
+    useEffect(() => {
+        imprimirMateriasDelProfesor();
+    }, []);
 
     return (
     <div>
@@ -163,6 +227,42 @@ export default function EditProfesor (){
                         <input type="number" placeholder={data.sueldoPorHora} id="inputSueldo" maxLength={8}/>
                     </div>
                     <div className='con1'>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Materias</th>
+                                    <th>Opción</th>
+                                </tr>
+                                
+                            </thead>
+                            <tbody>
+                                {error && <tr><td>Error: {error}</td></tr>}
+                                {!dataMat.length && <tr><td>No imparte ninguna Materia</td></tr>}
+                                {!error && dataMat.length > 0 && (
+                                    dataMat.map((materia, index) => (
+                                        <FilaMateria key={index} idProfesor={data.id} idMateria={materia.id} nombreMateria={materia.nombre} actualizar={imprimirMateriasDelProfesor}/>
+                                    ))
+                                )}
+                                <tr>
+                                    <td><select id='selectMateria'>
+                                        <option value="">Seleccionar materia</option>
+                                        <option value={1}>Pensamiento Matemático</option>
+                                        <option value={2}>Pensamiento Analítico</option>
+                                        <option value={3}>Física</option>
+                                        <option value={4}>Química</option>
+                                        <option value={5}>Biología</option>
+                                        <option value={6}>Ciencias de la Salud</option>
+                                        <option value={7}>Historia Universal y de México</option>
+                                        <option value={8}>Geografia</option>
+                                        <option value={9}>Filosofía</option>
+                                        <option value={10}>Estructura de la Lengua</option>
+                                        <option value={11}>Comprensión Lectora</option>
+                                        <option value={12}>Literatura</option>
+                                    </select></td>
+                                    <td><button onClick={agregarMateria}>Agregar</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             <div className='botones'>
