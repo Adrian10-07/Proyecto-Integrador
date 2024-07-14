@@ -124,10 +124,10 @@ export default function Alumnos() {
       </div>
 
       <div className='search-container-alumnos'>
-        <input type="search-A" placeholder='Nombre' id='search-container-alumnos-inputSearchName'/>
-        <input type="search-A" placeholder='Apell. Pat.' id='search-container-alumnos-inputSearchApellidoP'/>
-        <input type='search-A' placeholder='Apell. Mat.' id='search-container-alumnos-inputSearchApellidoM'/>
-        <input type='search-A' placeholder='No. Control.' id='search-container-alumnos-inputSearchNoControl'/>
+        <input type="search-A" placeholder='Nombre' id='search-container-alumnos-inputSearchName' maxLength={45}/>
+        <input type="search-A" placeholder='Apell. Pat.' id='search-container-alumnos-inputSearchApellidoP' maxLength={45}/>
+        <input type='search-A' placeholder='Apell. Mat.' id='search-container-alumnos-inputSearchApellidoM' maxLength={45}/>
+        <input type='search-A' placeholder='No. Control.' id='search-container-alumnos-inputSearchNoControl' maxLength={10}/>
         <button className='search-container-alumnos-aplicarBusqueda' onClick={operacionDeImpresionBusquedaYFiltro}><IoSearchSharp /></button>
 
         <a href={'/agg'}>
@@ -137,7 +137,7 @@ export default function Alumnos() {
 
       <div className='search-container-alumnos'>
         <input type='search-A' placeholder='Grado' id='search-container-alumnos-inputSearchGrade'/>
-        <input type='search-A' placeholder='Grupo' id='search-container-alumnos-inputSearchGroup'/>
+        <input type='search-A' placeholder='Grupo' id='search-container-alumnos-inputSearchGroup' maxLength={1}/>
         <select id='search-container-alumnos-estatus'>
           <option id='status' value="">Seleccionar status</option>
           <option value={1}>Activo</option>

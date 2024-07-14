@@ -38,6 +38,19 @@ export default function AddTramite() {
         */
     }, []);
 
+    /*
+    const comprobarSiEsNumeroFlotante = (cadenaAAnalizar) => {
+    const valoresAceptados = /^-?\d+(\.\d+)?$/;
+    if (valoresAceptados.test(cadenaAAnalizar)) {
+        console.log(cadenaAAnalizar + " es un valor válido");
+        return true;
+    } else {
+        console.log(cadenaAAnalizar + " no es un valor válido");
+        return false;
+    }
+}
+    */
+
     const handleSearchChange = (e) => {
         const { name, value } =e.target;
         setSearching(prevState => ({ ...prevState, [name]: value}));

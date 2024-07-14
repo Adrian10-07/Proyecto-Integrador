@@ -5,9 +5,11 @@ import { MdOutlineCancel } from "react-icons/md";
 import Logo2 from '../AlumnosForm/Alum-Add/AggAssets/Logo2.png';
 import Swal from 'sweetalert2';
 import './EditAlum.css';
+import { useState } from 'react';
 
 
 export default function EditAlum() {
+  const [coincidencias, setCoincidencias] = useState([]); //Necesario para obtener recursos
   const location = useLocation();
   const { data } = location.state || {};
   console.log(data.id)
@@ -19,18 +21,7 @@ export default function EditAlum() {
         confirmButtonText: "Guardar",
     }).then((result) => {
         if (result.isConfirmed) {
-            mandarCambiosALaBaseDeDatos()
-                .then(success => {
-                    if (success) {
-                        Swal.fire("Cambios guardados!", "", "success");
-                    } else {
-                        Swal.fire("Error, asegurese de seleccionar el turno y el estatus del alumno", "", "error");
-                    }
-                })
-                .catch(error => {
-                    Swal.fire("Error al guardar los cambios", error.message, "error");
-                    console.log(error.mesagge);
-                });
+            mandarCambiosALaBaseDeDatos();
         }
     });
   };
@@ -60,8 +51,53 @@ export default function EditAlum() {
 
   const navigate = useNavigate();
 
-  const mandarCambiosALaBaseDeDatos = () => {
-    return new Promise((resolve, reject) => {
+  const comprobarSiEsNumero = (cadenaAAnalizar) => {
+      var valoresAceptados = /^[0-9]+$/;
+      if (valoresAceptados.test(cadenaAAnalizar)){
+          console.log(cadenaAAnalizar + " es un valor valido")
+          return true;
+      } else {
+          console.log(cadenaAAnalizar + " no es un valor valido")
+          return false;
+      }
+  }
+
+  const comprobarSiHayDatosRepetidos = async (analizarNoControl, analizarCurp) => {
+      const url = `http://localhost:3000/alumnos/comprobarAlumnos`;
+
+      const datoACoincidir = {
+          noControl: analizarNoControl,
+          curp: analizarCurp
+      };
+
+      try {
+          const response = await fetch(url, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(datoACoincidir)
+          });
+
+          if (!response.ok) {
+              throw new Error('Error al buscar coincidencias: ' + response.status);
+          }
+
+          const data = await response.json();
+          setCoincidencias(data);
+
+          if (data.length > 0) {
+              console.log("Hay coincidencias: " + data);
+              return true;
+          } else {
+              console.log("No hay coincidencias");
+              return false;
+          }
+      } catch (error) {
+          console.log("Error: " + error);
+          return false;
+      }
+  };
+
+  const mandarCambiosALaBaseDeDatos = async () => {
       const url = `http://localhost:3000/alumnos/update/${data.id}`;
       let dato = {
         nombre: "", 
@@ -121,24 +157,86 @@ export default function EditAlum() {
 
     if (registrarTurno == 0 || registrarEstado == 0) {
         console.log("No olvide elegir el turno y estatus");
-        resolve(false)
-        // Agregar logica del error
+        Swal.fire({
+          title: "Error",
+          text: "No olvide elegir el turno y estatus del alumno",
+          icon: "error"
+        });
+        return false;
+    } else if (await comprobarSiHayDatosRepetidos(registrarNoControl, registrarCurp)){
+        Swal.fire({
+          title: "Error",
+          text: "Ya existen datos con el mismo número de control o CURP",
+          icon: "error"
+        });
+        return false;
     } else {
         if(registrarNombre) dato.nombre = registrarNombre; else dato.nombre = data.nombre;
         if(registrarApellidoP) dato.apellido_p = registrarApellidoP; else dato.apellido_p = data.apellido_p;
         if(registrarApellidoM) dato.apellido_m = registrarApellidoM; else dato.apellido_m = data.apellido_m;
-        if(registrarGrado) dato.grado = registrarGrado; else dato.grado = data.grado;
+        if(registrarGrado){
+          if(registrarGrado <= 0 || registrarGrado > 17){
+            Swal.fire({
+              title: "Error",
+              text: "Ingrese un grado válido",
+              icon: "error"
+            });
+            dato.grado = data.grado;
+            return false;
+          }
+          else dato.grado = registrarGrado;
+        } 
+        else dato.grado = data.grado;
         if(registrarGrupo) dato.grupo = registrarGrupo; else dato.grupo = data.grupo;
         dato.turno = registrarTurno;
-        if(registrarNoControl) dato.noControl = registrarNoControl; else dato.noControl = data.noControl;
+        if(registrarNoControl){
+          if(comprobarSiEsNumero(registrarNoControl))
+            dato.noControl = registrarNoControl;
+          else{
+            Swal.fire({
+              title: "Error",
+              text: "No. Control Inválido",
+              icon: "error"
+            });
+            dato.noControl = data.noControl;
+            return false;
+          }
+        } 
+        else dato.noControl = data.noControl;
         dato.estado = registrarEstado;
         if(registrarCurp) dato.curp = registrarCurp; else dato.curp = data.curp;
-        if(registrarTelefono) dato.telefono = registrarTelefono; else dato.telefono = data.telefono;
+        if(registrarTelefono){
+          if(comprobarSiEsNumero(registrarTelefono))
+            dato.telefono = registrarTelefono;
+          else{
+            Swal.fire({
+              title: "Error",
+              text: "No. de teléfono inválido",
+              icon: "error"
+            });
+            dato.telefono = data.telefono;
+            return false
+          }
+        } 
+        else dato.telefono = data.telefono;
         if(registrarCorreo) dato.correo = registrarCorreo; else dato.correo = data.correo;
         if(registrarNombreTutor) dato.nombre_tutor = registrarNombreTutor; else dato.nombre_tutor = data.nombre_tutor;
         if(registrarApellidoPTutor) dato.apellido_p_tutor = registrarApellidoPTutor; else dato.apellido_p_tutor = data.apellidoP_tutor;
         if(registrarApellidoMTutor) dato.apellido_m_tutor = registrarApellidoMTutor; else dato.apellido_m_tutor = data.apellidoM_tutor;
-        if(registrarTelefonoTutor) dato.telefono_tutor = registrarTelefonoTutor; else dato.telefono_tutor = data.telefono_tutor;
+        if(registrarTelefonoTutor){
+          if(comprobarSiEsNumero(registrarTelefonoTutor))
+            dato.telefono_tutor = registrarTelefonoTutor;
+          else{
+            Swal.fire({
+              title: "Error",
+              text: "No. de teléfono inválido",
+              icon: "error"
+            });
+            dato.telefono_tutor = data.telefono_tutor;
+            return false;
+          }
+        } 
+        else dato.telefono_tutor = data.telefono_tutor;
         if(registrarlvlAcademico) dato.nivelAcademico = registrarlvlAcademico; else dato.nivelAcademico = data.nivelAcademico;
         if (registrarSchoolProcedente) dato.escuelaProcedente = registrarSchoolProcedente; else dato.escuelaProcedente = data.escuelaProcedente;
         if (registrarUniAspirada) dato.colegioAspirado = registrarUniAspirada; else dato.colegioAspirado = data.colegioAspirado;
@@ -196,18 +294,36 @@ export default function EditAlum() {
             })
             .then(datos => {
                 console.log("Alumno registrado: ", datos);
-                resolve(true)
                 setTimeout(() => {
                     navigate('/alumnos');
                 }, 1000);
+                Swal.fire({
+                    title: "Éxito",
+                    text: "Alumno actualizado correctamente",
+                    icon: "success"
+                });
+                return true;
             })
             .catch(error => {
-                
-                //Agregar lógica para manejar el error en la interfaz de usuario
+                console.error('Error: ', error);
+                let errorMessage = "Error desconocido";
+                if (error.message.includes("NetworkError")) {
+                    errorMessage = "Error de red, por favor revisa tu conexión";
+                } else if (error.message.includes("404")) {
+                    errorMessage = "Endpoint no encontrado";
+                } else if (error.message.includes("500")) {
+                    errorMessage = "Error interno del servidor";
+                } else if (error.message.includes("datos duplicados")) {
+                    errorMessage = "Datos duplicados, por favor revisa la información ingresada";
+                }
+                Swal.fire({
+                    title: "Error",
+                    text: errorMessage,
+                    icon: "error"
+                });
+                return false;
             });
     }
-    })
-    
 };
 
 
@@ -245,7 +361,7 @@ export default function EditAlum() {
             </select>
           </div>
           <div className='con3-Edit'>
-            <input type="number" placeholder={data.telefono || 'Telefono*'} id='inputTelefono' maxLength={12}/>
+            <input type="text" placeholder={data.telefono || 'Telefono*'} id='inputTelefono' maxLength={12}/>
             <input type="text" placeholder={data.correo || 'Correo Electronico*'} id='inputCorreo' maxLength={45}/>
             <input type="text" placeholder={data.curp || 'CURP*'} id='inputCurp' maxLength={18}/>
           </div>
@@ -259,7 +375,7 @@ export default function EditAlum() {
             <input type="text" placeholder={data.nombre_tutor || 'Nombre*'} id='inputNombreTutor' maxLength={45}/>
             <input type="text" placeholder={data.apellidoP_tutor || 'Apellido Paterno*'} id='inputApellidoPTutor' maxLength={45}/>
             <input type="text" placeholder={data.apellidoM_tutor || 'Apellido Materno*'} id='inputApellidoMTutor' maxLength={45}/>
-            <input type="number" placeholder={data.telefono_tutor || 'Telefono*'} id='inputTelefonoTutor' maxLength={12}/>
+            <input type="text" placeholder={data.telefono_tutor || 'Telefono*'} id='inputTelefonoTutor' maxLength={12}/>
           </div>
         </div>
         <div>
