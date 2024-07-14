@@ -12,6 +12,7 @@ import EditAlum from './componentes/PagosEmpleadoForm/EditAlum';
 import Personal from './componentes/PersonalForm/Personal';
 import AddEmpleado from './componentes/PersonalForm/AddEmpleado/AddEmpleado';
 import AddProfesor from './componentes/PersonalForm/AddProfesor/AddProfesor';
+import EditEmpleado from './componentes/PersonalForm/EditEmpleado/EditEmpleado';
 
 import App from './App';
 
@@ -61,6 +62,10 @@ const router = createBrowserRouter([
   {
     path: '/editAlumno',
     element: <EditAlum></EditAlum>,
+  },
+  {
+    path: '/editEmpleado',
+    element: <EditEmpleado/>
   },
 ])
 

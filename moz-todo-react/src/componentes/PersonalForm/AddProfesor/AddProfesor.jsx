@@ -42,7 +42,7 @@ export default function AddProfesor (){
           }).then((result) => {
             if (result.isConfirmed) {
               setTimeout(() => {
-                  navigate('/alumnos');
+                  navigate('/empleados');
               }, 1000);
             }
           })

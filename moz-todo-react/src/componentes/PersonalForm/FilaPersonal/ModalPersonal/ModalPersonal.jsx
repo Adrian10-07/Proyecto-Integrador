@@ -70,6 +70,9 @@ export default function ModalPersonal ({idEmploye}){
                                 <p>Cargo: {data.nombre_cargo || "N/A"}</p>
                                 <p>Sueldo: {data.sueldoHora || "N/A"}</p>
 
+                                <Button onClick={() => navigate('/editEmpleado', { state: { data } })}>
+                                    Editar
+                                </Button>
                         </div>
                     )}
                     <Button onClick={handleClose}>Cerrar</Button>
