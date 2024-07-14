@@ -13,6 +13,7 @@ import Personal from './componentes/PersonalForm/Personal';
 import AddEmpleado from './componentes/PersonalForm/AddEmpleado/AddEmpleado';
 import AddProfesor from './componentes/PersonalForm/AddProfesor/AddProfesor';
 import EditEmpleado from './componentes/PersonalForm/EditEmpleado/EditEmpleado';
+import EditProfesor from './componentes/PersonalForm/EditProfesor/EditProfesor';
 
 import App from './App';
 
@@ -66,6 +67,10 @@ const router = createBrowserRouter([
   {
     path: '/editEmpleado',
     element: <EditEmpleado/>
+  },
+  {
+    path: '/editProfesor',
+    element: <EditProfesor/>
   },
 ])
 

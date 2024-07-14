@@ -98,6 +98,9 @@ export default function ModalProfesor ({idTeacher}){
                                         ))
                                     )}
                                 </ul>
+                                <Button onClick={() => navigate('/editProfesor', { state: { data } })}>
+                                    Editar
+                                </Button>
                         </div>
                     )}
                     <Button onClick={handleClose}>Cerrar</Button>

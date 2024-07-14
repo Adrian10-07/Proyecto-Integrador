@@ -5,7 +5,7 @@ import { MdOutlineCancel } from "react-icons/md";
 //import Logo2 from '../AlumnosForm/Alum-Add/AggAssets/Logo2.png';
 import Swal from 'sweetalert2';
 
-export default function EditEmpleado (){
+export default function EditProfesor (){
     const location = useLocation();
     const { data } = location.state || {};
     console.log(data.id)
@@ -17,12 +17,12 @@ export default function EditEmpleado (){
             confirmButtonText: "Guardar",
         }).then((result) => {
             if (result.isConfirmed) {
-                actualizarEmpleado()
+                actualizarMaestro()
                     .then(success => {
                         if (success) {
                             Swal.fire("Registro actualizado!", "", "success");
                         } else {
-                            Swal.fire("Error, asegurese de elegir el estatus, área y cargo", "", "error");
+                            Swal.fire("Error, asegurese de elegir el estatus y especialidad", "", "error");
                         }
                     })
                     .catch(error => {
@@ -57,9 +57,9 @@ export default function EditEmpleado (){
 
     const navigate = useNavigate();
 
-    const actualizarEmpleado = () => {
+    const actualizarMaestro = () => {
         return new Promise ((resolve, reject) => {
-            const url = `http://localhost:3000/empleados/updatePersonal/${data.id}`
+            const url = `http://localhost:3000/empleados/updateProfesor/${data.id}`
 
             let dato = {
                 nombre : "", 
@@ -68,10 +68,9 @@ export default function EditEmpleado (){
                 telefono : "", 
                 correo : "", 
                 curp : "", 
-                sueldoHora : "",
+                sueldoPorHora : "",
                 id_estatus : "",
-                id_cargo : "", 
-                id_area : ""
+                id_especialidad : ""
             }
 
             let nombreRegistro = document.getElementById("inputNombre").value;
@@ -80,12 +79,11 @@ export default function EditEmpleado (){
             let telefonoRegistro = document.getElementById("inputTelefono").value;
             let correoRegistro = document.getElementById("inputCorreo").value;
             let curpRegistro = document.getElementById("inputCurp").value;
-            let areaRegistro = document.getElementById("selectArea").value;
-            let cargoRegistro = document.getElementById("selectCargo").value;
+            let especialidadRegistro = document.getElementById("selectEspecialidad").value
             let sueldoRegisro = document.getElementById("inputSueldo").value;
             let estatusRegistro = document.getElementById("selectEstatus").value;
 
-            if(areaRegistro == 0 || cargoRegistro == 0 || estatusRegistro == 0){
+            if(especialidadRegistro == 0 || estatusRegistro == 0){
                 resolve(false);
             }
             else{
@@ -95,9 +93,8 @@ export default function EditEmpleado (){
                 if(telefonoRegistro) dato.telefono = telefonoRegistro; else dato.telefono = data.telefono;
                 if(correoRegistro) dato.correo = correoRegistro; else dato.correo = data.correo;
                 if(curpRegistro) dato.curp = curpRegistro; else dato.curp = data.curp;
-                dato.id_area = areaRegistro;
-                dato.id_cargo = cargoRegistro;
-                if(sueldoRegisro) dato.sueldoHora = sueldoRegisro; else dato.sueldoHora = data.sueldoHora;
+                dato.id_especialidad = especialidadRegistro;
+                if(sueldoRegisro) dato.sueldoPorHora = sueldoRegisro; else dato.sueldoPorHora = data.sueldoPorHora;
                 dato.id_estatus = estatusRegistro;
 
                 fetch(url, {
@@ -127,12 +124,12 @@ export default function EditEmpleado (){
             }
 
         });
-    };
+    }
 
-    return(
+    return (
     <div>
         <header className='header'>
-            <h1>             Datos del Empleado
+            <h1>             Datos del Profesor
             </h1>
 
         </header>
@@ -156,24 +153,16 @@ export default function EditEmpleado (){
                         <input type="text" placeholder={data.curp} id='inputCurp' maxLength={18}/>
                     </div>
                     <div className='con1'>
-                        <select id="selectArea">
-                            <option value={0}>Seleccionar Area</option>
-                            <option value={1}>Dirección General</option>
-                            <option value={2}>Dirección Administrativa</option>
-                            <option value={3}>Dirección Académica</option>
-                            <option value={4}>Dirección de Orientación Vocacional</option>
-                            <option value={5}>Apoyo Contable y Administrativo</option>
-                            <option value={6}>Cafetería</option>
-                            <option value={7}>Limpieza y Servicios</option>
+                        <select id="selectEspecialidad">
+                            <option value={0}>Seleccionar especialidad</option>
+                            <option value={1}>Ciencias: Físico-Matemático</option>
+                            <option value={2}>Ciencias: Químico-Biológicas</option>
+                            <option value={3}>Ciencias Sociales y Humanidades</option>
+                            <option value={4}>Lengua y Comunicación</option>
                         </select>
-                        <select id="selectCargo">
-                            <option value={0}>Seleccionar Cargo</option>
-                            <option value={2}>Coordinador</option>
-                            <option value={3}>Administrativo</option>
-                            <option value={4}>Directivo</option>
-                            <option value={5}>Contador</option>
-                        </select>
-                        <input type="number" placeholder={data.sueldoHora} id="inputSueldo" maxLength={8}/>
+                        <input type="number" placeholder={data.sueldoPorHora} id="inputSueldo" maxLength={8}/>
+                    </div>
+                    <div className='con1'>
                     </div>
                 </div>
             <div className='botones'>
