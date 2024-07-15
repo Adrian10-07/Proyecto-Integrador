@@ -10,6 +10,7 @@ import { FaFilter } from "react-icons/fa";
 import './Alumnos.css';
 import { IoSearchSharp } from "react-icons/io5";
 
+
 export default function Alumnos() {
   const [data, setData] = useState([
 
@@ -192,12 +193,6 @@ export default function Alumnos() {
           </tbody>
         </table>
       </div>
-      <EditModal
-        isOpen={isEditModalOpen}
-        onRequestClose={closeEditModal}
-        onDelete={handleDelete}
-        onSave={handleSave}
-      />
     </div>
   );
 }
