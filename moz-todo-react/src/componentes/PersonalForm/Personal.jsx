@@ -7,6 +7,8 @@ import { IoSearchSharp } from "react-icons/io5";
 import { IoMdPersonAdd } from "react-icons/io";
 import FilaPersonal from "./FilaPersonal/FilaPersonal";
 import FilaProfesor from "./FilaProfesores/FilaProfesor";
+import './Personal.css';
+
 
 export default function Personal (){
     const [dataPer, setDataPer] = useState([]);
@@ -149,33 +151,33 @@ export default function Personal (){
 
     return(
         <div>
-            <div className='header-Alumnos'>
+            <div className='header-Personal'>
                 <Link to={'/inicio'}>
-                    <button className='home-left-button'><LuHome className='icon-home' /></button>
+                    <button className='home-left-button-personal'><LuHome className='icon-home-personal' /></button>
                 </Link>
         
-            <div className='content'>Personal y Maestros</div>
+            <div className='content-personal'>Personal y Maestros</div>
             <a href={'/'}>
-                <button className='exit-right-button'><ImExit className='icon-exit' /></button>
+                <button className='exit-right-button-personal'><ImExit className='icon-exit-personal' /></button>
             </a>
         
         </div>
 
-        <div className='search-container-alumnos'>
+        <div className='search-container-personal'>
             <input type="search-A" placeholder='Nombre' id='search-container-personalMaestro-inputSearchName'/>
             <input type="search-A" placeholder='Apell. Pat.' id='search-container-personalMaestro-inputSearchApellidoP'/>
             <input type='search-A' placeholder='Apell. Mat.' id='search-container-personalMaestro-inputSearchApellidoM'/>
             <button className='search-container-personalMaestro-aplicarBusqueda' onClick={operacionDeImpresion}><IoSearchSharp /></button>
 
             <Link to={'/addEmpleado'}>
-                <button className='add-Alumno'>Añadir personal</button>
+                <button className='add-personal'><IoMdPersonAdd/>Añadir personal</button>
             </Link>
             <Link to={'/addMaestro'}>
-                <button className="add-Alumno">Añadir maestro</button>
+                <button className="add-personal"><IoMdPersonAdd/>Añadir maestro</button>
             </Link>
         </div>
 
-        <div className='search-container-alumnos'>
+        <div className='search-container-personal'>
             <select id="search-container-personal-area">
                 <option value="">Seleccionar Area</option>
                 <option value={1}>Dirección General</option>

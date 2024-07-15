@@ -3,8 +3,9 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { FiSave } from "react-icons/fi";
 import { MdOutlineCancel } from "react-icons/md";
 import { useState } from 'react';
-//import Logo2 from '../AlumnosForm/Alum-Add/AggAssets/Logo2.png';
+//import Logo2 from '../PersonalAssets/Logo2.png';
 import Swal from 'sweetalert2';
+import './EditEmpleado.css'
 
 export default function EditEmpleado (){
     const [coincidencias, setCoincidencias] = useState([]);
@@ -235,15 +236,18 @@ export default function EditEmpleado (){
 
     return(
     <div>
-        <header className='header'>
-            <h1>             Datos del Empleado
+                <header className='header-EditEmplead'>
+            <h1>             
+                Editar Empleado
             </h1>
+             
 
         </header>
 
-        <div className='Inputsagg'>
+
+        <div className='Inputsagg-EditEmplead'>
             <div className='D-Alumno'>
-                    <div className='con1'>
+                    <div className='con1-EditEmplead'>
                         <input type="text" placeholder={data.nombre} id='inputNombre' maxLength={45}/>
                         <input type="text" placeholder={data.apellido_p} id='inputApellidoP' maxLength={45}/>
                         <input type="text" placeholder={data.apellido_m} id='inputApellidoM' maxLength={45}/>
@@ -254,12 +258,12 @@ export default function EditEmpleado (){
                             <option value={3}>Dado de baja</option>
                         </select>
                     </div>
-                    <div className='con2'>
+                    <div className='con2-EditEmplead'>
                         <input type="tel" placeholder={data.telefono} id='inputTelefono' maxLength={12}/>
                         <input type="email" placeholder={data.correo} id='inputCorreo' maxLength={45} />
                         <input type="text" placeholder={data.curp} id='inputCurp' maxLength={18}/>
                     </div>
-                    <div className='con1'>
+                    <div className='con3-EditEmplead'>
                         <select id="selectArea">
                             <option value={0}>Seleccionar Area</option>
                             <option value={1}>Dirección General</option>
@@ -280,7 +284,7 @@ export default function EditEmpleado (){
                         <input type="number" placeholder={data.sueldoHora} id="inputSueldo" maxLength={8}/>
                     </div>
                 </div>
-            <div className='botones'>
+            <div className='botones-EditEmplead'>
 
                 <button onClick={handleCancelClick} className='uno'><MdOutlineCancel className='icon-cancel' /></button>
                 <button onClick={handleSaveClick} className='dos'><FiSave className='icon-save'/></button>
