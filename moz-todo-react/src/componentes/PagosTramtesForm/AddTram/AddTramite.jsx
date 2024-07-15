@@ -263,7 +263,7 @@ export default function AddTramite() {
                     <div className='con1'>
                         <input type="text" placeholder='folio' id='inputFolio' maxLength={32}/>
                         <input type="text" placeholder='concepto' id='inputConcepto' maxLength={75}/>
-                        <input type="text" placeholder='monto' id='inputMonto' maxLength={8}/>
+                        <input type="number" placeholder='monto' id='inputMonto' maxLength={8}/>
                         <input type="date" id='inputFecha' />
                         
                     </div>

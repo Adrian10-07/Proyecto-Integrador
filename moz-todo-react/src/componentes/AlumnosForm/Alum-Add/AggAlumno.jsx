@@ -175,7 +175,7 @@ export default function AggAlumno() {
             //Agregar la logica del error
             Swal.fire({
                 title: "Error",
-                text: "Ya existen datos con el mismo número de control o CURP",
+                text: "Ya existen registros con el mismo número de control o CURP",
                 icon: "error",
                 timer: 1000
             });
