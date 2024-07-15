@@ -1,7 +1,4 @@
 import React, { useState } from "react";
-import { SiGoogleforms } from "react-icons/si";
-import { MdEdit } from "react-icons/md";
-import DataAlumno from "../ModalesForm/DataAlumno/DataAlumno";
 import ChildModal from "../../PagosEmpleadoForm/ChildModal"
 
 export default function FilaDate (

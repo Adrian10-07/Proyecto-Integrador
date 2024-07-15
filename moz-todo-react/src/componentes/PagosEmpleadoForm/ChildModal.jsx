@@ -97,7 +97,7 @@ export default function NestedModal({ valueId }) {
               <li>Puntaje General: {data.nivelGeneral || "N/A"}</li>
             </ul>
             <Button className='EditA' onClick={() => navigate('/editAlumno', { state: { data } })}>
-            Editar<FontAwesomeIcon icon="faPenToSquare" />
+            Editar
             </Button>
           </div>
           )}
