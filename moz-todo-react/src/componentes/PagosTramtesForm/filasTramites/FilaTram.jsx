@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { SiGoogleforms } from "react-icons/si";
 import { MdEdit } from "react-icons/md";
-import DataTramite from "../ModalesForm/DataTramite/DataTramite";
+import Swal from 'sweetalert2';
+
 
 export default function FilaTram (
     {idT, folioT, nombreAlm, apellidoP, apellidoM, gradoAlm, grupoAlm, conceptoT, montoT, 
-        fechaDeCorteT, estatusTramiteT, }){
+        fechaDeCorteT, estatusTramiteT, actualizarLista}){
     
     //Hace maromas para pasar la fecha tipo SQL a una fecha de JS
     const fechaISO = fechaDeCorteT;
@@ -14,10 +15,8 @@ export default function FilaTram (
     const dia = fecha.getDate();
     const mes = fecha.getMonth() + 1;
     const anio = fecha.getFullYear();
-            
     const fechaFormateada = `${dia}-${mes}-${anio}`;
     const fechaAComparar = `${anio}-${String(mes).padStart(2, '0')}-${String(dia).padStart(2, '0')}`;
-    
     
     const determinarEstatusDePago = () => {
         if (estatusTramiteT == "Pagado"){
@@ -33,7 +32,7 @@ export default function FilaTram (
             const anioActual = fechaActual.getFullYear();
             const fechaComparacion = `${anioActual}-${mesActual}-${diaActual}`;
         
-            console.log("Hoy es " + fechaComparacion);
+            //console.log("Hoy es " + fechaComparacion);
 
             //Crea dis instancias de tipo Date para comparar las fechas
             const fechaActualObj = new Date(fechaComparacion);
@@ -43,14 +42,18 @@ export default function FilaTram (
             const diferenciaMilisegundos = fechaACompararObj - fechaActualObj;
             const diferenciaDias = diferenciaMilisegundos / (1000 * 60 * 60 * 24);
 
-            console.log(`Diferencia en días: ${diferenciaDias}`);
-            if(diferenciaDias < 10 && estatusTramiteT != "Por pagar"){
+            //console.log(`Diferencia en días: ${diferenciaDias}`);
+            if(diferenciaDias < 10 && estatusTramiteT !== "Por pagar" && estatusTramiteT !== "Atrasado"){
+                console.log("Se realizó el fetch para pasar el estado a Por Pagar")
                 //Si faltan 10 dias para que se venza el pago, lo marcara como proximo
                     actualizarAProximoAPagar();
+                    actualizarLista();
             }
-            if(diferenciaDias <= 0 && estatusTramiteT != "Atrasado"){
+            if(diferenciaDias <= 0 && estatusTramiteT !== "Atrasado"){
                 //Si faltan 0 dias o ya paso la fecha limite, lo marca como atrasado
+                console.log("Se realizó el fetch para pasar el estado a atrasado")
                     actualizarAAtrasado();
+                    actualizarLista();
             }
         }
     }
@@ -102,22 +105,67 @@ export default function FilaTram (
     const actualizarAPagado = () => {
         const url = `http://localhost:3000/tramites/changePaid/${idT}`
 
-        fetch(url, {
-            method: "PUT"
-        })
-        .then(response => {
-            if(!response.ok){
-              throw new Error('Error al "Pagar tramite": ' + response.status);
-            }
-            return response.json();
-        })
-        .then(response => {
-           console.log("Tramite pagado") 
-        })
-        .catch(error => {
-            console.log("Error : ", error)
-        });
+        if(estatusTramiteT !=="Pagado"){
+            fetch(url, {
+                method: "PUT"
+            })
+            .then(response => {
+                if(!response.ok){
+                throw new Error('Error al "Pagar tramite": ' + response.status);
+                }
+                return response.json();
+            })
+            .then(response => {
+                console.log("Tramite pagado") 
+                Swal.fire({
+                    title: "Éxito",
+                    text: "Trámite pagado",
+                    icon: "success",
+                    timer: 1000
+                });
+                return true;
+            })
+            .catch(error => {
+                console.log("Error : ", error)
+                let errorMessage = "Error desconocido";
+                if (error.message.includes("NetworkError")) {
+                    errorMessage = "Error de red, por favor revisa tu conexión";
+                } else if (error.message.includes("404")) {
+                    errorMessage = "Endpoint no encontrado";
+                } else if (error.message.includes("500")) {
+                    errorMessage = "Error interno del servidor";
+                } else if (error.message.includes("datos duplicados")) {
+                    errorMessage = "Datos duplicados, por favor revisa la información ingresada";
+                }
+                Swal.fire({
+                    title: "Error",
+                    text: errorMessage,
+                    icon: "error",
+                    timer: 1000                    
+                });
+            });
+            actualizarLista();
+        } else {
+            console.log("Ya se pagó el trámite");
+            Swal.fire({
+                title: "Trámite ya pagado",
+                timer: 1000
+            });
+            return true;
+        }
     }
+
+    const handleSaveClick = () => {
+        Swal.fire({
+            title: "Esta acción no se puede revertir ¿Estás seguro?",
+            showCancelButton: true,
+            confirmButtonText: "Confirmar",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                actualizarAPagado();
+            }
+        });
+    };
 
     return(
         <tr key={idT}>
@@ -129,7 +177,7 @@ export default function FilaTram (
             <td>{montoT}</td>
             <td>{fechaFormateada}</td>
             <td>{estatusTramiteT}</td>
-            <td><button onClick={actualizarAPagado}>Pagar</button></td>
+            <td><button onClick={handleSaveClick}>Pagar</button></td>
         </tr>
     );
 }

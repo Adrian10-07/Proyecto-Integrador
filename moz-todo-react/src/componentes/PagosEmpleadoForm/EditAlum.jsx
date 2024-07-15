@@ -25,6 +25,7 @@ export default function EditAlum() {
         }
     });
   };
+
   const handleCancelClick = () => {
     Swal.fire({
       title: "Cancelar Edición ¿?",
@@ -160,14 +161,16 @@ export default function EditAlum() {
         Swal.fire({
           title: "Error",
           text: "No olvide elegir el turno y estatus del alumno",
-          icon: "error"
+          icon: "error",
+          timer: 1000
         });
         return false;
     } else if (await comprobarSiHayDatosRepetidos(registrarNoControl, registrarCurp)){
         Swal.fire({
           title: "Error",
           text: "Ya existen datos con el mismo número de control o CURP",
-          icon: "error"
+          icon: "error",
+          timer: 1000
         });
         return false;
     } else {
@@ -179,7 +182,8 @@ export default function EditAlum() {
             Swal.fire({
               title: "Error",
               text: "Ingrese un grado válido",
-              icon: "error"
+              icon: "error",
+              timer: 1000
             });
             dato.grado = data.grado;
             return false;
@@ -196,7 +200,8 @@ export default function EditAlum() {
             Swal.fire({
               title: "Error",
               text: "No. Control Inválido",
-              icon: "error"
+              icon: "error",
+              timer: 1000
             });
             dato.noControl = data.noControl;
             return false;
@@ -212,7 +217,8 @@ export default function EditAlum() {
             Swal.fire({
               title: "Error",
               text: "No. de teléfono inválido",
-              icon: "error"
+              icon: "error",
+              timer: 1000
             });
             dato.telefono = data.telefono;
             return false
@@ -230,7 +236,8 @@ export default function EditAlum() {
             Swal.fire({
               title: "Error",
               text: "No. de teléfono inválido",
-              icon: "error"
+              icon: "error",
+              timer: 1000
             });
             dato.telefono_tutor = data.telefono_tutor;
             return false;
@@ -300,7 +307,8 @@ export default function EditAlum() {
                 Swal.fire({
                     title: "Éxito",
                     text: "Alumno actualizado correctamente",
-                    icon: "success"
+                    icon: "success",
+                    timer: 1000
                 });
                 return true;
             })
@@ -319,7 +327,8 @@ export default function EditAlum() {
                 Swal.fire({
                     title: "Error",
                     text: errorMessage,
-                    icon: "error"
+                    icon: "error",
+                    timer: 1000
                 });
                 return false;
             });

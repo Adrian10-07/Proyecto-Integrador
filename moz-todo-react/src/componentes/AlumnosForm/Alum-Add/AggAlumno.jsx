@@ -157,7 +157,8 @@ export default function AggAlumno() {
             Swal.fire({
                 title: "Error",
                 text: "Hay campos obligatorios sin llenar",
-                icon: "error"
+                icon: "error",
+                timer: 1000
             });
             return false;
             // Agregar logica del error
@@ -166,7 +167,8 @@ export default function AggAlumno() {
             Swal.fire({
                 title: "Error",
                 text: "Datos inválidos en los campos numéricos",
-                icon: "error"
+                icon: "error",
+                timer: 1000
             });
             return false;
         } else if (await comprobarSiHayDatosRepetidos(registrarNoControl, registrarCurp)){
@@ -174,7 +176,8 @@ export default function AggAlumno() {
             Swal.fire({
                 title: "Error",
                 text: "Ya existen datos con el mismo número de control o CURP",
-                icon: "error"
+                icon: "error",
+                timer: 1000
             });
             return false;
         } else {
@@ -226,7 +229,8 @@ export default function AggAlumno() {
                     Swal.fire({
                         title: "Éxito",
                         text: "Alumno registrado correctamente",
-                        icon: "success"
+                        icon: "success",
+                        timer: 1000
                     });
                     return true;
                 })
@@ -245,7 +249,8 @@ export default function AggAlumno() {
                     Swal.fire({
                         title: "Error",
                         text: errorMessage,
-                        icon: "error"
+                        icon: "error",
+                        timer: 1000
                     });
                     return false;
                 });
