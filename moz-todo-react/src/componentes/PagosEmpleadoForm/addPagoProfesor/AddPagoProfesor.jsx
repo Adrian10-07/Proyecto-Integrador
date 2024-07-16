@@ -8,9 +8,7 @@ import { IoSearchSharp } from 'react-icons/io5';
 
 export default function AddPagoProfesor () {
     const [nameProfesor, setNameProfesor] = useState([]);
-    const [searching, setSearching] = useState({
-        nombre:''
-    });
+    const [totalPago, setTotalPago] = useState(0);
     const navigate = useNavigate();
 
     const handleSearchChange = (e) => {
@@ -24,7 +22,9 @@ export default function AddPagoProfesor () {
         const url = "http://localhost:3000/PagoEmp/optionProfesor";
 
         let dato = {
-            "nombre_busqueda":""
+            nombre_busqueda :"",
+            apellido_p_busqueda : "",
+            apellido_m_busqueda : ""
         }
 
         let buscarPorNombre = document.getElementById("inputProfesorName").value;
@@ -36,29 +36,99 @@ export default function AddPagoProfesor () {
         let buscarPorApellidoM = document.getElementById('inputPersonalApellidom').value;
         if (buscarPorApellidoM)
             dato.apellido_m_busqueda = buscarPorApellidoM;
+
+        fetch(url, {
+            method:'POST',
+            headers: { 'Content-Type':'application/json'},
+            body:JSON.stringify(dato)
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('No conecta');
+            }
+            return response.json();
+        })
+        .then(data => {
+            setNameProfesor(data);
+        })
+        .catch(error => {
+            console.error('Error fetching data: ', error);
+            Swal.fire('Error fetching data', error.message, 'error');
+        });
+    }
+
+    const comprobarSiEsNumero = (cadenaAAnalizar) => {
+        var valoresAceptados = /^[0-9]+$/;
+        if (valoresAceptados.test(cadenaAAnalizar)){
+            console.log(cadenaAAnalizar + " es un valor valido")
+            return true;
+        } else {
+            console.log(cadenaAAnalizar + " no es un valor valido")
+            return false;
+        }
+    }
+
+    const calcularTotalAPagar = () => {
+        const idProfesorSelect = document.getElementById("inputIdProfesor").value;
+        let registrarHoras = document.getElementById('inputHoras').value;
+        if (idProfesorSelect == "not valid" || !registrarHoras || !comprobarSiEsNumero(registrarHoras) || registrarHoras <= 0){
+            Swal.fire({
+                title: "Error",
+                text: "Seleccione un maestro al cual calcular el pago y asigne las horas trabajadas",
+                icon: "error",
+                timer: 1000
+            });
+            return false;
+        }
+        else {
+            const url = `http://localhost:3000/PagoEmp/calcularMontoPro/${idProfesorSelect}`
+            fetch(url)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('No conecta');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log(data[0].sueldoPorHora);
+                setTotalPago(data[0].sueldoPorHora * registrarHoras);
+                console.log(totalPago);
+            })
+            .catch(error => {
+                console.error('Error fetching data: ', error);
+                Swal.fire('Error fetching data', error.message, 'error');
+            });
+            
+        }
     }
 
     const dbPersonal = () => {
-        return new Promise ((resolve, reject) => {
+        
             const url = "http://localhost:3000/PagoEmp/pagoPro";
             let data = {
                 horasTrabajadas: "",
                 totalPago: "",
-                fechaDeCorte:"",
+                fechaPago:"",
                 idProfesor:"",
 
             };
             let registrarHoras = document.getElementById('inputHoras').value;
-            let registrarTotal = document.getElementById('inputTotal').value;
+            let registrarTotal = totalPago;
             let registrarFecha = document.getElementById('inputFecha').value;
             let registraridProfesor = document.getElementById('inputIdProfesor').value;
 
-            if (!registrarHoras || !registrarTotal || !registrarFecha ||registraridProfesor == "not valid") {
-                resolve(false)
+            if (!registrarHoras || registrarTotal <= 0 || !registrarFecha ||registraridProfesor == "not valid") {
+                Swal.fire({
+                    title: "Error",
+                    text: "Llene todos los campos y calcule el pago total",
+                    icon: "error",
+                    timer: 1000
+                });
+                return false;
             } else {
                 data.horasTrabajadas = registrarHoras;
                 data.totalPago = registrarTotal;
-                data.fechaDeCorte = registrarFecha;
+                data.fechaPago = registrarFecha;
                 data.idProfesor = registraridProfesor;
 
                 fetch(url, {
@@ -76,16 +146,38 @@ export default function AddPagoProfesor () {
                 })
                 .then(datosReturn => {
                     console.log("Datos guardados: " + datosReturn)
-                    resolve(true)
                     setTimeout(() => {
-                        navigate('/tramites');
+                        navigate('/pagosEmp');
                     }, 1000);
+                    Swal.fire({
+                        title: "Éxito",
+                        text: "Informe de pago de maestro registrado correctamente",
+                        icon: "success",
+                        timer: 1000
+                    });
+                    return true;
                 })
                 .catch(error => {
                     console.error('Error:', error);
+                    let errorMessage = "Error desconocido";
+                    if (error.message.includes("NetworkError")) {
+                        errorMessage = "Error de red, por favor revisa tu conexión";
+                    } else if (error.message.includes("404")) {
+                        errorMessage = "Endpoint no encontrado";
+                    } else if (error.message.includes("500")) {
+                        errorMessage = "Error interno del servidor";
+                    } else if (error.message.includes("datos duplicados")) {
+                        errorMessage = "Datos duplicados, por favor revisa la información ingresada";
+                    }
+                    Swal.fire({
+                        title: "Error",
+                        text: errorMessage,
+                        icon: "error",
+                        timer: 1000
+                    });
+                    return false;
                 });
             }
-        });
     };
 
     const handleSaveClick = () => {
@@ -95,17 +187,7 @@ export default function AddPagoProfesor () {
             confirmButtonText: "Guardar",
         }).then((result) => {
             if (result.isConfirmed) {
-                dbPersonal()
-                    .then(success => {
-                        if (success) {
-                            Swal.fire("Cambios guardados!", "", "success");
-                        } else {
-                            Swal.fire("Error, asegurese de llenar todos los campos", "", "error");
-                        }
-                    })
-                    .catch(error => {
-                        Swal.fire("Error al guardar los cambios", error.message, "error");
-                    });
+                dbPersonal();
             }
         });
     };
@@ -123,11 +205,16 @@ export default function AddPagoProfesor () {
           }).then((result) => {
             if (result.isConfirmed) {
               setTimeout(() => {
-                  navigate('/tramites');
+                  navigate('/pagosEmp');
               }, 1000);
             }
           })
     };
+
+    useEffect(() => {
+        optionProfesor();
+    }, []);
+
     return (
         <div>
             <header className='header'>
@@ -140,8 +227,7 @@ export default function AddPagoProfesor () {
                     <p>Generar</p>
                 <div className='pagoProfesor'>
                     <div className='box_profesor'>
-                        <input type="int" placeholder='Horas trabajadas' id='inputHoras' maxLength={10}/>
-                        <input type="int" id="inputTotal" placeholder='Total a pagar'/>
+                        <input type="number" placeholder='Horas trabajadas' id='inputHoras' maxLength={10}/>
                         <input type="date" id='inputFecha' />
                         
                     </div>
@@ -159,6 +245,11 @@ export default function AddPagoProfesor () {
                                 <option key={elemento.id} value={elemento.id}>{elemento.nombre} {elemento.apellido_p} {elemento.apellido_m}</option>
                             ))}
                         </select>
+                    </div>
+                    <div>
+                        <h4>Calculando pago:</h4>
+                        <button onClick={calcularTotalAPagar}>Calcular</button>
+                        <p>{totalPago}</p>
                     </div>
                 </div>
             </div>
