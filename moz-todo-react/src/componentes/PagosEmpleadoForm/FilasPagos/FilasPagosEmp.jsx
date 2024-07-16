@@ -33,7 +33,7 @@ export default function FilasPagosEmp (
             const anioActual = fechaActual.getFullYear();
             const fechaComparacion = `${anioActual}-${mesActual}-${diaActual}`;
         
-            console.log("Hoy es " + fechaComparacion);
+            //console.log("Hoy es " + fechaComparacion);
 
             //Crea dis instancias de tipo Date para comparar las fechas
             const fechaActualObj = new Date(fechaComparacion);
@@ -43,16 +43,14 @@ export default function FilasPagosEmp (
             const diferenciaMilisegundos = fechaACompararObj - fechaActualObj;
             const diferenciaDias = diferenciaMilisegundos / (1000 * 60 * 60 * 24);
 
-            console.log(`Diferencia en días: ${diferenciaDias}`);
-            if(diferenciaDias < 10 && estatusTramite != "Por pagar"){
+            //console.log(`Diferencia en días: ${diferenciaDias}`);
+            if(diferenciaDias < 10 && estatusTramite !== "Por pagar" && estatusTramite !== "Atrasado"){
                 //Si faltan 10 dias para que se venza el pago, lo marcara como proximo
                     actualizarAProximoAPagar();
-                    actualizarLista();
             }
-            if(diferenciaDias <= 0 && estatusTramite != "Atrasado"){
+            if(diferenciaDias <= 0 && estatusTramite !== "Atrasado"){
                 //Si faltan 0 dias o ya paso la fecha limite, lo marca como atrasado
                     actualizarAAtrasado();
-                    actualizarLista();
             }
         }
     }
@@ -75,6 +73,7 @@ export default function FilasPagosEmp (
         })
         .then(response => {
             console.log("Cambiando estado de pago a proximo");
+            actualizarLista();
         })
         .catch(error => {
             console.log("Error : ", error);
@@ -95,6 +94,7 @@ export default function FilasPagosEmp (
         })
         .then(response => {
             console.log("Cambiando estado de pago a atrasado");
+            actualizarLista();
         })
         .catch(error => {
             console.log("Error : ", error);
@@ -122,6 +122,7 @@ export default function FilasPagosEmp (
                     icon: "success",
                     timer: 1000
                 });
+                actualizarLista();
                 return true;
             })
             .catch(error => {
@@ -144,7 +145,7 @@ export default function FilasPagosEmp (
                 });
                 return false
             });
-            actualizarLista();
+            
         } else {
             console.log("Ya se marcó como pagado");
             Swal.fire({

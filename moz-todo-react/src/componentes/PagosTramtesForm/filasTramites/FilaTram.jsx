@@ -46,13 +46,11 @@ export default function FilaTram (
                 console.log("Se realizó el fetch para pasar el estado a Por Pagar")
                 //Si faltan 10 dias para que se venza el pago, lo marcara como proximo
                     actualizarAProximoAPagar();
-                    actualizarLista();
             }
             if(diferenciaDias <= 0 && estatusTramiteT !== "Atrasado"){
                 //Si faltan 0 dias o ya paso la fecha limite, lo marca como atrasado
                 console.log("Se realizó el fetch para pasar el estado a atrasado")
                     actualizarAAtrasado();
-                    actualizarLista();
             }
         }
     }
@@ -75,6 +73,7 @@ export default function FilaTram (
         })
         .then(response => {
             console.log("Cambiando estado de tramite a proximo");
+            actualizarLista();
         })
         .catch(error => {
             console.log("Error : ", error);
@@ -95,6 +94,7 @@ export default function FilaTram (
         })
         .then(response => {
             console.log("Cambiando estado de tramite a atrasado");
+            actualizarLista();
         })
         .catch(error => {
             console.log("Error : ", error);
@@ -122,6 +122,7 @@ export default function FilaTram (
                     icon: "success",
                     timer: 1000
                 });
+                actualizarLista();
                 return true;
             })
             .catch(error => {
@@ -143,7 +144,7 @@ export default function FilaTram (
                     timer: 1000                    
                 });
             });
-            actualizarLista();
+            
         } else {
             console.log("Ya se pagó el trámite");
             Swal.fire({
