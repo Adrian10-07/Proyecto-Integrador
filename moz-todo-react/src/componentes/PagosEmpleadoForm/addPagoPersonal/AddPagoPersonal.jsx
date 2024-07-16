@@ -5,6 +5,7 @@ import { MdOutlineCancel } from 'react-icons/md';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 import { IoSearchSharp } from 'react-icons/io5';
+import './AddPagoPersonal.css'
 
 export default function AddPagoPersonal () {
     const [namePersonal, setNamePersonal] = useState([]);
@@ -208,7 +209,7 @@ export default function AddPagoPersonal () {
 
 
     return (
-        <div>
+        <div >
             <header className='header'>
                 <img src={Logo2} alt="Left" className='image-add-left' />
                 Pago de trámites
@@ -227,7 +228,7 @@ export default function AddPagoPersonal () {
                         <input type='text' placeholder='Nombre' id='inputPersonalName' maxLength={45}/>
                         <input type="text" placeholder='apellido paterno' id='inputPersonalApellidop' maxLength={45}/>
                         <input type="text" placeholder='apelllido materno' id='inputPersonalApellidom' maxLength={45}/>
-                        <button onClick={optionPersonal}>< IoSearchSharp />Buscar</button>
+                        <button className='Buscar' onClick={optionPersonal}>< IoSearchSharp />Buscar</button>
                         
                     </div>
                     <div className='searchPersonal'>
@@ -240,7 +241,7 @@ export default function AddPagoPersonal () {
                     </div>
                     <div>
                         <h4>Calculando pago:</h4>
-                        <button onClick={calcularTotalAPagar}>Calcular</button>
+                        <button className='calcular' onClick={calcularTotalAPagar}>Calcular</button>
                         <p>{totalPago}</p>
                     </div>
                 </div>

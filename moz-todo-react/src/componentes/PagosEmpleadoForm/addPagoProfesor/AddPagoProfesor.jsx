@@ -5,6 +5,7 @@ import { MdOutlineCancel } from 'react-icons/md';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 import { IoSearchSharp } from 'react-icons/io5';
+import './AddPagoProfesor.css'
 
 export default function AddPagoProfesor () {
     const [nameProfesor, setNameProfesor] = useState([]);
@@ -149,7 +150,7 @@ export default function AddPagoProfesor () {
                         <input type='text' placeholder='Nombre' id='inputProfesorName' maxLength={45}/>
                         <input type="text" placeholder='apellido paterno' id='inputPersonalApellidop' maxLength={45}/>
                         <input type="text" placeholder='apelllido materno' id='inputPersonalApellidom' maxLength={45}/>
-                        <button onClick={optionProfesor}>< IoSearchSharp />Buscar</button>
+                        <button className='buscar1' onClick={optionProfesor}>< IoSearchSharp />Buscar</button>
                         
                     </div>
                     <div className='searchProfesor'>
