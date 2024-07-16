@@ -6,9 +6,11 @@ import { MdOutlineCancel } from "react-icons/md";
 import FilaMateria from './FilaMateria/FilaMateria';
 //import Logo2 from '../AlumnosForm/Alum-Add/AggAssets/Logo2.png';
 import Swal from 'sweetalert2';
+import './EditProfesor.css';
 
 export default function EditProfesor (){
     const location = useLocation();
+    const [coincidencias, setCoincidencias] = useState([]);
     const [dataMat, setDataMat] = useState([]);
     const [error, setError] = useState(null);
     const { data } = location.state || {};
@@ -22,16 +24,6 @@ export default function EditProfesor (){
         }).then((result) => {
             if (result.isConfirmed) {
                 actualizarMaestro()
-                    .then(success => {
-                        if (success) {
-                            Swal.fire("Registro actualizado!", "", "success");
-                        } else {
-                            Swal.fire("Error, asegurese de elegir el estatus y especialidad", "", "error");
-                        }
-                    })
-                    .catch(error => {
-                        Swal.fire("Error al guardar los cambios", error.message, "error");
-                    });
             }
         });
     };
@@ -61,8 +53,66 @@ export default function EditProfesor (){
 
     const navigate = useNavigate();
 
-    const actualizarMaestro = () => {
-        return new Promise ((resolve, reject) => {
+    const comprobarSiEsNumero = (cadenaAAnalizar) => {
+        var valoresAceptados = /^[0-9]+$/;
+        if (valoresAceptados.test(cadenaAAnalizar)){
+            console.log(cadenaAAnalizar + " es un valor valido")
+            return true;
+        } else {
+            console.log(cadenaAAnalizar + " no es un valor valido")
+            return false;
+        }
+    }
+
+    const comprobarSiElSueldoEsValido = (comprobarMonto) => {
+        const valoresAceptados = /^-?\d+(\.\d+)?$/;
+        if (valoresAceptados.test(comprobarMonto)) {
+            console.log(comprobarMonto + " es un valor válido");
+            return true;
+        } else {
+            console.log(comprobarMonto + " no es un valor válido");
+            return false;
+        }
+    }
+
+    const comprobarSiExisteElMaestro = async (nombreEmpleado, apellidoPEmpleado, apellidoMEmpleado) => {
+        const url = `http://localhost:3000/empleados/comprobarProfesores`;
+
+        const comprobarProfe = {
+            nombreComp : nombreEmpleado, 
+            apellido_pComp : apellidoPEmpleado, 
+            apellido_mComp : apellidoMEmpleado
+        }
+
+        try {
+            const response = await fetch(url, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(comprobarProfe)
+            });
+    
+            if (!response.ok) {
+                throw new Error('Error al buscar coincidencias: ' + response.status);
+            }
+    
+            const data = await response.json();
+            setCoincidencias(data);
+    
+            if (data.length > 0) {
+                console.log("Hay coincidencias: " + data);
+                return true;
+            } else {
+                console.log("No hay coincidencias");
+                return false;
+            }
+        } catch (error) {
+            console.log("Error: " + error);
+            return false;
+        }
+    }
+
+
+    const actualizarMaestro = async () => {
             const url = `http://localhost:3000/empleados/updateProfesor/${data.id}`
 
             let dato = {
@@ -88,17 +138,52 @@ export default function EditProfesor (){
             let estatusRegistro = document.getElementById("selectEstatus").value;
 
             if(especialidadRegistro == 0 || estatusRegistro == 0){
-                resolve(false);
-            }
-            else{
+                Swal.fire({
+                    title: "Error",
+                    text: "No olvide seleccionar el área y la especialidad del maestro",
+                    icon: "error",
+                    timer: 1000
+                });
+                return false
+            } else if(await comprobarSiExisteElMaestro(nombreRegistro, apellido_pRegistro, apellido_mRegistro)){
+                Swal.fire({
+                    title: "Error",
+                    text: "Al parecer ya está registrado este maestro",
+                    icon: "error",
+                    timer: 1000
+                });
+                return false;
+            }else{
                 if(nombreRegistro) dato.nombre = nombreRegistro; else dato.nombre = data.nombre;
                 if(apellido_pRegistro) dato.apellido_p = apellido_pRegistro; else dato.apellido_p = data.apellido_p;
                 if(apellido_mRegistro) dato.apellido_m = apellido_mRegistro; else dato.apellido_m = data.apellido_m;
-                if(telefonoRegistro) dato.telefono = telefonoRegistro; else dato.telefono = data.telefono;
+                if(telefonoRegistro){
+                    if(!comprobarSiEsNumero(telefonoRegistro)){
+                        Swal.fire({
+                            title: "Error",
+                            text: "Número de teléfono inválido",
+                            icon: "error",
+                            timer: 1000
+                        });
+                        dato.telefono = data.telefono; 
+                        return false;
+                    } else dato.telefono = telefonoRegistro; 
+                } else dato.telefono = data.telefono;
                 if(correoRegistro) dato.correo = correoRegistro; else dato.correo = data.correo;
                 if(curpRegistro) dato.curp = curpRegistro; else dato.curp = data.curp;
                 dato.id_especialidad = especialidadRegistro;
-                if(sueldoRegisro) dato.sueldoPorHora = sueldoRegisro; else dato.sueldoPorHora = data.sueldoPorHora;
+                if(sueldoRegisro){
+                    if(!comprobarSiElSueldoEsValido(sueldoRegisro) || sueldoRegisro <= 0 || sueldoRegisro > 100000.00){
+                        Swal.fire({
+                            title: "Error",
+                            text: "Ingrese un monto válido",
+                            icon: "error",
+                            timer: 1000
+                        });
+                        dato.sueldoPorHora = data.sueldoPorHora;
+                        return false; 
+                    } else dato.sueldoPorHora = sueldoRegisro;
+                } else dato.sueldoPorHora = data.sueldoPorHora;
                 dato.id_estatus = estatusRegistro;
 
                 fetch(url, {
@@ -116,18 +201,38 @@ export default function EditProfesor (){
                 })
                 .then(data => {
                     console.log("Alumno registrado: ", data);
-                    resolve(true)
                     setTimeout(() => {
                         navigate('/empleados');
                     }, 1000);
+                    Swal.fire({
+                        title: "Éxito",
+                        text: "Maestro actualizado correctamente",
+                        icon: "success",
+                        timer: 1000
+                    });
+                    return true;
                 })
                 .catch(error => {
                     console.error('Error: ', error);
-                    //Agregar lógica para manejar el error en la interfaz de usuario
+                    let errorMessage = "Error desconocido";
+                    if (error.message.includes("NetworkError")) {
+                        errorMessage = "Error de red, por favor revisa tu conexión";
+                    } else if (error.message.includes("404")) {
+                        errorMessage = "Endpoint no encontrado";
+                    } else if (error.message.includes("500")) {
+                        errorMessage = "Error interno del servidor";
+                    } else if (error.message.includes("datos duplicados")) {
+                        errorMessage = "Datos duplicados, por favor revisa la información ingresada";
+                    }
+                    Swal.fire({
+                        title: "Error",
+                        text: errorMessage,
+                        icon: "error",
+                        timer: 1000
+                    });
+                    return false;
                 });
-            }
-
-        });    
+            }   
     }
 
     const imprimirMateriasDelProfesor = () => {
@@ -161,6 +266,16 @@ export default function EditProfesor (){
         if(!registrarMateria)
             console.log("Seleccione una materia")
         else{
+
+            if (dataMat.some(materia => materia.id === parseInt(registrarMateria))) {
+                Swal.fire({
+                    title: "Error",
+                    text: "La materia ya ha sido asignada al profesor.",
+                    icon: "error",
+                    timer: 1000
+                });
+                return; // Salir de la función si la materia ya está asignada
+            }
 
             dataMateria.idMateria = registrarMateria;
 
@@ -231,7 +346,6 @@ export default function EditProfesor (){
                             <thead>
                                 <tr>
                                     <th>Materias</th>
-                                    <th>Opción</th>
                                 </tr>
                                 
                             </thead>

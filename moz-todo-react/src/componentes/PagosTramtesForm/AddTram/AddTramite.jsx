@@ -8,6 +8,7 @@ import { IoSearchSharp } from "react-icons/io5";
 import './AddTramite.css'
 
 export default function AddTramite() {
+    const [coincidencias, setCoincidencias] = useState([]);
     const [nameAlum, setNameAlum] = useState([]);
     const [searching, setSearching] = useState({
         nombre:'',
@@ -19,23 +20,6 @@ export default function AddTramite() {
 
     useEffect(() => {
         optionAlumnosAlumnos();
-        /*
-        fetch("http://localhost:3000/alumnos/")
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log('API response:', data); 
-                setNameAlum(data);
-            })
-            .catch(error => {
-                console.error('Error fetching data:', error);
-                Swal.fire('Error fetching data', error.message, 'error');
-            });
-        */
     }, []);
 
     /*
@@ -51,10 +35,41 @@ export default function AddTramite() {
 }
     */
 
-    const handleSearchChange = (e) => {
-        const { name, value } =e.target;
-        setSearching(prevState => ({ ...prevState, [name]: value}));
-    };
+    const comprobarSiYaExisteElFolio = async (folioComprobar) => {
+        const url = `http://localhost:3000/tramites/buscarCoincidencias/${folioComprobar}`;
+        try {
+            const response = await fetch(url);
+    
+            if (!response.ok) {
+                throw new Error('Error al buscar coincidencias: ' + response.status);
+            }
+    
+            const data = await response.json();
+            setCoincidencias(data);
+    
+            if (data.length > 0) {
+                console.log("Hay coincidencias: " + data);
+                return true;
+            } else {
+                console.log("No hay coincidencias");
+                return false;
+            }
+        } catch (error) {
+            console.log("Error: " + error);
+            return false;
+        }
+    }
+
+    const comprobarSiElMontoEsValido = (comprobarMonto) => {
+        const valoresAceptados = /^-?\d+(\.\d+)?$/;
+        if (valoresAceptados.test(comprobarMonto)) {
+            console.log(comprobarMonto + " es un valor válido");
+            return true;
+        } else {
+            console.log(comprobarMonto + " no es un valor válido");
+            return false;
+        }
+    }
 
     const optionAlumnosAlumnos = () => {
         const url = "http://localhost:3000/tramites/optionsAlumnos";
@@ -99,8 +114,7 @@ export default function AddTramite() {
         });
     };
 
-    const mandarALaBaseDeDatos = () => {
-        return new Promise ((resolve, reject) => {
+    const mandarALaBaseDeDatos = async () => {
             const url = 'http://localhost:3000/tramites/add';
             let data = {
                 folio: "",
@@ -117,8 +131,38 @@ export default function AddTramite() {
             let registrarid_alumno = document.getElementById('inputId_alumno').value;
 
             if (!registrarFolio || !registrarConcepto || !registrarMonto || !registrarFecha || !registrarid_alumno || registrarid_alumno == "not valid") {
-                resolve(false)
-            } else {
+                Swal.fire({
+                    title: "Error",
+                    text: "Hay campos obligatorios sin llenar",
+                    icon: "error",
+                    timer: 1000
+                });
+                return false;
+            } else if (!comprobarSiElMontoEsValido(registrarMonto)){
+                Swal.fire({
+                    title: "Error",
+                    text: "Ingrese un monto válido",
+                    icon: "error",
+                    timer: 1000
+                });
+                return false;
+            }else if(registrarMonto <= 0 || registrarMonto > 100000.00){
+                Swal.fire({
+                    title: "Error",
+                    text: "Ingrese un monto válido",
+                    icon: "error",
+                    timer: 1000
+                });
+                return false;
+            }else if(await comprobarSiYaExisteElFolio(registrarFolio)){
+                Swal.fire({
+                    title: "Error",
+                    text: "Ya existe un registro con ese folio",
+                    icon: "error",
+                    timer: 1000
+                });
+                return false;
+            }else {
                 data.folio = registrarFolio;
                 data.concepto = registrarConcepto;
                 data.monto = registrarMonto;
@@ -140,16 +184,38 @@ export default function AddTramite() {
                 })
                 .then(datosReturn => {
                     console.log("Datos guardados: " + datosReturn)
-                    resolve(true)
                     setTimeout(() => {
                         navigate('/tramites');
                     }, 1000);
+                    Swal.fire({
+                        title: "Éxito",
+                        text: "Informe de pago de trámite registrado correctamente",
+                        icon: "success",
+                        timer: 1000
+                    });
+                    return true;
                 })
                 .catch(error => {
                     console.error('Error:', error);
+                    let errorMessage = "Error desconocido";
+                    if (error.message.includes("NetworkError")) {
+                        errorMessage = "Error de red, por favor revisa tu conexión";
+                    } else if (error.message.includes("404")) {
+                        errorMessage = "Endpoint no encontrado";
+                    } else if (error.message.includes("500")) {
+                        errorMessage = "Error interno del servidor";
+                    } else if (error.message.includes("datos duplicados")) {
+                        errorMessage = "Datos duplicados, por favor revisa la información ingresada";
+                    }
+                    Swal.fire({
+                        title: "Error",
+                        text: errorMessage,
+                        icon: "error",
+                        timer: 1000
+                    });
+                    return false;
                 });
-            }
-        }); 
+            } 
     };
 
     const handleSaveClick = () => {
@@ -159,17 +225,7 @@ export default function AddTramite() {
             confirmButtonText: "Guardar",
         }).then((result) => {
             if (result.isConfirmed) {
-                mandarALaBaseDeDatos()
-                    .then(success => {
-                        if (success) {
-                            Swal.fire("Cambios guardados!", "", "success");
-                        } else {
-                            Swal.fire("Error, asegurese de llenar todos los campos", "", "error");
-                        }
-                    })
-                    .catch(error => {
-                        Swal.fire("Error al guardar los cambios", error.message, "error");
-                    });
+                mandarALaBaseDeDatos();
             }
         });
     };
@@ -207,7 +263,7 @@ export default function AddTramite() {
                     <div className='con1'>
                         <input type="text" placeholder='folio' id='inputFolio' maxLength={32}/>
                         <input type="text" placeholder='concepto' id='inputConcepto' maxLength={75}/>
-                        <input type="text" placeholder='monto' id='inputMonto' maxLength={8}/>
+                        <input type="number" placeholder='monto' id='inputMonto' maxLength={8}/>
                         <input type="date" id='inputFecha' />
                         
                     </div>

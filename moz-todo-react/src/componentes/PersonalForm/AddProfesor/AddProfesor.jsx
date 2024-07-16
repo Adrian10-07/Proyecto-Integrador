@@ -4,8 +4,10 @@ import { FiSave } from "react-icons/fi";
 import { MdOutlineCancel } from "react-icons/md";
 import Swal from 'sweetalert2'
 import { useNavigate } from 'react-router-dom';
+import { useState } from "react";
 
 export default function AddProfesor (){
+    const [coincidencias, setCoincidencias] = useState([]);
 
     const handleSaveClick = () => {
         Swal.fire({
@@ -14,17 +16,7 @@ export default function AddProfesor (){
             confirmButtonText: "Guardar",
         }).then((result) => {
             if (result.isConfirmed) {
-                realizarRegistro()
-                    .then(success => {
-                        if (success) {
-                            Swal.fire("Registro guardado!", "", "success");
-                        } else {
-                            Swal.fire("Error, asegurese de llenar todos los campos", "", "error");
-                        }
-                    })
-                    .catch(error => {
-                        Swal.fire("Error al guardar los cambios", error.message, "error");
-                    });
+                realizarRegistro();
             }
         });
     };
@@ -50,8 +42,65 @@ export default function AddProfesor (){
 
     const navigate = useNavigate();
 
-    const realizarRegistro = () => {
-        return new Promise ((resolve, reject) => {
+    const comprobarSiEsNumero = (cadenaAAnalizar) => {
+        var valoresAceptados = /^[0-9]+$/;
+        if (valoresAceptados.test(cadenaAAnalizar)){
+            console.log(cadenaAAnalizar + " es un valor valido")
+            return true;
+        } else {
+            console.log(cadenaAAnalizar + " no es un valor valido")
+            return false;
+        }
+    }
+
+    const comprobarSiElSueldoEsValido = (comprobarMonto) => {
+        const valoresAceptados = /^-?\d+(\.\d+)?$/;
+        if (valoresAceptados.test(comprobarMonto)) {
+            console.log(comprobarMonto + " es un valor válido");
+            return true;
+        } else {
+            console.log(comprobarMonto + " no es un valor válido");
+            return false;
+        }
+    }
+
+    const comprobarSiExisteElMaestro = async (nombreEmpleado, apellidoPEmpleado, apellidoMEmpleado) => {
+        const url = `http://localhost:3000/empleados/comprobarProfesores`;
+
+        const comprobarProfe = {
+            nombreComp : nombreEmpleado, 
+            apellido_pComp : apellidoPEmpleado, 
+            apellido_mComp : apellidoMEmpleado
+        }
+
+        try {
+            const response = await fetch(url, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(comprobarProfe)
+            });
+    
+            if (!response.ok) {
+                throw new Error('Error al buscar coincidencias: ' + response.status);
+            }
+    
+            const data = await response.json();
+            setCoincidencias(data);
+    
+            if (data.length > 0) {
+                console.log("Hay coincidencias: " + data);
+                return true;
+            } else {
+                console.log("No hay coincidencias");
+                return false;
+            }
+        } catch (error) {
+            console.log("Error: " + error);
+            return false;
+        }
+    }
+
+    const realizarRegistro = async () => {
             const url = "http://localhost:3000/empleados/addProfesor";
             let data = {
                 nombre : "", 
@@ -74,10 +123,38 @@ export default function AddProfesor (){
             let sueldoRegisro = document.getElementById("inputSueldo").value;
 
             if(!nombreRegistro || !apellido_pRegistro || !apellido_mRegistro || !telefonoRegistro || !correoRegistro || !curpRegistro || !especialidadRegistro || !sueldoRegisro){
-                //Mensaje de error
-                resolve(false);
-            }
-            else {
+                Swal.fire({
+                    title: "Error",
+                    text: "Hay campos obligatorios sin llenar",
+                    icon: "error",
+                    timer: 1000
+                });
+                return false;
+            } else if (!comprobarSiEsNumero(telefonoRegistro) || !comprobarSiElSueldoEsValido(sueldoRegisro)){
+                Swal.fire({
+                    title: "Error",
+                    text: "Datos inválidos en los campos numéricos",
+                    icon: "error",
+                    timer: 1000
+                });
+                return false;
+            }else if(sueldoRegisro <= 0 || sueldoRegisro > 100000.00){
+                Swal.fire({
+                    title: "Error",
+                    text: "Ingrese un monto válido",
+                    icon: "error",
+                    timer: 1000
+                });
+                return false;
+            }else if(await comprobarSiExisteElMaestro(nombreRegistro, apellido_pRegistro, apellido_mRegistro)){
+                Swal.fire({
+                    title: "Error",
+                    text: "Al parecer ya está registrado este maestro",
+                    icon: "error",
+                    timer: 1000
+                });
+                return false;
+            }else {
                 data.nombre = nombreRegistro;
                 data.apellido_p = apellido_pRegistro;
                 data.apellido_m = apellido_mRegistro;
@@ -102,28 +179,48 @@ export default function AddProfesor (){
                 })
                 .then(data => {
                     console.log("Alumno registrado: ", data);
-                    resolve(true)
                     setTimeout(() => {
                         navigate('/empleados');
                     }, 1000);
+                    Swal.fire({
+                        title: "Éxito",
+                        text: "Empleado registrado correctamente",
+                        icon: "success",
+                        timer: 1000
+                    });
+                    return true;
                 })
                 .catch(error => {
                     console.error('Error: ', error);
-                    //Agregar lógica para manejar el error en la interfaz de usuario
+                    let errorMessage = "Error desconocido";
+                    if (error.message.includes("NetworkError")) {
+                        errorMessage = "Error de red, por favor revisa tu conexión";
+                    } else if (error.message.includes("404")) {
+                        errorMessage = "Endpoint no encontrado";
+                    } else if (error.message.includes("500")) {
+                        errorMessage = "Error interno del servidor";
+                    } else if (error.message.includes("datos duplicados")) {
+                        errorMessage = "Datos duplicados, por favor revisa la información ingresada";
+                    }
+                    Swal.fire({
+                        title: "Error",
+                        text: errorMessage,
+                        icon: "error",
+                        timer: 1000
+                    });
+                    return false;
                 });
             }
-            
-        });
     }
 
 
     return (
     <div>
         <header className='header'>
-            <img src={Logo2} alt="Left" className='header-image-left' />
+            
             <h1>             Datos del Profesor
             </h1>
-             <img src={Logo2} alt="Left" className='header-image-rigth' />
+             
 
         </header>
 
