@@ -3,7 +3,6 @@ import { SiGoogleforms } from "react-icons/si";
 import { MdEdit } from "react-icons/md";
 import Swal from 'sweetalert2';
 
-
 export default function FilaTram (
     {idT, folioT, nombreAlm, apellidoP, apellidoM, gradoAlm, grupoAlm, conceptoT, montoT, 
         fechaDeCorteT, estatusTramiteT, actualizarLista}){

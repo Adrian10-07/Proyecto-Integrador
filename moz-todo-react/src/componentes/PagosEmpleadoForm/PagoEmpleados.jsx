@@ -12,41 +12,16 @@ import { Link } from 'react-router-dom';
 
 
 export default function PagoEmpleados() {
-  const [data, setData] = useState([
-    { id: 1, folio: 'Juan' },
-    { id: 2, folio: 'María' },
-    { id: 3, folio: 'Carlos' },
-  ]);
-
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [selectedId, setSelectedId] = useState(null);
-  const [recursos, setRecursos] = useState([]); //Necesario para obtener recursos
+  const [pagEmp, setPagEmp] = useState([]); //Necesario para obtener recursos
+  const [pagPro, setPagPro] = useState([]);
   const [error, setError] = useState(null); //Indica error al obtener recursos
-
-  const handleEdit = (id) => {
-    setSelectedId(id);
-    setIsEditModalOpen(true);
-  };
-
-  const closeEditModal = () => {
-    setIsEditModalOpen(false);
-  };
-
-  const handleDelete = () => {
-    setRecursos(recursos.filter(item => item.id !== selectedId));
-    closeEditModal();
-  };
-
-  const handleSave = () => {
-    // Aquí puedes agregar la lógica para guardar los cambios
-    console.log('Save changes for item with id:', selectedId);
-    closeEditModal();
-  };
 
   const buscarOFiltrar = () => {
     //busqueda solo del personal
-    const url = "http://localhost:3000/PagoEmp/searchP";
-    let data = {
+    const url1 = "http://localhost:3000/PagoEmp/searchP";
+    const url2 = "http://localhost:3000/PagoEmp/searchPro";
+    
+    let data1 = {
         nombreB:"",
         apellido_pB:"",
         apellido_mB:"",
@@ -54,32 +29,48 @@ export default function PagoEmpleados() {
         estatusF:""
     };
 
+    let data2 = {
+        nombreB:"",
+        apellido_pB:"",
+        apellido_mB:"",
+        fechaPagoB:"",
+        estatusF:""
+    }
 
     let searchNombre = document.getElementById("search-container-pagos-inputSearchNombre").value;
-    if (searchNombre) 
-      data.nombreB = searchNombre;
+    if (searchNombre) {
+      data1.nombreB = searchNombre;
+      data2.nombreB = searchNombre;
+    }
 
     let SearchApellidoP = document.getElementById("search-container-pagos-inputSearchApellidoP").value;
-    if (SearchApellidoP) 
-      data.apellido_pB = SearchApellidoP;
+    if (SearchApellidoP) {
+      data1.apellido_pB = SearchApellidoP;
+      data2.apellido_pB = SearchApellidoP;
+    }
 
     let SearchApellidoM = document.getElementById("search-container-pagos-inputSearchApellidoM").value;
-    if (SearchApellidoM) 
-      data.apellido_mB = SearchApellidoM;
+    if (SearchApellidoM) {
+      data1.apellido_mB = SearchApellidoM;
+      data2.apellido_mB = SearchApellidoM;
+    }
 
     let searchFecha = document.getElementById("search-container-tramites-inputSearchFecha").value;
     if (searchFecha){
-      data.fechaPagoB = searchFecha;
+      data1.fechaPagoB = searchFecha;
+      data2.fechaPagoB = searchFecha;
     } 
     let searchEstatus = document.getElementById("search-container-pagos-estatus").value;
-    if (searchEstatus) 
-      data.estatusF = searchEstatus;
+    if (searchEstatus) {
+      data1.estatusF = searchEstatus;
+      data2.estatusF = searchEstatus;
+    }
 ;
 
-    fetch(url, {
+    fetch(url1, {
       method: "POST",
       headers: { "Content-Type": "application/json"},
-      body: JSON.stringify(data)
+      body: JSON.stringify(data1)
      })
     .then(response => {
       if(!response.ok){
@@ -88,7 +79,25 @@ export default function PagoEmpleados() {
       return response.json();
     })
     .then(response => {
-      setRecursos(response);
+      setPagEmp(response);
+    })
+    .catch(error => {
+      setError(error.message);
+    });
+
+    fetch(url2, {
+      method: "POST",
+      headers: { "Content-Type": "application/json"},
+      body: JSON.stringify(data2)
+     })
+    .then(response => {
+      if(!response.ok){
+        throw new Error('Error al imprimir los pagos: ' + response.status);
+      }
+      return response.json();
+    })
+    .then(response => {
+      setPagPro(response);
     })
     .catch(error => {
       setError(error.message);
@@ -141,22 +150,31 @@ export default function PagoEmpleados() {
         <table>
           <thead>
             <tr> 
-                <th>Fecha</th>
                 <th>Empleado</th>
-                <th>Horas trabajadas</th>
                 <th>Cargo</th>
-                <th>Estatus del pago</th>
+                <th>Horas trabajadas</th>
                 <th>Total a pagar</th>
+                <th>Fecha de pago</th>
+                <th>Estatus del pago</th>
             </tr>
           </thead>
           <tbody>
-            {recursos.length > 0 ? (
-              recursos.map((recurso) => (
-              <tr><td></td></tr>
+            {pagEmp.length > 0 ? (
+              pagEmp.map((recurso) => (
+              <FilasPagosEmp key={recurso.id} idP={recurso.id} nombreEmp={recurso.nombre} apellidoP={recurso.apellido_p} apellidoM={recurso.apellido_m} carg={recurso.nombre_cargo} horasTra={recurso.horasTrabajadas} totalPago={recurso.totalPago}  fechaDeCorte={recurso.fechaPago} estatusTramite={recurso.tipo_estatus} actualizarLista={buscarOFiltrar}/>
               ))
             ) : (
               <tr>
-                <td colSpan="6">No hay datos</td>
+                <td colSpan="6">No hay datos de pgos de empleados</td>
+              </tr>
+            )}
+            {pagPro.length > 0 ? (
+              pagPro.map((recurso) => (
+                <FilasPagosEmp key={recurso.id} idP={recurso.id} nombreEmp={recurso.nombre} apellidoP={recurso.apellido_p} apellidoM={recurso.apellido_m} carg={"Docente"} horasTra={recurso.horasTrabajadas} totalPago={recurso.totalPago}  fechaDeCorte={recurso.fechaPago} estatusTramite={recurso.tipo_estatus} actualizarLista={buscarOFiltrar}/>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="6">No hay datos de pago de maestros</td>
               </tr>
             )}
           </tbody>
