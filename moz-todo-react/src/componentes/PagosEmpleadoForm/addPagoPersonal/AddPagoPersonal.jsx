@@ -8,25 +8,16 @@ import { IoSearchSharp } from 'react-icons/io5';
 
 export default function AddPagoPersonal () {
     const [namePersonal, setNamePersonal] = useState([]);
-    const [searching, setSearching] = useState({
-        nombre:''
-    });
     const navigate = useNavigate();
-
-    const handleSearchChange = (e) => {
-        const { name, value } = e.target;
-        setSearching(prevState => ({
-            ...prevState, [name]: value
-        }));
-    };
+    const [totalPago, setTotalPago] = useState(0);
 
     const optionPersonal = () => {
-        const url = "http://localhost:3000/PagoEmp/optionPersonal";
+        const url = "http://localhost:3000/PagoEmp/buscarPers";
 
         let dato = {
-            "nombre_busqueda":"",
-            "apellido_p_busqueda":"",
-            "apellido_m_busqueda":""
+            nombre_busqueda:"",
+            apellido_p_busqueda:"",
+            apellido_m_busqueda:""
         }
 
         let buscarPorNombre = document.getElementById("inputPersonalName").value;
@@ -38,29 +29,97 @@ export default function AddPagoPersonal () {
         let buscarPorApellidoM = document.getElementById('inputPersonalApellidom').value;
         if (buscarPorApellidoM)
             dato.apellido_m_busqueda = buscarPorApellidoM;
+
+        fetch(url, {
+            method:'POST',
+            headers: { 'Content-Type':'application/json'},
+            body:JSON.stringify(dato)
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('No conecta');
+            }
+            return response.json();
+        })
+        .then(data => {
+            setNamePersonal(data);
+        })
+        .catch(error => {
+            console.error('Error fetching data: ', error);
+            Swal.fire('Error fetching data', error.message, 'error');
+        });
+    }
+
+    const comprobarSiEsNumero = (cadenaAAnalizar) => {
+        var valoresAceptados = /^[0-9]+$/;
+        if (valoresAceptados.test(cadenaAAnalizar)){
+            console.log(cadenaAAnalizar + " es un valor valido")
+            return true;
+        } else {
+            console.log(cadenaAAnalizar + " no es un valor valido")
+            return false;
+        }
+    }
+
+    const calcularTotalAPagar = () => {
+        const idPersonalSelect = document.getElementById("inputIdPersonal").value;
+        let registrarHoras = document.getElementById('inputHoras').value;
+        if (idPersonalSelect == "not valid" || !registrarHoras || !comprobarSiEsNumero(registrarHoras) || registrarHoras <= 0){
+            Swal.fire({
+                title: "Error",
+                text: "Seleccione un personal al cual calcular el pago y asigne las horas trabajadas",
+                icon: "error",
+                timer: 1000
+            });
+            return false;
+        }
+        else {
+            const url = `http://localhost:3000/PagoEmp/calcularMontoPer/${idPersonalSelect}`
+            fetch(url)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('No conecta');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log(data[0].sueldoHora);
+                setTotalPago(data[0].sueldoHora * registrarHoras);
+                console.log(totalPago);
+            })
+            .catch(error => {
+                console.error('Error fetching data: ', error);
+                Swal.fire('Error fetching data', error.message, 'error');
+            });
+            
+        }
     }
 
     const dbPersonal = () => {
-        return new Promise ((resolve, reject) => {
             const url = "http://localhost:3000/PagoEmp/pagoPer";
             let data = {
                 horasTrabajadas: "",
                 totalPago: "",
-                fechaDeCorte:"",
-                idPersonal:"",
-
+                fechaPago:"",
+                idPersonal:""
             };
             let registrarHoras = document.getElementById('inputHoras').value;
-            let registrarTotal = document.getElementById('inputTotal').value;
+            let registrarTotal = totalPago;
             let registrarFecha = document.getElementById('inputFecha').value;
             let registraridPersonal = document.getElementById('inputIdPersonal').value;
 
-            if (!registrarHoras || !registrarTotal || !registrarFecha ||registraridPersonal == "not valid") {
-                resolve(false)
+            if (!registrarHoras || registrarTotal <= 0 || !registrarFecha ||registraridPersonal == "not valid") {
+                Swal.fire({
+                    title: "Error",
+                    text: "Llene todos los campos y calcule el pago total",
+                    icon: "error",
+                    timer: 1000
+                });
+                return false;
             } else {
                 data.horasTrabajadas = registrarHoras;
                 data.totalPago = registrarTotal;
-                data.fechaDeCorte = registrarFecha;
+                data.fechaPago = registrarFecha;
                 data.idPersonal = registraridPersonal;
 
                 fetch(url, {
@@ -78,16 +137,38 @@ export default function AddPagoPersonal () {
                 })
                 .then(datosReturn => {
                     console.log("Datos guardados: " + datosReturn)
-                    resolve(true)
                     setTimeout(() => {
-                        navigate('/tramites');
+                        navigate('/pagosEmp');
                     }, 1000);
+                    Swal.fire({
+                        title: "Éxito",
+                        text: "Informe de pago de empleado registrado correctamente",
+                        icon: "success",
+                        timer: 1000
+                    });
+                    return true;
                 })
                 .catch(error => {
                     console.error('Error:', error);
+                    let errorMessage = "Error desconocido";
+                    if (error.message.includes("NetworkError")) {
+                        errorMessage = "Error de red, por favor revisa tu conexión";
+                    } else if (error.message.includes("404")) {
+                        errorMessage = "Endpoint no encontrado";
+                    } else if (error.message.includes("500")) {
+                        errorMessage = "Error interno del servidor";
+                    } else if (error.message.includes("datos duplicados")) {
+                        errorMessage = "Datos duplicados, por favor revisa la información ingresada";
+                    }
+                    Swal.fire({
+                        title: "Error",
+                        text: errorMessage,
+                        icon: "error",
+                        timer: 1000
+                    });
+                    return false;
                 });
             }
-        });
     };
 
     const handleSaveClick = () => {
@@ -98,16 +179,6 @@ export default function AddPagoPersonal () {
         }).then((result) => {
             if (result.isConfirmed) {
                 dbPersonal()
-                    .then(success => {
-                        if (success) {
-                            Swal.fire("Cambios guardados!", "", "success");
-                        } else {
-                            Swal.fire("Error, asegurese de llenar todos los campos", "", "error");
-                        }
-                    })
-                    .catch(error => {
-                        Swal.fire("Error al guardar los cambios", error.message, "error");
-                    });
             }
         });
     };
@@ -125,11 +196,17 @@ export default function AddPagoPersonal () {
           }).then((result) => {
             if (result.isConfirmed) {
               setTimeout(() => {
-                  navigate('/tramites');
+                  navigate('/pagosEmp');
               }, 1000);
             }
           })
     };
+
+    useEffect(() => {
+        optionPersonal();
+    }, []);
+
+
     return (
         <div>
             <header className='header'>
@@ -143,7 +220,6 @@ export default function AddPagoPersonal () {
                 <div className='pagoPersonal'>
                     <div className='box_personal'>
                         <input type="number" placeholder='Horas trabajadas' id='inputHoras' maxLength={10}/>
-                        <input type="number" id="inputTotal" placeholder='Total a pagar'/>
                         <input type="date" id='inputFecha' />
                         
                     </div>
@@ -161,6 +237,11 @@ export default function AddPagoPersonal () {
                                 <option key={elemento.id} value={elemento.id}>{elemento.nombre} {elemento.apellido_p} {elemento.apellido_m}</option>
                             ))}
                         </select>
+                    </div>
+                    <div>
+                        <h4>Calculando pago:</h4>
+                        <button onClick={calcularTotalAPagar}>Calcular</button>
+                        <p>{totalPago}</p>
                     </div>
                 </div>
             </div>

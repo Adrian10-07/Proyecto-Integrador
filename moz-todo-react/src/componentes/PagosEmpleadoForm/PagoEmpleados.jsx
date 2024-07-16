@@ -119,10 +119,10 @@ export default function PagoEmpleados() {
         <button id='search-container-pagos-aplicarBusqueda' onClick={buscarOFiltrar}><IoSearchSharp /></button>
 
         <a href={'/addPer'}>
-          <button className='add-pago'>< MdNoteAdd /></button>
+          <button className='add-pago'>PagoEmpleado< MdNoteAdd /></button>
         </a>
         <a href={'/addPro'}>
-          <button className='add-pago'>< MdNoteAdd /></button>
+          <button className='add-pago'>PagoMaestro< MdNoteAdd /></button>
         </a>
       </div>
 
@@ -152,10 +152,7 @@ export default function PagoEmpleados() {
           <tbody>
             {recursos.length > 0 ? (
               recursos.map((recurso) => (
-              <FilaTram key={recurso.id} idP={recurso.id} nombreEmp={recurso.nombre} 
-                apellidoP={recurso.apellido_p} apellidoM={recurso.apellido_m} horasTra={recurso.horasTrabajadas}
-                totalPago={recurso.totalPago} fechaDeCorteT={recurso.fechaPago} estatusTramiteT={recurso.tipo_estatus}
-              />
+              <tr><td></td></tr>
               ))
             ) : (
               <tr>
