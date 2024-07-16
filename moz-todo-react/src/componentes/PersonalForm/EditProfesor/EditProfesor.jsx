@@ -6,6 +6,7 @@ import { MdOutlineCancel } from "react-icons/md";
 import FilaMateria from './FilaMateria/FilaMateria';
 //import Logo2 from '../AlumnosForm/Alum-Add/AggAssets/Logo2.png';
 import Swal from 'sweetalert2';
+import './EditProfesor.css';
 
 export default function EditProfesor (){
     const location = useLocation();
@@ -345,7 +346,6 @@ export default function EditProfesor (){
                             <thead>
                                 <tr>
                                     <th>Materias</th>
-                                    <th>Opción</th>
                                 </tr>
                                 
                             </thead>

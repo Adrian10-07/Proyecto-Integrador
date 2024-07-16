@@ -219,11 +219,10 @@ export default function AddEmpleado (){
     return(
     <div>
         <header className='header'>
-            <img src={Logo2} alt="Left" className='header-image-left' />
+            
             <h1>             Datos del Empleado
             </h1>
-             <img src={Logo2} alt="Left" className='header-image-rigth' />
-
+             
         </header>
 
         <div className='Inputsagg'>

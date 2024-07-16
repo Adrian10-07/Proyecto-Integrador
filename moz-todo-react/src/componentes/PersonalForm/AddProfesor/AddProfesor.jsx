@@ -217,10 +217,10 @@ export default function AddProfesor (){
     return (
     <div>
         <header className='header'>
-            <img src={Logo2} alt="Left" className='header-image-left' />
+            
             <h1>             Datos del Profesor
             </h1>
-             <img src={Logo2} alt="Left" className='header-image-rigth' />
+             
 
         </header>
 
