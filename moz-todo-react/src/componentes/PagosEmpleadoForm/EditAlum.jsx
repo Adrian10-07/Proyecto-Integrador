@@ -199,7 +199,7 @@ export default function EditAlum() {
                 }, 1000);
             })
             .catch(error => {
-                console.error('Error: ', error);
+                
                 //Agregar lógica para manejar el error en la interfaz de usuario
             });
     }
@@ -220,14 +220,14 @@ export default function EditAlum() {
         <div className='D-Alumno'>
           <p>Siendo los campos con * obligatorios</p>
           <div className='con1'>
-            <input type='text' placeholder={data.noControl || 'N/A'} id='inputNoControl' />
-            <input type="text" placeholder={data.nombre || 'Nombre*'} id='inputNombre' />
-            <input type="text" placeholder={data.apellido_p || 'Apellido Paterno*'} id='inputApellidoP' />
-            <input type="text" placeholder={data.apellido_m || 'Apellido Materno*'} id='inputApellidoM' />
+            <input type='text' placeholder={data.noControl || 'N/A'} id='inputNoControl' maxLength={10}/>
+            <input type="text" placeholder={data.nombre || 'Nombre*'} id='inputNombre' maxLength={45}/>
+            <input type="text" placeholder={data.apellido_p || 'Apellido Paterno*'} id='inputApellidoP' maxLength={45}/>
+            <input type="text" placeholder={data.apellido_m || 'Apellido Materno*'} id='inputApellidoM' maxLength={45}/>
           </div>
           <div className='con1'>
             <input type='number' placeholder={data.grado || 'Grado*'} id='inputGrado'/>
-            <input type='text' placeholder={data.grupo || 'Grupo*'} id='inputGrupo' />
+            <input type='text' placeholder={data.grupo || 'Grupo*'} id='inputGrupo' maxLength={1}/>
             <select id='inputTurno'>
               <option value={0}>--Seleccionar Turno*--</option>
               <option value={1}>Matutino</option>
@@ -242,21 +242,21 @@ export default function EditAlum() {
             </select>
           </div>
           <div className='con2'>
-            <input type="number" placeholder={data.telefono || 'Telefono*'} id='inputTelefono' />
-            <input type="text" placeholder={data.correo || 'Correo Electronico*'} id='inputCorreo' />
-            <input type="text" placeholder={data.curp || 'CURP*'} id='inputCurp' />
+            <input type="number" placeholder={data.telefono || 'Telefono*'} id='inputTelefono' maxLength={12}/>
+            <input type="text" placeholder={data.correo || 'Correo Electronico*'} id='inputCorreo' maxLength={45}/>
+            <input type="text" placeholder={data.curp || 'CURP*'} id='inputCurp' maxLength={18}/>
           </div>
           <div className='con4'>
-            <input type="text" placeholder={data.nivelAcademico || 'Nivel académico actual'} id='inputlvlAcademic' />
+            <input type="text" placeholder={data.nivelAcademico || 'Nivel académico actual'} id='inputlvlAcademic' maxLength={45}/>
           </div>
         </div>
         <div>
           <h2>Datos del Tutor</h2>
           <div className='D-Tutor'>
-            <input type="text" placeholder={data.nombre_tutor || 'Nombre*'} id='inputNombreTutor' />
-            <input type="text" placeholder={data.apellidoP_tutor || 'Apellido Paterno*'} id='inputApellidoPTutor' />
-            <input type="text" placeholder={data.apellidoM_tutor || 'Apellido Materno*'} id='inputApellidoMTutor' />
-            <input type="number" placeholder={data.telefono_tutor || 'Telefono*'} id='inputTelefonoTutor' />
+            <input type="text" placeholder={data.nombre_tutor || 'Nombre*'} id='inputNombreTutor' maxLength={45}/>
+            <input type="text" placeholder={data.apellidoP_tutor || 'Apellido Paterno*'} id='inputApellidoPTutor' maxLength={45}/>
+            <input type="text" placeholder={data.apellidoM_tutor || 'Apellido Materno*'} id='inputApellidoMTutor' maxLength={45}/>
+            <input type="number" placeholder={data.telefono_tutor || 'Telefono*'} id='inputTelefonoTutor' maxLength={12}/>
           </div>
         </div>
         <div>
@@ -264,9 +264,9 @@ export default function EditAlum() {
           <div className='D-Diagnostico'>
             <h4>Examen Diagnostico Ceneval "EXANII II"</h4>
             <div className='con5'>
-              <input type='text' placeholder={data.escuelaProcedente || 'Colegio de proveniencia'} id='inputColegioProveniente' />
-              <input type="text" placeholder={data.colegioAspirado || 'Universidad a la que aplica'} id='inputUniversidadAspira' />
-              <input type="text" placeholder={data.carreraAspirada || 'Carrera a la que aplica'} id='inputCarreraAspira' />
+              <input type='text' placeholder={data.escuelaProcedente || 'Colegio de proveniencia'} id='inputColegioProveniente' maxLength={45}/>
+              <input type="text" placeholder={data.colegioAspirado || 'Universidad a la que aplica'} id='inputUniversidadAspira' maxLength={45}/>
+              <input type="text" placeholder={data.carreraAspirada || 'Carrera a la que aplica'} id='inputCarreraAspira' maxLength={45}/>
             </div>
             <div className='con1'>
               <label>Fecha de inicio del curso</label>

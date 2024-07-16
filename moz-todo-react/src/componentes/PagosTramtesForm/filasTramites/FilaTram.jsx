@@ -17,6 +17,15 @@ export default function FilaTram (
             
             // Puedes formatear la fecha como prefieras, por ejemplo:
     const fechaFormateada = `${dia}-${mes}-${anio}`;
+    
+    const determinarEstatusDePago = () => {
+        if (estatusTramiteT == "Pagado"){
+            console.log("Tramite ya pagado");
+        }
+        else{
+            
+        }
+    }
 
     const actualizarAPagado = () => {
         const url = `http://localhost:3000/tramites/changePaid/${idT}`
@@ -48,7 +57,7 @@ export default function FilaTram (
             <td>{montoT}</td>
             <td>{fechaFormateada}</td>
             <td>{estatusTramiteT}</td>
-            <td><button>Pagar</button></td>
+            <td><button onClick={actualizarAPagado}>Pagar</button></td>
         </tr>
     );
 }

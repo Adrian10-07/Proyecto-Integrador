@@ -7,8 +7,8 @@ import Alumnos from './componentes/AlumnosForm/Alumnos';
 import AggAlumno from './componentes/AlumnosForm/Alum-Add/AggAlumno';
 import NestedModal from './componentes/PagosEmpleadoForm/ChildModal';
 import Tramites from './componentes/PagosTramtesForm/Tramites';
-import AddTramite
- from './componentes/PagosTramtesForm/AddTram/AddTramite';
+import AddTramite from './componentes/PagosTramtesForm/AddTram/AddTramite';
+import EditAlum from './componentes/PagosEmpleadoForm/EditAlum';
 
 import App from './App';
 
@@ -46,6 +46,10 @@ const router = createBrowserRouter([
   {
     path: "/addTra",
     element: <AddTramite/>,
+  },
+  {
+    path: '/editAlumno',
+    element: <EditAlum></EditAlum>,
   },
 ])
 
