@@ -7,13 +7,6 @@ import FilaTram from './filasTramites/FilaTram';
 import { MdNoteAdd } from "react-icons/md";
 import { IoSearchSharp } from "react-icons/io5";
 import { FaFilter } from "react-icons/fa";
-<<<<<<< HEAD
-
-
-
-
-=======
->>>>>>> ac38bf34f75d7a37c7ae8c4bac96f9a84c445c94
 import { Link } from 'react-router-dom';
 import './Tramites.css';
 
@@ -58,18 +51,8 @@ export default function Tramites() {
 
     let searchFecha = document.getElementById("search-container-tramites-inputSearchFecha").value;
     if (searchFecha){
-<<<<<<< HEAD
-      console.log('Fecha seleccionada:', searchFecha)
-    const date = new Date(searchFecha);
-    const formattedDate = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
-    data.fechaDeCorteFiltro = formattedDate;
-    console.log('Fecha formateada:', formattedDate);
-    } 
-      
-=======
       data.fechaDeCorteFiltro = searchFecha;
     } 
->>>>>>> ac38bf34f75d7a37c7ae8c4bac96f9a84c445c94
 
     let searchEstatus = document.getElementById("search-container-pagos-estatus").value;
     if (searchEstatus) 
@@ -80,11 +63,7 @@ export default function Tramites() {
       data.gradoFiltro = SearchGrado;
 
     let SearchGrupo = document.getElementById("search-container-pagos-inputSearchGroup").value;
-<<<<<<< HEAD
-    if (SearchGrado) 
-=======
     if (SearchGrupo) 
->>>>>>> ac38bf34f75d7a37c7ae8c4bac96f9a84c445c94
       data.grupoFiltro = SearchGrupo;
 
     fetch(url, {
@@ -138,11 +117,7 @@ export default function Tramites() {
 
       <div className='search-container-pagos'>
         <input type='search-A' placeholder='Grado' id='search-container-pagos-inputSearchGrade'/>
-<<<<<<< HEAD
-        <input type='search-A' placeholder='Grupo' id='search-container-pagos-inputSearchGroup'/>
-=======
         <input type='search-A' placeholder='Grupo' id='search-container-pagos-inputSearchGroup' maxLength={1}/>
->>>>>>> ac38bf34f75d7a37c7ae8c4bac96f9a84c445c94
         <select id='search-container-pagos-estatus'>
           <option id='status-pago' value="">Seleccionar estatus</option>
           <option value={1}>Pendiente</option>

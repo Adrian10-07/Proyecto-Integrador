@@ -249,7 +249,7 @@ export default function AddPagoProfesor () {
                     </div>
                     <div>
                         <h4>Calculando pago:</h4>
-                        <button onClick={calcularTotalAPagar}>Calcular</button>
+                        <button className='calcular' onClick={calcularTotalAPagar}>Calcular</button>
                         <p>{totalPago}</p>
                     </div>
                 </div>

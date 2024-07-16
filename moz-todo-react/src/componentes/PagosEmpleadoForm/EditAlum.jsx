@@ -313,29 +313,8 @@ export default function EditAlum() {
                 return true;
             })
             .catch(error => {
-<<<<<<< HEAD
                 
                 //Agregar lógica para manejar el error en la interfaz de usuario
-=======
-                console.error('Error: ', error);
-                let errorMessage = "Error desconocido";
-                if (error.message.includes("NetworkError")) {
-                    errorMessage = "Error de red, por favor revisa tu conexión";
-                } else if (error.message.includes("404")) {
-                    errorMessage = "Endpoint no encontrado";
-                } else if (error.message.includes("500")) {
-                    errorMessage = "Error interno del servidor";
-                } else if (error.message.includes("datos duplicados")) {
-                    errorMessage = "Datos duplicados, por favor revisa la información ingresada";
-                }
-                Swal.fire({
-                    title: "Error",
-                    text: errorMessage,
-                    icon: "error",
-                    timer: 1000
-                });
-                return false;
->>>>>>> ac38bf34f75d7a37c7ae8c4bac96f9a84c445c94
             });
     }
 };
@@ -349,17 +328,10 @@ export default function EditAlum() {
              <img src={Logo2} alt="Left" className='image-rigth-Edit' />
 
         </header>
-<<<<<<< HEAD
       <div className='Inputsagg'>
         <div className='D-Alumno'>
           <p>Siendo los campos con * obligatorios</p>
           <div className='con1'>
-=======
-      <div className='Inputs-Edit'>
-        <div className='D-Alumno-Edit'>
-          <p>Campos Obligatorios:</p>
-          <div className='con1-Edit'>
->>>>>>> ac38bf34f75d7a37c7ae8c4bac96f9a84c445c94
             <input type='text' placeholder={data.noControl || 'N/A'} id='inputNoControl' maxLength={10}/>
             <input type="text" placeholder={data.nombre || 'Nombre*'} id='inputNombre' maxLength={45}/>
             <input type="text" placeholder={data.apellido_p || 'Apellido Paterno*'} id='inputApellidoP' maxLength={45}/>
@@ -381,39 +353,22 @@ export default function EditAlum() {
               <option value={4}>Egresado</option>
             </select>
           </div>
-<<<<<<< HEAD
           <div className='con2'>
             <input type="number" placeholder={data.telefono || 'Telefono*'} id='inputTelefono' maxLength={12}/>
             <input type="text" placeholder={data.correo || 'Correo Electronico*'} id='inputCorreo' maxLength={45}/>
             <input type="text" placeholder={data.curp || 'CURP*'} id='inputCurp' maxLength={18}/>
           </div>
           <div className='con4'>
-=======
-          <div className='con3-Edit'>
-            <input type="text" placeholder={data.telefono || 'Telefono*'} id='inputTelefono' maxLength={12}/>
-            <input type="text" placeholder={data.correo || 'Correo Electronico*'} id='inputCorreo' maxLength={45}/>
-            <input type="text" placeholder={data.curp || 'CURP*'} id='inputCurp' maxLength={18}/>
-          </div>
-          <div className='con4-Edit'>
->>>>>>> ac38bf34f75d7a37c7ae8c4bac96f9a84c445c94
             <input type="text" placeholder={data.nivelAcademico || 'Nivel académico actual'} id='inputlvlAcademic' maxLength={45}/>
           </div>
         </div>
         <div>
           <h2>Datos del Tutor</h2>
-<<<<<<< HEAD
           <div className='D-Tutor'>
             <input type="text" placeholder={data.nombre_tutor || 'Nombre*'} id='inputNombreTutor' maxLength={45}/>
             <input type="text" placeholder={data.apellidoP_tutor || 'Apellido Paterno*'} id='inputApellidoPTutor' maxLength={45}/>
             <input type="text" placeholder={data.apellidoM_tutor || 'Apellido Materno*'} id='inputApellidoMTutor' maxLength={45}/>
             <input type="number" placeholder={data.telefono_tutor || 'Telefono*'} id='inputTelefonoTutor' maxLength={12}/>
-=======
-          <div className='D-Tutor-Edit'>
-            <input type="text" placeholder={data.nombre_tutor || 'Nombre*'} id='inputNombreTutor' maxLength={45}/>
-            <input type="text" placeholder={data.apellidoP_tutor || 'Apellido Paterno*'} id='inputApellidoPTutor' maxLength={45}/>
-            <input type="text" placeholder={data.apellidoM_tutor || 'Apellido Materno*'} id='inputApellidoMTutor' maxLength={45}/>
-            <input type="text" placeholder={data.telefono_tutor || 'Telefono*'} id='inputTelefonoTutor' maxLength={12}/>
->>>>>>> ac38bf34f75d7a37c7ae8c4bac96f9a84c445c94
           </div>
         </div>
         <div>
