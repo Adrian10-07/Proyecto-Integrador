@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { SiGoogleforms } from "react-icons/si";
 import { MdEdit } from "react-icons/md";
+import Swal from 'sweetalert2';
 
 export default function FilasPagosEmp (
-    {idP, nombreEmp, apellidoP, apellidoM, horasTra, totalPago, 
-        fechaDeCorte, estatusTramite, }){
+    {idP, nombreEmp, apellidoP, apellidoM, carg, horasTra, totalPago, 
+        fechaDeCorte, estatusTramite, actualizarLista}){
     
     //Hace maromas para pasar la fecha tipo SQL a una fecha de JS
     const fechaISO = fechaDeCorte;
@@ -46,10 +47,12 @@ export default function FilasPagosEmp (
             if(diferenciaDias < 10 && estatusTramite != "Por pagar"){
                 //Si faltan 10 dias para que se venza el pago, lo marcara como proximo
                     actualizarAProximoAPagar();
+                    actualizarLista();
             }
             if(diferenciaDias <= 0 && estatusTramite != "Atrasado"){
                 //Si faltan 0 dias o ya paso la fecha limite, lo marca como atrasado
                     actualizarAAtrasado();
+                    actualizarLista();
             }
         }
     }
@@ -101,31 +104,78 @@ export default function FilasPagosEmp (
     const actualizarAPagado = () => {
         const url = `http://localhost:3000/PagoEmp/pagado/${idP}`
 
-        fetch(url, {
-            method: "PUT"
-        })
-        .then(response => {
-            if(!response.ok){
-              throw new Error('Error al "Pagar": ' + response.status);
-            }
-            return response.json();
-        })
-        .then(response => {
-           console.log("Pagado") 
-        })
-        .catch(error => {
-            console.log("Error : ", error)
-        });
+        if(estatusTramite !=="Pagado"){
+            fetch(url, {
+                method: "PUT"
+            })
+            .then(response => {
+                if(!response.ok){
+                    throw new Error('Error al "Pagar": ' + response.status);
+                }
+                return response.json();
+            })
+            .then(response => {
+                console.log("Pagado");
+                Swal.fire({
+                    title: "Éxito",
+                    text: "Se registró como pagado",
+                    icon: "success",
+                    timer: 1000
+                });
+                return true;
+            })
+            .catch(error => {
+                console.log("Error : ", error);
+                let errorMessage = "Error desconocido";
+                if (error.message.includes("NetworkError")) {
+                    errorMessage = "Error de red, por favor revisa tu conexión";
+                } else if (error.message.includes("404")) {
+                    errorMessage = "Endpoint no encontrado";
+                } else if (error.message.includes("500")) {
+                    errorMessage = "Error interno del servidor";
+                } else if (error.message.includes("datos duplicados")) {
+                    errorMessage = "Datos duplicados, por favor revisa la información ingresada";
+                }
+                Swal.fire({
+                    title: "Error",
+                    text: errorMessage,
+                    icon: "error",
+                    timer: 1000                    
+                });
+                return false
+            });
+            actualizarLista();
+        } else {
+            console.log("Ya se marcó como pagado");
+            Swal.fire({
+                title: "Trámite ya pagado",
+                timer: 1000
+            });
+            return true;
+        }
     }
+
+    const handleSaveClick = () => {
+        Swal.fire({
+            title: "Esta acción no se puede revertir ¿Estás seguro?",
+            showCancelButton: true,
+            confirmButtonText: "Confirmar",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                actualizarAPagado();
+            }
+        });
+    };
 
     return(
         <tr key={idP}>
             <td>{nombreEmp} {apellidoP} {apellidoM}</td>
+            <td>{carg}</td>
             <td>{horasTra}</td>
             <td>{totalPago}</td>
             <td>{fechaFormateada}</td>
             <td>{estatusTramite}</td>
-            <td><button onClick={actualizarAPagado}>Pagar</button></td>
+            <td><button onClick={handleSaveClick}>Pagar</button></td>
         </tr>
     );
 }

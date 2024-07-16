@@ -11,11 +11,29 @@ body {
     color: white;
     padding: 50px 0;
     text-align: center;
+<<<<<<< HEAD
+    font-size: 10px;
+=======
     font-size: 40px;
+>>>>>>> ac38bf34f75d7a37c7ae8c4bac96f9a84c445c94
     font-weight: bold;
     position: relative;
 }
 
+<<<<<<< HEAD
+.header-image-left {
+    height: 40px;
+    position: absolute;
+    left: 10px;
+    top: 10px;
+}
+
+.header-image-right {
+    height: 40px;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+=======
 .image-add-right {
     height: 100px;
     position: absolute;
@@ -28,6 +46,7 @@ body {
     position: absolute;
     right: 100px;
     top: 25px;
+>>>>>>> ac38bf34f75d7a37c7ae8c4bac96f9a84c445c94
 }
 
 .tramite {
@@ -42,10 +61,17 @@ body {
     display: block;
     width: calc(100% - 20px);
     padding: 10px;
+<<<<<<< HEAD
+    margin: 10px 5px;
+    border: 1px solid rgba(224, 224, 224, 1);
+    border-radius: 8px;
+    font-size: 20px;
+=======
     border: 1px solid rgba(224, 224, 224, 1);
     border-radius: 8px;
     font-size: 20px;
     margin-right: 5px;
+>>>>>>> ac38bf34f75d7a37c7ae8c4bac96f9a84c445c94
 }
 
 h2,
@@ -65,6 +91,10 @@ label {
 label input[type="date"], #inputFecha {
     display: block;
     padding: 10px;
+<<<<<<< HEAD
+    margin-top: 2px;
+=======
+>>>>>>> ac38bf34f75d7a37c7ae8c4bac96f9a84c445c94
     border: 1px solid rgba(224, 224, 224, 1);
     border-radius: 4px;
     font-size: 16px;
@@ -72,7 +102,11 @@ label input[type="date"], #inputFecha {
     position: relative;
 }
 
+<<<<<<< HEAD
+.con1,
+=======
 
+>>>>>>> ac38bf34f75d7a37c7ae8c4bac96f9a84c445c94
 .con2,
 .con3,
 .con4,
@@ -130,6 +164,8 @@ label input[type="date"], #inputFecha {
 .icon-cancel {
     font-size: 50px;
 }
+<<<<<<< HEAD
+=======
 
 
 .Inputadd {
@@ -165,3 +201,4 @@ label input[type="date"], #inputFecha {
 .con1 button:hover{
     background-color: #3700b3;
 }
+>>>>>>> ac38bf34f75d7a37c7ae8c4bac96f9a84c445c94

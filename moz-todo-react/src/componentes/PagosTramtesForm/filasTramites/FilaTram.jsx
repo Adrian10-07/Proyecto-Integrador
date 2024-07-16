@@ -3,7 +3,6 @@ import { SiGoogleforms } from "react-icons/si";
 import { MdEdit } from "react-icons/md";
 import Swal from 'sweetalert2';
 
-
 export default function FilaTram (
     {idT, folioT, nombreAlm, apellidoP, apellidoM, gradoAlm, grupoAlm, conceptoT, montoT, 
         fechaDeCorteT, estatusTramiteT, actualizarLista}){
@@ -16,6 +15,17 @@ export default function FilaTram (
     const mes = fecha.getMonth() + 1;
     const anio = fecha.getFullYear();
     const fechaFormateada = `${dia}-${mes}-${anio}`;
+<<<<<<< HEAD
+    
+    const determinarEstatusDePago = () => {
+        if (estatusTramiteT == "Pagado"){
+            console.log("Tramite ya pagado");
+        }
+        else{
+            
+        }
+    }
+=======
     const fechaAComparar = `${anio}-${String(mes).padStart(2, '0')}-${String(dia).padStart(2, '0')}`;
     
     const determinarEstatusDePago = () => {
@@ -33,6 +43,7 @@ export default function FilaTram (
             const fechaComparacion = `${anioActual}-${mesActual}-${diaActual}`;
         
             //console.log("Hoy es " + fechaComparacion);
+>>>>>>> ac38bf34f75d7a37c7ae8c4bac96f9a84c445c94
 
             //Crea dis instancias de tipo Date para comparar las fechas
             const fechaActualObj = new Date(fechaComparacion);
@@ -177,7 +188,11 @@ export default function FilaTram (
             <td>{montoT}</td>
             <td>{fechaFormateada}</td>
             <td>{estatusTramiteT}</td>
+<<<<<<< HEAD
+            <td><button onClick={actualizarAPagado}>Pagar</button></td>
+=======
             <td><button onClick={handleSaveClick}>Pagar</button></td>
+>>>>>>> ac38bf34f75d7a37c7ae8c4bac96f9a84c445c94
         </tr>
     );
 }
