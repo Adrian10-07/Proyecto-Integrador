@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import './AggAlumno.css'
 import Logo2 from './AggAssets/Logo2.png';
 import { FiSave } from "react-icons/fi";
@@ -10,6 +10,10 @@ import { useNavigate } from 'react-router-dom';
     
 
 export default function AggAlumno() {
+    const [coincidencias, setCoincidencias] = useState([]); //Necesario para obtener recursos
+    const [error, setError] = useState(null);
+
+
     const handleSaveClick = () => {
         Swal.fire({
             title: "¿Desea guardar los cambios?",
@@ -17,17 +21,7 @@ export default function AggAlumno() {
             confirmButtonText: "Guardar",
         }).then((result) => {
             if (result.isConfirmed) {
-                mandarALaBaseDeDatos()
-                    .then(success => {
-                        if (success) {
-                            Swal.fire("Cambios guardados!", "", "success");
-                        } else {
-                            Swal.fire("Error, asegurese de llenar los campos obligatorios", "", "error");
-                        }
-                    })
-                    .catch(error => {
-                        Swal.fire("Error al guardar los cambios", error.message, "error");
-                    });
+                mandarALaBaseDeDatos();
             }
         });
     };
@@ -53,8 +47,54 @@ export default function AggAlumno() {
 
     const navigate = useNavigate();
 
-    const mandarALaBaseDeDatos = () => {
-        return new Promise ((resolve, reject) => {
+    const comprobarSiEsNumero = (cadenaAAnalizar) => {
+        var valoresAceptados = /^[0-9]+$/;
+        if (valoresAceptados.test(cadenaAAnalizar)){
+            console.log(cadenaAAnalizar + " es un valor valido")
+            return true;
+        } else {
+            console.log(cadenaAAnalizar + " no es un valor valido")
+            return false;
+        }
+    }
+
+    const comprobarSiHayDatosRepetidos = async (analizarNoControl, analizarCurp) => {
+        const url = `http://localhost:3000/alumnos/comprobarAlumnos`;
+    
+        const datoACoincidir = {
+            noControl: analizarNoControl,
+            curp: analizarCurp
+        };
+    
+        try {
+            const response = await fetch(url, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(datoACoincidir)
+            });
+    
+            if (!response.ok) {
+                throw new Error('Error al buscar coincidencias: ' + response.status);
+            }
+    
+            const data = await response.json();
+            setCoincidencias(data);
+    
+            if (data.length > 0) {
+                console.log("Hay coincidencias: " + data);
+                return true;
+            } else {
+                console.log("No hay coincidencias");
+                return false;
+            }
+        } catch (error) {
+            console.log("Error: " + error);
+            return false;
+        }
+    };
+    
+    const mandarALaBaseDeDatos = async () => {
+        
         const url = "http://localhost:3000/alumnos/addAlumno";
         let data = {
             nombre: "", 
@@ -92,7 +132,7 @@ export default function AggAlumno() {
         let registrarGrupo = document.getElementById("inputGrupo").value;
         let registrarTurno = document.getElementById("inputTurno").value;
         let registrarNoControl = document.getElementById("inputNoControl").value;
-        let registrarEstado = document.getElementById("inputEstatus").value;
+        let registrarEstado = 1;
         let registrarCurp = document.getElementById("inputCurp").value;
         let registrarTelefono = document.getElementById("inputTelefono").value;
         let registrarCorreo = document.getElementById("inputCorreo").value;
@@ -114,8 +154,32 @@ export default function AggAlumno() {
 
         if (!registrarNoControl || !registrarNombre || !registrarApellidoP && !registrarApellidoM || !registrarGrado || !registrarGrupo || !registrarTurno || !registrarEstado || !registrarTelefono || !registrarCorreo || !registrarCurp || !registrarlvlAcademico || !registrarNombreTutor || !registrarApellidoPTutor || !registrarApellidoMTutor || !registrarTelefonoTutor) {
             console.log("Hay campos obligatorios sin llenar");
-            resolve(false)
+            Swal.fire({
+                title: "Error",
+                text: "Hay campos obligatorios sin llenar",
+                icon: "error",
+                timer: 1000
+            });
+            return false;
             // Agregar logica del error
+        } else if (!comprobarSiEsNumero(registrarNoControl) || !comprobarSiEsNumero(registrarTelefono) || !comprobarSiEsNumero(registrarTelefonoTutor) || registrarGrado <= 0 || registrarGrado > 17){
+            //Agregar la logica del error
+            Swal.fire({
+                title: "Error",
+                text: "Datos inválidos en los campos numéricos",
+                icon: "error",
+                timer: 1000
+            });
+            return false;
+        } else if (await comprobarSiHayDatosRepetidos(registrarNoControl, registrarCurp)){
+            //Agregar la logica del error
+            Swal.fire({
+                title: "Error",
+                text: "Ya existen registros con el mismo número de control o CURP",
+                icon: "error",
+                timer: 1000
+            });
+            return false;
         } else {
             data.nombre = registrarNombre;
             data.apellido_p = registrarApellidoP;
@@ -159,17 +223,38 @@ export default function AggAlumno() {
                 })
                 .then(data => {
                     console.log("Alumno registrado: ", data);
-                    resolve(true)
                     setTimeout(() => {
                         navigate('/alumnos');
                     }, 1000);
+                    Swal.fire({
+                        title: "Éxito",
+                        text: "Alumno registrado correctamente",
+                        icon: "success",
+                        timer: 1000
+                    });
+                    return true;
                 })
                 .catch(error => {
                     console.error('Error: ', error);
-                    //Agregar lógica para manejar el error en la interfaz de usuario
+                    let errorMessage = "Error desconocido";
+                    if (error.message.includes("NetworkError")) {
+                        errorMessage = "Error de red, por favor revisa tu conexión";
+                    } else if (error.message.includes("404")) {
+                        errorMessage = "Endpoint no encontrado";
+                    } else if (error.message.includes("500")) {
+                        errorMessage = "Error interno del servidor";
+                    } else if (error.message.includes("datos duplicados")) {
+                        errorMessage = "Datos duplicados, por favor revisa la información ingresada";
+                    }
+                    Swal.fire({
+                        title: "Error",
+                        text: errorMessage,
+                        icon: "error",
+                        timer: 1000
+                    });
+                    return false;
                 });
-        }
-        });
+            }
     };
 
 
@@ -178,14 +263,15 @@ export default function AggAlumno() {
     <div>
         <header className='header'>
             <img src={Logo2} alt="Left" className='header-image-left' />
-             Datos del Alumno
+            <h1>             Datos del Alumno
+            </h1>
              <img src={Logo2} alt="Left" className='header-image-rigth' />
 
         </header>
 
         <div className='Inputsagg'>
         <div className='D-Alumno'>
-                    <p>Siendo los campos con * obligatorios</p>
+                    <p id='CO'>Campos obligatorios:</p>
                     <div className='con1'>
                         <input type='text' placeholder='No. Control' id='inputNoControl' maxLength={10}/>
                         <input type="text" placeholder='Nombre*' id='inputNombre' maxLength={45}/>
@@ -196,16 +282,9 @@ export default function AggAlumno() {
                         <input type='number' placeholder='Grado*' id='inputGrado' maxLength={2}/>
                         <input type='text' placeholder='Grupo*' id='inputGrupo' maxLength={1}/>
                         <select id='inputTurno'>
-                            <option>--Seleccionar turno*--</option>
+                            <option> Seleccionar turno </option>
                             <option value={1}>Matutino</option>
                             <option value={2}>Vespertino</option>
-                        </select>
-                        <select id='inputEstatus'>
-                            <option>--Seleccionar Estatus*--</option>
-                            <option value={1}>Activo</option>
-                            <option value={2}>Inactivo</option>
-                            <option value={3}>Dado de baja</option>
-                            <option value={4}>Egresado</option>
                         </select>
                     </div>
                     <div className='con2'>

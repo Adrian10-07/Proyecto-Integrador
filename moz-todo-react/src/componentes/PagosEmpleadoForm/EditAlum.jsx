@@ -4,8 +4,12 @@ import { FiSave } from "react-icons/fi";
 import { MdOutlineCancel } from "react-icons/md";
 import Logo2 from '../AlumnosForm/Alum-Add/AggAssets/Logo2.png';
 import Swal from 'sweetalert2';
+import './EditAlum.css';
+import { useState } from 'react';
+
 
 export default function EditAlum() {
+  const [coincidencias, setCoincidencias] = useState([]); //Necesario para obtener recursos
   const location = useLocation();
   const { data } = location.state || {};
   console.log(data.id)
@@ -17,30 +21,21 @@ export default function EditAlum() {
         confirmButtonText: "Guardar",
     }).then((result) => {
         if (result.isConfirmed) {
-            mandarCambiosALaBaseDeDatos()
-                .then(success => {
-                    if (success) {
-                        Swal.fire("Cambios guardados!", "", "success");
-                    } else {
-                        Swal.fire("Error, asegurese de seleccionar el turno y el estatus del alumno", "", "error");
-                    }
-                })
-                .catch(error => {
-                    Swal.fire("Error al guardar los cambios", error.message, "error");
-                });
+            mandarCambiosALaBaseDeDatos();
         }
     });
   };
+
   const handleCancelClick = () => {
     Swal.fire({
-      title: "Cancelar Registro ¿?",
+      title: "Cancelar Edición ¿?",
       text: "Se borraran los datos ingresados",
       icon: "warning",
       showCancelButton: true,
       cancelButtonColor: "#3085d6",
       confirmButtonColor: "#d33",
-      confirmButtonText: "Si, Cancelar Registro",
-      cancelButtonText: "Volver al Registro",
+      confirmButtonText: "Si, Cancelar Edición",
+      cancelButtonText: "Seguir Editando",
     }).then((result) => {
       if (result.isConfirmed) {
         setTimeout(() => {
@@ -57,8 +52,53 @@ export default function EditAlum() {
 
   const navigate = useNavigate();
 
-  const mandarCambiosALaBaseDeDatos = () => {
-    return new Promise((resolve, reject) => {
+  const comprobarSiEsNumero = (cadenaAAnalizar) => {
+      var valoresAceptados = /^[0-9]+$/;
+      if (valoresAceptados.test(cadenaAAnalizar)){
+          console.log(cadenaAAnalizar + " es un valor valido")
+          return true;
+      } else {
+          console.log(cadenaAAnalizar + " no es un valor valido")
+          return false;
+      }
+  }
+
+  const comprobarSiHayDatosRepetidos = async (analizarNoControl, analizarCurp) => {
+      const url = `http://localhost:3000/alumnos/comprobarAlumnos`;
+
+      const datoACoincidir = {
+          noControl: analizarNoControl,
+          curp: analizarCurp
+      };
+
+      try {
+          const response = await fetch(url, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(datoACoincidir)
+          });
+
+          if (!response.ok) {
+              throw new Error('Error al buscar coincidencias: ' + response.status);
+          }
+
+          const data = await response.json();
+          setCoincidencias(data);
+
+          if (data.length > 0) {
+              console.log("Hay coincidencias: " + data);
+              return true;
+          } else {
+              console.log("No hay coincidencias");
+              return false;
+          }
+      } catch (error) {
+          console.log("Error: " + error);
+          return false;
+      }
+  };
+
+  const mandarCambiosALaBaseDeDatos = async () => {
       const url = `http://localhost:3000/alumnos/update/${data.id}`;
       let dato = {
         nombre: "", 
@@ -118,24 +158,92 @@ export default function EditAlum() {
 
     if (registrarTurno == 0 || registrarEstado == 0) {
         console.log("No olvide elegir el turno y estatus");
-        resolve(false)
-        // Agregar logica del error
+        Swal.fire({
+          title: "Error",
+          text: "No olvide elegir el turno y estatus del alumno",
+          icon: "error",
+          timer: 1000
+        });
+        return false;
+    } else if (await comprobarSiHayDatosRepetidos(registrarNoControl, registrarCurp)){
+        Swal.fire({
+          title: "Error",
+          text: "Ya existen datos con el mismo número de control o CURP",
+          icon: "error",
+          timer: 1000
+        });
+        return false;
     } else {
         if(registrarNombre) dato.nombre = registrarNombre; else dato.nombre = data.nombre;
         if(registrarApellidoP) dato.apellido_p = registrarApellidoP; else dato.apellido_p = data.apellido_p;
         if(registrarApellidoM) dato.apellido_m = registrarApellidoM; else dato.apellido_m = data.apellido_m;
-        if(registrarGrado) dato.grado = registrarGrado; else dato.grado = data.grado;
+        if(registrarGrado){
+          if(registrarGrado <= 0 || registrarGrado > 17){
+            Swal.fire({
+              title: "Error",
+              text: "Ingrese un grado válido",
+              icon: "error",
+              timer: 1000
+            });
+            dato.grado = data.grado;
+            return false;
+          }
+          else dato.grado = registrarGrado;
+        } 
+        else dato.grado = data.grado;
         if(registrarGrupo) dato.grupo = registrarGrupo; else dato.grupo = data.grupo;
         dato.turno = registrarTurno;
-        if(registrarNoControl) dato.noControl = registrarNoControl; else dato.noControl = data.noControl;
+        if(registrarNoControl){
+          if(comprobarSiEsNumero(registrarNoControl))
+            dato.noControl = registrarNoControl;
+          else{
+            Swal.fire({
+              title: "Error",
+              text: "No. Control Inválido",
+              icon: "error",
+              timer: 1000
+            });
+            dato.noControl = data.noControl;
+            return false;
+          }
+        } 
+        else dato.noControl = data.noControl;
         dato.estado = registrarEstado;
         if(registrarCurp) dato.curp = registrarCurp; else dato.curp = data.curp;
-        if(registrarTelefono) dato.telefono = registrarTelefono; else dato.telefono = data.telefono;
+        if(registrarTelefono){
+          if(comprobarSiEsNumero(registrarTelefono))
+            dato.telefono = registrarTelefono;
+          else{
+            Swal.fire({
+              title: "Error",
+              text: "No. de teléfono inválido",
+              icon: "error",
+              timer: 1000
+            });
+            dato.telefono = data.telefono;
+            return false
+          }
+        } 
+        else dato.telefono = data.telefono;
         if(registrarCorreo) dato.correo = registrarCorreo; else dato.correo = data.correo;
         if(registrarNombreTutor) dato.nombre_tutor = registrarNombreTutor; else dato.nombre_tutor = data.nombre_tutor;
         if(registrarApellidoPTutor) dato.apellido_p_tutor = registrarApellidoPTutor; else dato.apellido_p_tutor = data.apellidoP_tutor;
         if(registrarApellidoMTutor) dato.apellido_m_tutor = registrarApellidoMTutor; else dato.apellido_m_tutor = data.apellidoM_tutor;
-        if(registrarTelefonoTutor) dato.telefono_tutor = registrarTelefonoTutor; else dato.telefono_tutor = data.telefono_tutor;
+        if(registrarTelefonoTutor){
+          if(comprobarSiEsNumero(registrarTelefonoTutor))
+            dato.telefono_tutor = registrarTelefonoTutor;
+          else{
+            Swal.fire({
+              title: "Error",
+              text: "No. de teléfono inválido",
+              icon: "error",
+              timer: 1000
+            });
+            dato.telefono_tutor = data.telefono_tutor;
+            return false;
+          }
+        } 
+        else dato.telefono_tutor = data.telefono_tutor;
         if(registrarlvlAcademico) dato.nivelAcademico = registrarlvlAcademico; else dato.nivelAcademico = data.nivelAcademico;
         if (registrarSchoolProcedente) dato.escuelaProcedente = registrarSchoolProcedente; else dato.escuelaProcedente = data.escuelaProcedente;
         if (registrarUniAspirada) dato.colegioAspirado = registrarUniAspirada; else dato.colegioAspirado = data.colegioAspirado;
@@ -193,105 +301,154 @@ export default function EditAlum() {
             })
             .then(datos => {
                 console.log("Alumno registrado: ", datos);
-                resolve(true)
                 setTimeout(() => {
                     navigate('/alumnos');
                 }, 1000);
+                Swal.fire({
+                    title: "Éxito",
+                    text: "Alumno actualizado correctamente",
+                    icon: "success",
+                    timer: 1000
+                });
+                return true;
             })
             .catch(error => {
+<<<<<<< HEAD
                 
                 //Agregar lógica para manejar el error en la interfaz de usuario
+=======
+                console.error('Error: ', error);
+                let errorMessage = "Error desconocido";
+                if (error.message.includes("NetworkError")) {
+                    errorMessage = "Error de red, por favor revisa tu conexión";
+                } else if (error.message.includes("404")) {
+                    errorMessage = "Endpoint no encontrado";
+                } else if (error.message.includes("500")) {
+                    errorMessage = "Error interno del servidor";
+                } else if (error.message.includes("datos duplicados")) {
+                    errorMessage = "Datos duplicados, por favor revisa la información ingresada";
+                }
+                Swal.fire({
+                    title: "Error",
+                    text: errorMessage,
+                    icon: "error",
+                    timer: 1000
+                });
+                return false;
+>>>>>>> ac38bf34f75d7a37c7ae8c4bac96f9a84c445c94
             });
     }
-    })
-    
 };
 
 
   return (
     <div>
-      <header className='header'>
-            <img src={Logo2} alt="Left" className='header-image-left' />
+      <header className='header-Edit'>
+            <img src={Logo2} alt="Left" className='image-left-Edit' />
              Datos del Alumno
-             <img src={Logo2} alt="Left" className='header-image-rigth' />
+             <img src={Logo2} alt="Left" className='image-rigth-Edit' />
 
         </header>
+<<<<<<< HEAD
       <div className='Inputsagg'>
         <div className='D-Alumno'>
           <p>Siendo los campos con * obligatorios</p>
           <div className='con1'>
+=======
+      <div className='Inputs-Edit'>
+        <div className='D-Alumno-Edit'>
+          <p>Campos Obligatorios:</p>
+          <div className='con1-Edit'>
+>>>>>>> ac38bf34f75d7a37c7ae8c4bac96f9a84c445c94
             <input type='text' placeholder={data.noControl || 'N/A'} id='inputNoControl' maxLength={10}/>
             <input type="text" placeholder={data.nombre || 'Nombre*'} id='inputNombre' maxLength={45}/>
             <input type="text" placeholder={data.apellido_p || 'Apellido Paterno*'} id='inputApellidoP' maxLength={45}/>
             <input type="text" placeholder={data.apellido_m || 'Apellido Materno*'} id='inputApellidoM' maxLength={45}/>
           </div>
-          <div className='con1'>
+          <div className='con2-Edit'>
             <input type='number' placeholder={data.grado || 'Grado*'} id='inputGrado'/>
             <input type='text' placeholder={data.grupo || 'Grupo*'} id='inputGrupo' maxLength={1}/>
             <select id='inputTurno'>
-              <option value={0}>--Seleccionar Turno*--</option>
+              <option value={0}>Seleccionar Turno</option>
               <option value={1}>Matutino</option>
               <option value={2}>Vespertino</option>
             </select>
             <select id='inputEstatus'>
-              <option value={0}>--Seleccionar Estatus*--</option>
+              <option value={0}>Seleccionar Estatus</option>
               <option value={1}>Activo</option>
               <option value={2}>Inactivo</option>
               <option value={3}>Dado de baja</option>
               <option value={4}>Egresado</option>
             </select>
           </div>
+<<<<<<< HEAD
           <div className='con2'>
             <input type="number" placeholder={data.telefono || 'Telefono*'} id='inputTelefono' maxLength={12}/>
             <input type="text" placeholder={data.correo || 'Correo Electronico*'} id='inputCorreo' maxLength={45}/>
             <input type="text" placeholder={data.curp || 'CURP*'} id='inputCurp' maxLength={18}/>
           </div>
           <div className='con4'>
+=======
+          <div className='con3-Edit'>
+            <input type="text" placeholder={data.telefono || 'Telefono*'} id='inputTelefono' maxLength={12}/>
+            <input type="text" placeholder={data.correo || 'Correo Electronico*'} id='inputCorreo' maxLength={45}/>
+            <input type="text" placeholder={data.curp || 'CURP*'} id='inputCurp' maxLength={18}/>
+          </div>
+          <div className='con4-Edit'>
+>>>>>>> ac38bf34f75d7a37c7ae8c4bac96f9a84c445c94
             <input type="text" placeholder={data.nivelAcademico || 'Nivel académico actual'} id='inputlvlAcademic' maxLength={45}/>
           </div>
         </div>
         <div>
           <h2>Datos del Tutor</h2>
+<<<<<<< HEAD
           <div className='D-Tutor'>
             <input type="text" placeholder={data.nombre_tutor || 'Nombre*'} id='inputNombreTutor' maxLength={45}/>
             <input type="text" placeholder={data.apellidoP_tutor || 'Apellido Paterno*'} id='inputApellidoPTutor' maxLength={45}/>
             <input type="text" placeholder={data.apellidoM_tutor || 'Apellido Materno*'} id='inputApellidoMTutor' maxLength={45}/>
             <input type="number" placeholder={data.telefono_tutor || 'Telefono*'} id='inputTelefonoTutor' maxLength={12}/>
+=======
+          <div className='D-Tutor-Edit'>
+            <input type="text" placeholder={data.nombre_tutor || 'Nombre*'} id='inputNombreTutor' maxLength={45}/>
+            <input type="text" placeholder={data.apellidoP_tutor || 'Apellido Paterno*'} id='inputApellidoPTutor' maxLength={45}/>
+            <input type="text" placeholder={data.apellidoM_tutor || 'Apellido Materno*'} id='inputApellidoMTutor' maxLength={45}/>
+            <input type="text" placeholder={data.telefono_tutor || 'Telefono*'} id='inputTelefonoTutor' maxLength={12}/>
+>>>>>>> ac38bf34f75d7a37c7ae8c4bac96f9a84c445c94
           </div>
         </div>
         <div>
           <h2>Datos del Examen de Diagnostico del curso Pre-universitario</h2>
-          <div className='D-Diagnostico'>
+          <div className='D-Diagnostico-Edit'>
             <h4>Examen Diagnostico Ceneval "EXANII II"</h4>
             <div className='con5'>
               <input type='text' placeholder={data.escuelaProcedente || 'Colegio de proveniencia'} id='inputColegioProveniente' maxLength={45}/>
               <input type="text" placeholder={data.colegioAspirado || 'Universidad a la que aplica'} id='inputUniversidadAspira' maxLength={45}/>
               <input type="text" placeholder={data.carreraAspirada || 'Carrera a la que aplica'} id='inputCarreraAspira' maxLength={45}/>
             </div>
-            <div className='con1'>
+            <div className='con5-Edit'>
               <label>Fecha de inicio del curso</label>
               <input type='date' id='inputFechaCurso' />
               <label>Fecha del examen de Diagnostico</label>
               <input type='date' id='inputFechaExamen' />
             </div>
             <h4>Puntajes del examen</h4>
-            <div className='con5'>
+            <div className='con6-Edit'>
               <input type="number" placeholder={data.nivelMatematico || 'Pensamiento Matematico'} id='inputMatScore' />
               <input type="number" placeholder={data.nivelAnalitico || 'Pensamiento Analitico'} id='inputAnalitScore' />
               <input type="number" placeholder={data.nivelLinguistico || 'Estructura de la lengua'} id='inputLangScore' />
               <input type="number" placeholder={data.nivelComprension || 'Comprension Lectora'} id='inputLectScore' />
             </div>
-            <div className='con6'>
+            <div className='con7-Edit'>
               <input type="number" placeholder={data.nivelGeneral || 'Puntaje general'} id='inputGenScore' />
             </div>
           </div>
         </div>
-        <div className='botones'>
-          <button onClick={handleCancelClick} className='uno'>
-            <MdOutlineCancel className='icon-cancel' />
+        <div className='botones-Edit'>
+          <button onClick={handleCancelClick} className='uno-Edit'>
+            <MdOutlineCancel className='icon-cancel-Edit' />
           </button>
-          <button onClick={handleSaveClick} className='dos'>
-            <FiSave className='icon-save'/>
+          <button onClick={handleSaveClick} className='dos-Edit'>
+            <FiSave className='icon-save-Edit'/>
           </button>
         </div>
       </div>

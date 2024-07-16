@@ -36,7 +36,7 @@ export default function Inicio() {
           icono={faMoneyBill} action={"Informes de pago de trámites"} widhtFont={90} enlace={'/tramites'}
         />
         <CardsOptions
-          icono={faMoneyBill} action={"Informes de pago del personal"} widhtFont={90}
+          icono={faMoneyBill} action={"Informes de pago del personal"} widhtFont={90} enlace={'/pagosEmp'}
         />
       </div>
 

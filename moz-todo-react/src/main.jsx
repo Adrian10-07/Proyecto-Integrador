@@ -9,8 +9,20 @@ import NestedModal from './componentes/PagosEmpleadoForm/ChildModal';
 import Tramites from './componentes/PagosTramtesForm/Tramites';
 import AddTramite from './componentes/PagosTramtesForm/AddTram/AddTramite';
 import EditAlum from './componentes/PagosEmpleadoForm/EditAlum';
+<<<<<<< HEAD
+=======
+import Personal from './componentes/PersonalForm/Personal';
+import AddEmpleado from './componentes/PersonalForm/AddEmpleado/AddEmpleado';
+import AddProfesor from './componentes/PersonalForm/AddProfesor/AddProfesor';
+import EditEmpleado from './componentes/PersonalForm/EditEmpleado/EditEmpleado';
+import EditProfesor from './componentes/PersonalForm/EditProfesor/EditProfesor';
+import AddPagoPersonal from './componentes/PagosEmpleadoForm/addPagoPersonal/AddPagoPersonal';
+import AddPagoProfesor from './componentes/PagosEmpleadoForm/addPagoProfesor/AddPagoProfesor';
+import PagoEmpleados from './componentes/PagosEmpleadoForm/PagoEmpleados';
+>>>>>>> ac38bf34f75d7a37c7ae8c4bac96f9a84c445c94
 
 import App from './App';
+
 
 const router = createBrowserRouter([
   {
@@ -37,7 +49,15 @@ const router = createBrowserRouter([
   },
   {
     path: "/empleados",
-    element: <NestedModal/>,
+    element: <Personal/>,
+  },
+  {
+    path: "/addEmpleado",
+    element: <AddEmpleado/>,
+  },
+  {
+    path: "/addMaestro",
+    element: <AddProfesor/>,
   },
   {
     path:'/tramites',
@@ -51,6 +71,29 @@ const router = createBrowserRouter([
     path: '/editAlumno',
     element: <EditAlum></EditAlum>,
   },
+<<<<<<< HEAD
+=======
+  {
+    path: '/editEmpleado',
+    element: <EditEmpleado/>
+  },
+  {
+    path: '/editProfesor',
+    element: <EditProfesor/>
+  },
+  {
+    path:'/addPer',
+    element:<AddPagoPersonal/>
+  },
+  {
+    path:'/addPro',
+    element:<AddPagoProfesor/>
+  },
+  {
+    path: '/pagosEmp',
+    element: <PagoEmpleados/>
+  }
+>>>>>>> ac38bf34f75d7a37c7ae8c4bac96f9a84c445c94
 ])
 
 

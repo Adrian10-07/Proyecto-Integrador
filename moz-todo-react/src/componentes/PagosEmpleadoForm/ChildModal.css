@@ -1,9 +1,16 @@
 .modal-box {
   position: absolute;
+<<<<<<< HEAD
   top: 45%;
   left: 50%;
   transform: translate(-50%, -50%);
   width: 90vw; /* Cambiar el tamaño del modal a 80% del ancho de la ventana */
+=======
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 50vw; /* Cambiar el tamaño del modal a 80% del ancho de la ventana */
+>>>>>>> ac38bf34f75d7a37c7ae8c4bac96f9a84c445c94
   max-width: 800px; /* Asegurarse de que no sea mayor de 600px */
   background-color: rgb(255, 255, 255);
   border: none;
@@ -32,7 +39,11 @@
 .image-left{
   right: 300px;
   top: 135px;
+<<<<<<< HEAD
   margin-bottom: 0px;
+=======
+  margin-bottom: -20px;
+>>>>>>> ac38bf34f75d7a37c7ae8c4bac96f9a84c445c94
   }
 
 
@@ -45,5 +56,13 @@
 .image-right{
 left: 300px;
 bottom: 50px;
+<<<<<<< HEAD
 margin-bottom: 0px;
 }
+=======
+margin-top: 20px;
+}
+
+
+
+>>>>>>> ac38bf34f75d7a37c7ae8c4bac96f9a84c445c94

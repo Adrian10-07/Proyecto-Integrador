@@ -7,45 +7,20 @@ import FilaTram from './filasTramites/FilaTram';
 import { MdNoteAdd } from "react-icons/md";
 import { IoSearchSharp } from "react-icons/io5";
 import { FaFilter } from "react-icons/fa";
+<<<<<<< HEAD
 
 
 
 
+=======
+>>>>>>> ac38bf34f75d7a37c7ae8c4bac96f9a84c445c94
 import { Link } from 'react-router-dom';
-
 import './Tramites.css';
 
 export default function Tramites() {
-  const [data, setData] = useState([
-    { id: 1, folio: 'Juan' },
-    { id: 2, folio: 'María' },
-    { id: 3, folio: 'Carlos' },
-  ]);
-
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [selectedTramiteId, setSelectedTramiteId] = useState(null);
   const [recursos, setRecursos] = useState([]); //Necesario para obtener recursos
   const [error, setError] = useState(null); //Indica error al obtener recursos
 
-  const handleEdit = (id) => {
-    setSelectedTramiteId(id);
-    setIsEditModalOpen(true);
-  };
-
-  const closeEditModal = () => {
-    setIsEditModalOpen(false);
-  };
-
-  const handleDelete = () => {
-    setRecursos(recursos.filter(item => item.id !== selectedTramiteId));
-    closeEditModal();
-  };
-
-  const handleSave = () => {
-    // Aquí puedes agregar la lógica para guardar los cambios
-    console.log('Save changes for item with id:', selectedTramiteId);
-    closeEditModal();
-  };
 
   const operacionDeImpresionBusquedaYFiltro = () => {
     const url = "http://localhost:3000/tramites/search";
@@ -83,6 +58,7 @@ export default function Tramites() {
 
     let searchFecha = document.getElementById("search-container-tramites-inputSearchFecha").value;
     if (searchFecha){
+<<<<<<< HEAD
       console.log('Fecha seleccionada:', searchFecha)
     const date = new Date(searchFecha);
     const formattedDate = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
@@ -90,6 +66,10 @@ export default function Tramites() {
     console.log('Fecha formateada:', formattedDate);
     } 
       
+=======
+      data.fechaDeCorteFiltro = searchFecha;
+    } 
+>>>>>>> ac38bf34f75d7a37c7ae8c4bac96f9a84c445c94
 
     let searchEstatus = document.getElementById("search-container-pagos-estatus").value;
     if (searchEstatus) 
@@ -100,7 +80,11 @@ export default function Tramites() {
       data.gradoFiltro = SearchGrado;
 
     let SearchGrupo = document.getElementById("search-container-pagos-inputSearchGroup").value;
+<<<<<<< HEAD
     if (SearchGrado) 
+=======
+    if (SearchGrupo) 
+>>>>>>> ac38bf34f75d7a37c7ae8c4bac96f9a84c445c94
       data.grupoFiltro = SearchGrupo;
 
     fetch(url, {
@@ -154,7 +138,11 @@ export default function Tramites() {
 
       <div className='search-container-pagos'>
         <input type='search-A' placeholder='Grado' id='search-container-pagos-inputSearchGrade'/>
+<<<<<<< HEAD
         <input type='search-A' placeholder='Grupo' id='search-container-pagos-inputSearchGroup'/>
+=======
+        <input type='search-A' placeholder='Grupo' id='search-container-pagos-inputSearchGroup' maxLength={1}/>
+>>>>>>> ac38bf34f75d7a37c7ae8c4bac96f9a84c445c94
         <select id='search-container-pagos-estatus'>
           <option id='status-pago' value="">Seleccionar estatus</option>
           <option value={1}>Pendiente</option>
@@ -175,7 +163,7 @@ export default function Tramites() {
               <th>Grupo</th>
               <th>Concepto</th>
               <th>Monto</th>
-              <th>Fecha</th>
+              <th>Fecha de corte</th>
               <th>Estatus del pago</th>
             </tr>
           </thead>
@@ -186,6 +174,7 @@ export default function Tramites() {
                 apellidoP={recurso.apellido_p} apellidoM={recurso.apellido_m} gradoAlm={recurso.grado}
                 grupoAlm={recurso.grupo} conceptoT={recurso.concepto} montoT={recurso.monto}
                 fechaDeCorteT={recurso.fechaDeCorte} estatusTramiteT={recurso.tipo_estatus}
+                actualizarLista={operacionDeImpresionBusquedaYFiltro}
               />
               ))
             ) : (

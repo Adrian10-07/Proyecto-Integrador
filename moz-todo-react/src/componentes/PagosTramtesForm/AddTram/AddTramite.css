@@ -9,13 +9,18 @@ body {
 .header {
     background-color: rgba(31, 145, 168, 1);
     color: white;
-    padding: 10px 0;
+    padding: 50px 0;
     text-align: center;
+<<<<<<< HEAD
     font-size: 10px;
+=======
+    font-size: 40px;
+>>>>>>> ac38bf34f75d7a37c7ae8c4bac96f9a84c445c94
     font-weight: bold;
     position: relative;
 }
 
+<<<<<<< HEAD
 .header-image-left {
     height: 40px;
     position: absolute;
@@ -28,6 +33,20 @@ body {
     position: absolute;
     right: 10px;
     top: 10px;
+=======
+.image-add-right {
+    height: 100px;
+    position: absolute;
+    left: 100px;
+    top: 25px;
+}
+
+.image-add-left {
+    height: 100px;
+    position: absolute;
+    right: 100px;
+    top: 25px;
+>>>>>>> ac38bf34f75d7a37c7ae8c4bac96f9a84c445c94
 }
 
 .tramite {
@@ -42,10 +61,17 @@ body {
     display: block;
     width: calc(100% - 20px);
     padding: 10px;
+<<<<<<< HEAD
     margin: 10px 5px;
     border: 1px solid rgba(224, 224, 224, 1);
     border-radius: 8px;
     font-size: 20px;
+=======
+    border: 1px solid rgba(224, 224, 224, 1);
+    border-radius: 8px;
+    font-size: 20px;
+    margin-right: 5px;
+>>>>>>> ac38bf34f75d7a37c7ae8c4bac96f9a84c445c94
 }
 
 h2,
@@ -62,20 +88,25 @@ label {
     color: rgba(130, 130, 130, 1);
 }
 
-label input[type="date"] {
+label input[type="date"], #inputFecha {
     display: block;
-    width: calc(100% - 20px);
     padding: 10px;
+<<<<<<< HEAD
     margin-top: 2px;
+=======
+>>>>>>> ac38bf34f75d7a37c7ae8c4bac96f9a84c445c94
     border: 1px solid rgba(224, 224, 224, 1);
     border-radius: 4px;
     font-size: 16px;
     color: rgba(130, 130, 130, 1);
     position: relative;
-    bottom: 3px;
 }
 
+<<<<<<< HEAD
 .con1,
+=======
+
+>>>>>>> ac38bf34f75d7a37c7ae8c4bac96f9a84c445c94
 .con2,
 .con3,
 .con4,
@@ -133,3 +164,41 @@ label input[type="date"] {
 .icon-cancel {
     font-size: 50px;
 }
+<<<<<<< HEAD
+=======
+
+
+.Inputadd {
+    text-align: center;
+    color: rgba(130, 130, 130, 1);
+    font-size: 20px;
+}
+
+#inputId_alumno{
+    display: block;
+    padding: 10px;
+    margin-top: 10px;
+    border: 1px solid rgba(224, 224, 224, 1);
+    border-radius: 4px;
+    font-size: 15px;
+    color: rgba(130, 130, 130, 1);
+    bottom: 3px;
+    position:relative;
+}
+
+.con1 button {
+    background-color: rgba(31, 145, 168, 1);
+    color: #ffffff;
+    border: none;
+    padding: .7em 5em;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    transition: background-color 0.3s;
+}
+.con1 button:hover{
+    background-color: #3700b3;
+}
+>>>>>>> ac38bf34f75d7a37c7ae8c4bac96f9a84c445c94
