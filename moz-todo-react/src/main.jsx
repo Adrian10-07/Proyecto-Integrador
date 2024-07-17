@@ -17,6 +17,7 @@ import EditProfesor from './componentes/PersonalForm/EditProfesor/EditProfesor';
 import AddPagoPersonal from './componentes/PagosEmpleadoForm/addPagoPersonal/AddPagoPersonal';
 import AddPagoProfesor from './componentes/PagosEmpleadoForm/addPagoProfesor/AddPagoProfesor';
 import PagoEmpleados from './componentes/PagosEmpleadoForm/PagoEmpleados';
+import AddUser from './componentes/UsuariosForm/AddUser/AddUser';
 
 import App from './App';
 
@@ -35,6 +36,10 @@ const router = createBrowserRouter([
   {
     path: "/usuarios",
     element: <Usuarios/>,
+  },
+  {
+    path: "/aggUsers",
+    element: <AddUser/>
   },
   {
     path: "/alumnos",
