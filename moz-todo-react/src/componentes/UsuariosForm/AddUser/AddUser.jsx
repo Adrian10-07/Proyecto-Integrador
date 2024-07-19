@@ -93,7 +93,7 @@ export default function AddUser (){
         let password = document.getElementById("inputPassword").value;
         let confirmPassword = document.getElementById("inputCPassword").value;
 
-        if(!userNombre || !tipoUsuario || !personalAsignado || !password || !confirmPassword){
+        if(!userNombre || tipoUsuario == 0 || personalAsignado == "not valid" || !password || !confirmPassword){
             Swal.fire({
                 title: "Error",
                 text: "Hay campos sin llenar",
@@ -230,7 +230,7 @@ export default function AddUser (){
                     <div className='box_personal'>
                         <input type="text" placeholder='Nombre del usuario' id='inputUserName' maxLength={35}/>
                         <select id="selectTipo">
-                            <option>Seleccionar tipo de usuario</option>
+                            <option value={0}>Seleccionar tipo de usuario</option>
                             <option value={"employe"}>Personal</option>
                             <option value={"admin"}>Administrador</option>
                         </select>

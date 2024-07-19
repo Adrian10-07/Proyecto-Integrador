@@ -62,7 +62,7 @@ const TableComponent = () => {
           </thead>
           <tbody>
             {users.map((item) => (
-              <FilaUsuarios key={item.id} data={item}/>
+              <FilaUsuarios key={item.id} data={item} actualizar={imprimirUsuarios}/>
             ))}
           </tbody>
         </table>

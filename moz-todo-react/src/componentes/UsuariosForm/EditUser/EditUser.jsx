@@ -1,3 +1,273 @@
-import React from "react";
+import React, { useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { FiSave } from "react-icons/fi";
+import { MdOutlineCancel } from "react-icons/md";
+import Swal from 'sweetalert2';
 
-export default function EditUser (){}
+export default function EditUser (){
+    const location = useLocation();
+    const navigate = useNavigate();
+    const [coincidencias, setCoincidencias] = useState([]);
+    const { data } = location.state || {};
+
+    const [newName, setNewName] = useState("");
+    const [newTipo, setNewTipo] = useState("");
+    const [newPwd, setNewPwd] = useState("");
+    const [confirmPwd, setConfirmPwd] = useState("");
+
+    const comprobarSiElUsuarioYaExiste = async (userNameComp) => {
+        const url = `http://localhost:3000/usersJWT/compUser`;
+
+        let comprobarUser = {
+            idPersonalAOcupar: "", 
+            idNombreAComprobar: userNameComp
+        };
+
+        try {
+            const response = await fetch(url, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(comprobarUser)
+            });
+    
+            if (!response.ok) {
+                throw new Error('Error al buscar coincidencias: ' + response.status);
+            }
+    
+            const data = await response.json();
+            setCoincidencias(data);
+    
+            if (data.length > 0) {
+                console.log("Hay coincidencias: " + data);
+                return true;
+            } else {
+                console.log("No hay coincidencias");
+                return false;
+            }
+        } catch (error) {
+            console.log("Error: " + error);
+            return false;
+        }
+    }
+
+    const editarNombre = async () => {
+        if(!newName){
+            Swal.fire({
+                title: "Error",
+                text: "Ingrese el nombre",
+                icon: "error",
+                timer: 1000
+            });
+            return false;
+        } else if (await comprobarSiElUsuarioYaExiste(newName)){
+            Swal.fire({
+                title: "Error",
+                text: "Al parecer ya hay un usuario con ese nombre",
+                icon: "error",
+                timer: 1000
+            });
+            return false;
+        } else {
+            Swal.fire({
+                title: "Éxito",
+                text: "Guarde los cambios para efectuar el cambio",
+                icon: "success",
+                timer: 1000
+            });
+            return true;
+        }
+    }
+
+    const editarTipo = () => {
+        if(newTipo == 0){
+            Swal.fire({
+                title: "Error",
+                text: "Seleccione un tipo de usuario",
+                icon: "error",
+                timer: 1000
+            });
+            return false;
+        } else {
+            Swal.fire({
+                title: "Éxito",
+                text: "Guarde los cambios para efectuar el cambio",
+                icon: "success",
+                timer: 1000
+            });
+            return true;
+        }
+    }
+
+    const editarUsuario = async () => {
+        const url = `http://localhost:3000/usersJWT/update/${data.id}`;
+
+        let user = {
+            nombre: newName || data.nombre_usuario,
+            password: "", 
+            tipo: newTipo || data.tipo
+        };
+
+        if(!newPwd || !confirmPwd){
+            Swal.fire({
+                title: "Error",
+                text: "Tiene que cambiar la contraseña para guardar los cambios",
+                icon: "error",
+                timer: 1000
+            });
+            return false;
+        } else if (newPwd.length < 8){
+            Swal.fire({
+                title: "Error",
+                text: "Contraseña muy corta, ingrese al menos 8 caracteres",
+                icon: "error",
+                timer: 1000
+            });
+            return false;
+        } else if (newPwd !== confirmPwd){
+            Swal.fire({
+                title: "Error",
+                text: "Asegúrese de ingresar la misma contraseña en ambos campos para contraseña",
+                icon: "error",
+                timer: 1000
+            });
+            return false;
+        } else {
+            user.password = newPwd;
+
+            fetch(url, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(user)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(errorData => {
+                        throw new Error(errorData.error);
+                    });
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log("Usuario editado: ", data);
+                setTimeout(() => {
+                    navigate('/usuarios');
+                }, 1000);
+                Swal.fire({
+                    title: "Éxito",
+                    text: "Usuario actualizado correctamente",
+                    icon: "success",
+                    timer: 1000
+                });
+                return true;
+            })
+            .catch(error => {
+                console.error('Error: ', error);
+                let errorMessage = "Error desconocido";
+                if (error.message.includes("NetworkError")) {
+                    errorMessage = "Error de red, por favor revisa tu conexión";
+                } else if (error.message.includes("404")) {
+                    errorMessage = "Endpoint no encontrado";
+                } else if (error.message.includes("500")) {
+                    errorMessage = "Error interno del servidor";
+                } else if (error.message.includes("datos duplicados")) {
+                    errorMessage = "Datos duplicados, por favor revisa la información ingresada";
+                }
+                Swal.fire({
+                    title: "Error",
+                    text: errorMessage,
+                    icon: "error",
+                    timer: 1000
+                });
+                return false;
+            });
+        }
+    }
+
+    const handleSaveClick = () => {
+        Swal.fire({
+            title: "¿Desea guardar los cambios?",
+            showCancelButton: true,
+            confirmButtonText: "Guardar",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                editarUsuario();
+            }
+        });
+    };
+
+    const handleCancelClick = () => {
+        Swal.fire({
+          title: "Cancelar Edición ¿?",
+          text: "Se borrarán los datos ingresados",
+          icon: "warning",
+          showCancelButton: true,
+          cancelButtonColor: "#3085d6",
+          confirmButtonColor: "#d33",
+          confirmButtonText: "Sí, Cancelar Edición",
+          cancelButtonText: "Seguir Editando",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            setTimeout(() => {
+                navigate('/usuarios');
+            }, 1000);
+          }
+        })
+    };
+    
+    return (
+        <div>
+            <header className='header'>
+                Editar información del Usuario
+            </header>
+
+            <div className='Inputadd'>
+                <p>Crear</p>
+                <div className='pagoPersonal'>
+                    <div className='box_personal'>
+                        <input 
+                            type="text" 
+                            placeholder='Nombre del usuario' 
+                            id='inputUserName' 
+                            maxLength={35}
+                            value={newName}
+                            onChange={(e) => setNewName(e.target.value)}
+                        />
+                        <button onClick={editarNombre}>Cambiar nombre</button>
+                        <select 
+                            id="selectTipo"
+                            value={newTipo}
+                            onChange={(e) => setNewTipo(e.target.value)}
+                        >
+                            <option value={0}>Seleccionar tipo de usuario</option>
+                            <option value={"employe"}>Personal</option>
+                            <option value={"admin"}>Administrador</option>
+                        </select>
+                        <button onClick={editarTipo}>Cambiar tipo de usuario</button>
+                    </div>
+                    <div>
+                        <input 
+                            type='password' 
+                            placeholder='Contraseña' 
+                            id='inputPassword' 
+                            maxLength={20}
+                            value={newPwd}
+                            onChange={(e) => setNewPwd(e.target.value)}
+                        />
+                        <input 
+                            type='password' 
+                            placeholder='Confirmar' 
+                            id="inputCPassword" 
+                            maxLength={20}
+                            value={confirmPwd}
+                            onChange={(e) => setConfirmPwd(e.target.value)}
+                        />
+                    </div>
+                </div>
+            </div>
+            <div className='botones'>
+                <button onClick={handleCancelClick} className='uno'><MdOutlineCancel className='icon-cancel' /></button>
+                <button onClick={handleSaveClick} className='dos'><FiSave className='icon-save' /></button>
+            </div>
+        </div>
+    );
+}
