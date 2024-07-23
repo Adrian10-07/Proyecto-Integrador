@@ -2,14 +2,19 @@ import React from "react";
 import Swal from 'sweetalert2';
 import { useNavigate } from "react-router-dom";
 
-export default function FilaUsuarios ({data, actualizar}){
+export default function FilaUsuarios ({data, actualizar, autentificar}){
     const navigate = useNavigate();
 
-    const deleteUser = () => {
+    const fetchDelete = () => {
         const url = `http://localhost:3000/usersJWT/delete/${data.id}`
+        const token = localStorage.getItem('token');
 
         fetch(url, {
-            method: "DELETE"
+            method: "DELETE",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
         })
         .then(response => {
             if(!response.ok){
@@ -44,10 +49,48 @@ export default function FilaUsuarios ({data, actualizar}){
                 title: "Error",
                 text: errorMessage,
                 icon: "error",
-                timer: 1000                    
+                timer: 1000
             });
-            return false
+            autentificar();
+            return false;
         });
+    }
+
+    const deleteUser = () => {
+        const tipoUsuario = localStorage.getItem('typeUser');
+
+        if(data.tipo == "admin"){
+            if(tipoUsuario == "master")
+                fetchDelete();
+            else{
+                Swal.fire({
+                    title: "No autorizado",
+                    text: "Usted no tiene permiso para hacer eso",
+                    icon: "error",
+                    timer: 1000                    
+                });
+                return false
+            }
+        } else fetchDelete();
+        
+    }
+
+    const editUser = () => {
+        const tipoUsuario = localStorage.getItem('typeUser');
+
+        if(data.tipo == "admin"){
+            if(tipoUsuario == "master")
+                navigate('/updateUsers', { state: { data } })
+            else{
+                Swal.fire({
+                    title: "No autorizado",
+                    text: "Usted no tiene permiso para hacer eso",
+                    icon: "error",
+                    timer: 1000                    
+                });
+                return false
+            }
+        } else navigate('/updateUsers', { state: { data } });
     }
 
     const handleSaveClick = () => {
@@ -68,7 +111,7 @@ export default function FilaUsuarios ({data, actualizar}){
             <td>{data.nombre_usuario}</td>
             <td>{data.tipo}</td>
             <td>{data.nombre} {data.apellido_p} {data.apellido_m}</td>
-            <td><button onClick={() => navigate('/updateUsers', { state: { data } })}>Editar</button></td>
+            <td><button onClick={editUser}>Editar</button></td>
             <td><button onClick={handleSaveClick}>Borrar</button></td>
         </tr>
     );

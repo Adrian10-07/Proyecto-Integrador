@@ -3,7 +3,7 @@ import ChildModal from "../../PagosEmpleadoForm/ChildModal"
 
 export default function FilaDate (
     {idAlumno, noControlAlumno, nombreAlumno, apellidoPAlumno, 
-        apellidoMAlumno, gradoAlumno, grupoAlumno, turnoAlumno, estatusAlumno}){
+        apellidoMAlumno, gradoAlumno, grupoAlumno, turnoAlumno, estatusAlumno, autenticar}){
     
     let idProp = idAlumno;
 
@@ -18,7 +18,7 @@ export default function FilaDate (
             <td>{turnoAlumno}</td>
             <td>{estatusAlumno}</td>
             <td><ChildModal
-                valueId={idProp}
+                valueId={idProp} autentificacion={autenticar}
             /></td>        
         </tr>
     );

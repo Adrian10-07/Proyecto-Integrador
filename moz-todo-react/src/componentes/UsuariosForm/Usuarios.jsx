@@ -1,20 +1,30 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { IoMdPersonAdd } from "react-icons/io";
 import { FaUserEdit } from "react-icons/fa";
 import { LuHome } from "react-icons/lu";
 import { ImExit } from "react-icons/im";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import FilaUsuarios from './FilaUsuarios/FilaUsuarios';
+import Swal from 'sweetalert2';
+import { LogInfoContext } from '../../LogInfo';
 import './Usuarios.css';
 
 const TableComponent = () => {
   const [error, setError] = useState(null);
   const [users, setUsers] = useState([]);
+  const { isLoggedIn, setIsLoggedIn } = useContext(LogInfoContext);
+  const navigate = useNavigate();
 
   const imprimirUsuarios = () => {
     const url = `http://localhost:3000/usersJWT/`;
+    const token = localStorage.getItem('token');
 
-    fetch(url)
+    fetch(url, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+    })
     .then(response => {
       if(!response.ok){
         throw new Error('Error al imprimir los alumnos: ' + response.status);
@@ -27,8 +37,80 @@ const TableComponent = () => {
     })
     .catch(error => {
       setError(error.message);
+      authentificateUser();
     });
   }
+
+  const authentificateUser = async () => {
+    const token = localStorage.getItem('token');
+    if (!token || !isLoggedIn) {          
+      Swal.fire({
+        title: "Error",
+        text: "Usted no ha iniciado sesión",
+        icon: "error",
+      });
+      navigate('/')
+      return false;
+    } else {
+      const idUsuario = localStorage.getItem('idUser');
+      const url = `http://localhost:3000/usersJWT/verify/${idUsuario}`;
+      
+      try{
+        const response = await fetch(url, {
+          headers: { Authorization: `Bearer ${token}` }
+        })
+
+        if (!response.ok) {
+          const errorMessage = await respuesta.text(); 
+          Swal.fire({
+            title: 'Error',
+            text: 'Error inesperado. Inténtalo de nuevo más tarde.',
+            icon: 'error',
+            confirmButtonText: 'Aceptar'
+          });
+          localStorage.removeItem('token');
+          localStorage.removeItem('idUser');
+          localStorage.removeItem('typeUser')
+          navigate('/');
+          return;
+        }
+        else {
+          console.log("Token vigente");
+        }
+      }catch(error){
+        Swal.fire({
+          title: 'Error',
+          text: 'Token expirado, vuelva a iniciar sesion',
+          icon: 'error',
+          confirmButtonText: 'Aceptar'
+        });
+        console.log("Token expirado")
+        localStorage.removeItem('token');
+        localStorage.removeItem('idUser');
+        localStorage.removeItem('typeUser')
+        navigate('/')
+        return;
+      }
+    }
+    const tipoUsuario = localStorage.getItem('typeUser');
+    if(tipoUsuario == "employe"){
+        Swal.fire({
+            title: 'Error',
+            text: 'Ups, usted no tiene permitido estar aquí',
+            icon: 'error',
+            confirmButtonText: 'Aceptar'
+        })
+        setTimeout(() => {
+            navigate('/inicio');
+        }, 1000);
+    }
+  }
+
+  //Al cargar la page, ejecuta la funcion
+  useEffect(()=>{
+    authentificateUser();
+  }, []);
+
 
   useEffect(()=>{
     imprimirUsuarios();
@@ -62,7 +144,7 @@ const TableComponent = () => {
           </thead>
           <tbody>
             {users.map((item) => (
-              <FilaUsuarios key={item.id} data={item} actualizar={imprimirUsuarios}/>
+              <FilaUsuarios key={item.id} data={item} actualizar={imprimirUsuarios} autentificar={authentificateUser}/>
             ))}
           </tbody>
         </table>
@@ -72,10 +154,3 @@ const TableComponent = () => {
 };
 
 export default TableComponent;
-
-/* 
-      <div className='search-container'>
-        <input type="search" placeholder='nombre de usuario' />
-        <button className='add'><IoMdPersonAdd /></button>
-      </div>
-*/

@@ -5,7 +5,7 @@ import Swal from 'sweetalert2';
 
 export default function FilaTram (
     {idT, folioT, nombreAlm, apellidoP, apellidoM, gradoAlm, grupoAlm, conceptoT, montoT, 
-        fechaDeCorteT, estatusTramiteT, actualizarLista}){
+        fechaDeCorteT, estatusTramiteT, actualizarLista, autentificar}){
     
     //Hace maromas para pasar la fecha tipo SQL a una fecha de JS
     const fechaISO = fechaDeCorteT;
@@ -61,9 +61,14 @@ export default function FilaTram (
 
     const actualizarAProximoAPagar = () => {
         const url = `http://localhost:3000/tramites/changeNext/${idT}`;
+        const token = localStorage.getItem('token');
 
         fetch(url, {
-            method: "PUT"
+            method: "PUT",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
         })
         .then(response => {
             if(!response.ok){
@@ -82,9 +87,14 @@ export default function FilaTram (
 
     const actualizarAAtrasado = () => {
         const url = `http://localhost:3000/tramites/changeArrears/${idT}`;
+        const token = localStorage.getItem('token');
 
         fetch(url, {
-            method: "PUT"
+            method: "PUT",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
         })
         .then(response => {
             if(!response.ok){
@@ -103,10 +113,15 @@ export default function FilaTram (
     
     const actualizarAPagado = () => {
         const url = `http://localhost:3000/tramites/changePaid/${idT}`
+        const token = localStorage.getItem('token');
 
         if(estatusTramiteT !=="Pagado"){
             fetch(url, {
-                method: "PUT"
+                method: "PUT",
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
             })
             .then(response => {
                 if(!response.ok){
@@ -141,8 +156,10 @@ export default function FilaTram (
                     title: "Error",
                     text: errorMessage,
                     icon: "error",
-                    timer: 1000                    
+                    timer: 1000
                 });
+                autentificar();
+                return false;
             });
             
         } else {

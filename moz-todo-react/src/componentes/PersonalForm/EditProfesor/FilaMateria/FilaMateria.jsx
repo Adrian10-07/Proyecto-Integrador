@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function FilaMateria ({idProfesor, idMateria, nombreMateria, actualizar}){
+export default function FilaMateria ({idProfesor, idMateria, nombreMateria, actualizar, autentificar}){
 
     const quitarMateria = () => {
         const url = `http://localhost:3000/empleados/deltMat`
@@ -28,6 +28,7 @@ export default function FilaMateria ({idProfesor, idMateria, nombreMateria, actu
         })
         .catch(error => {
             console.error('Error: ', error);
+            autentificar();
         });
     }
 

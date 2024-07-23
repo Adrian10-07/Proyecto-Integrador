@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import './ModalProfesor.css' // Importa la hoja de estilos
 import { FaUserEdit } from "react-icons/fa";
 
-export default function ModalProfesor ({idTeacher}){
+export default function ModalProfesor ({idTeacher, autenticacion}){
     const [open, setOpen] = useState(false);
     const [data, setData] = useState(null);
     const [dataMat, setDataMat] = useState([]);
@@ -23,8 +23,14 @@ export default function ModalProfesor ({idTeacher}){
 
     const imprimirDatosDelProfesor = () => {
         const url = `http://localhost:3000/empleados/viewSpecificTeacher`
+        const token = localStorage.getItem('token');
 
-        fetch(`${url}/${idTeacher}`)
+        fetch(`${url}/${idTeacher}`, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+        })
         .then(response => {
             if (!response.ok) {
               throw new Error('Error al imprimir los datos del profesor: ' + response.status);
@@ -37,14 +43,21 @@ export default function ModalProfesor ({idTeacher}){
         .catch(error => {
             console.error('Error fetching data:', error);
             setError(error.message);
+            autenticacion()
         });
         imprimirMateriasDelProfesor();
     }
 
     const imprimirMateriasDelProfesor = () => {
         const url = `http://localhost:3000/empleados/showMat`
+        const token = localStorage.getItem('token');
 
-        fetch(`${url}/${idTeacher}`)
+        fetch(`${url}/${idTeacher}`, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+        })
         .then(response => {
             if (!response.ok) {
               throw new Error('Error al imprimir los datos del profesor: ' + response.status);
@@ -57,6 +70,7 @@ export default function ModalProfesor ({idTeacher}){
         .catch(error => {
             console.error('Error fetching data:', error);
             setError(error.message);
+            autenticacion()
         });
     }    
 
@@ -65,6 +79,48 @@ export default function ModalProfesor ({idTeacher}){
             imprimirDatosDelProfesor();
         }
     }, [open]);
+
+    const tipoUsuario = localStorage.getItem('typeUser');
+        if(tipoUsuario == "employe"){
+            return (
+        <div>
+            <Button onClick={handleOpen}> <FaUserEdit /> </Button>
+            <Modal
+                open={open}
+                onClose={handleClose}
+            >
+                <Box className="modal-box">
+                    <header>
+                        <h2>Datos del empleado</h2>
+                    </header>
+                    {error && <p>Error: {error}</p>}
+                    {!error && data && (
+                        <div>
+                                <p>Nombre: {data.nombre || "N/A"} {data.apellido_p || "N/A"} {data.apellido_m || "N/A"}</p>
+                                <p>Telefono: {data.telefono || "N/A"}</p>
+                                <p>Correo: {data.correo || "N/A"}</p>
+                                <p>CURP: {data.curp || "N/A"}</p>
+                                <p>Estatus: {data.tipo_estatus || "N/A"}</p>
+                                <p>Especialidad: {data.nombre_especialidad || "N/A"}</p>
+
+                                <h5>Materias que imparte:</h5>
+                                <ul>
+                                    {error && <li>Error: {error}</li>}
+                                    {!dataMat.length && <li>No imparte ninguna Materia</li>}
+                                    {!error && dataMat.length > 0 && (
+                                        dataMat.map((materia, index) => (
+                                            <li key={index}>{materia.nombre}</li>
+                                        ))
+                                    )}
+                                </ul>
+                        </div>
+                    )}
+                    <Button onClick={handleClose}>Cerrar</Button>
+                </Box>
+            </Modal>
+        </div>
+            );
+    }
 
     return (
         <div>

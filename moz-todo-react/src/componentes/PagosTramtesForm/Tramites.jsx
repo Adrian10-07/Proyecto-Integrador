@@ -1,6 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import { IoMdPersonAdd } from "react-icons/io";
-import { FaUserEdit } from "react-icons/fa";
+import React, { useEffect, useState, useContext } from 'react';
 import { LuHome } from "react-icons/lu";
 import { ImExit, ImIcoMoon } from "react-icons/im";
 import FilaTram from './filasTramites/FilaTram';
@@ -8,15 +6,18 @@ import { MdNoteAdd } from "react-icons/md";
 import { IoSearchSharp } from "react-icons/io5";
 import { FaFilter } from "react-icons/fa";
 import { Link } from 'react-router-dom';
+import { LogInfoContext } from '../../LogInfo';
+import Swal from 'sweetalert2';
 import './Tramites.css';
 
 export default function Tramites() {
   const [recursos, setRecursos] = useState([]); //Necesario para obtener recursos
   const [error, setError] = useState(null); //Indica error al obtener recursos
-
+  const { isLoggedIn, setIsLoggedIn } = useContext(LogInfoContext);
 
   const operacionDeImpresionBusquedaYFiltro = () => {
     const url = "http://localhost:3000/tramites/search";
+    const token = localStorage.getItem('token');
     let data = {
       folio_busqueda: "",
       concepto_busqueda: "",
@@ -68,7 +69,10 @@ export default function Tramites() {
 
     fetch(url, {
       method: "POST",
-      headers: { "Content-Type": "application/json"},
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
       body: JSON.stringify(data)
      })
     .then(response => {
@@ -82,8 +86,68 @@ export default function Tramites() {
     })
     .catch(error => {
       setError(error.message);
+      authentificateUser();
     });
   }
+
+  const authentificateUser = async () => {
+    const token = localStorage.getItem('token');
+    if (!token || !isLoggedIn) {          
+      Swal.fire({
+        title: "Error",
+        text: "Usted no ha iniciado sesión",
+        icon: "error",
+      });
+      navigate('/')
+      return false;
+    } else {
+      const idUsuario = localStorage.getItem('idUser');
+      const url = `http://localhost:3000/usersJWT/verify/${idUsuario}`;
+      
+      try{
+        const response = await fetch(url, {
+          headers: { Authorization: `Bearer ${token}` }
+        })
+
+        if (!response.ok) {
+          const errorMessage = await respuesta.text(); 
+          Swal.fire({
+            title: 'Error',
+            text: 'Error inesperado. Inténtalo de nuevo más tarde.',
+            icon: 'error',
+            confirmButtonText: 'Aceptar'
+          });
+          localStorage.removeItem('token');
+          localStorage.removeItem('idUser');
+          localStorage.removeItem('typeUser')
+          navigate('/');
+          return;
+        }
+        else {
+          console.log("Token vigente");
+        }
+      }catch(error){
+        Swal.fire({
+          title: 'Error',
+          text: 'Token expirado, vuelva a iniciar sesion',
+          icon: 'error',
+          confirmButtonText: 'Aceptar'
+        });
+        console.log("Token expirado")
+        localStorage.removeItem('token');
+        localStorage.removeItem('idUser');
+        localStorage.removeItem('typeUser')
+        navigate('/')
+        return;
+      }
+    }
+  }
+
+  //Al cargar la page, ejecuta la funcion
+  useEffect(()=>{
+    authentificateUser();
+  }, []);
+
 
   useEffect(()=>{
     operacionDeImpresionBusquedaYFiltro();
@@ -149,7 +213,7 @@ export default function Tramites() {
                 apellidoP={recurso.apellido_p} apellidoM={recurso.apellido_m} gradoAlm={recurso.grado}
                 grupoAlm={recurso.grupo} conceptoT={recurso.concepto} montoT={recurso.monto}
                 fechaDeCorteT={recurso.fechaDeCorte} estatusTramiteT={recurso.tipo_estatus}
-                actualizarLista={operacionDeImpresionBusquedaYFiltro}
+                actualizarLista={operacionDeImpresionBusquedaYFiltro} autentificar={authentificateUser}
               />
               ))
             ) : (

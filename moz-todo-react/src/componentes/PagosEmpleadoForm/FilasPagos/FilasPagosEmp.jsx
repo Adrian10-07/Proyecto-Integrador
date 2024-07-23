@@ -5,7 +5,7 @@ import Swal from 'sweetalert2';
 
 export default function FilasPagosEmp (
     {idP, nombreEmp, apellidoP, apellidoM, carg, horasTra, totalPago, 
-        fechaDeCorte, estatusTramite, actualizarLista}){
+        fechaDeCorte, estatusTramite, actualizarLista, autentificar}){
     
     //Hace maromas para pasar la fecha tipo SQL a una fecha de JS
     const fechaISO = fechaDeCorte;
@@ -61,9 +61,14 @@ export default function FilasPagosEmp (
 
     const actualizarAProximoAPagar = () => {
         const url = `http://localhost:3000/PagoEmp/proximo/${idP}`;
+        const token = localStorage.getItem('token');
 
         fetch(url, {
-            method: "PUT"
+            method: "PUT",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
         })
         .then(response => {
             if(!response.ok){
@@ -82,9 +87,14 @@ export default function FilasPagosEmp (
 
     const actualizarAAtrasado = () => {
         const url = `http://localhost:3000/PagoEmp/atrasado/${idP}`;
+        const token = localStorage.getItem('token');
 
         fetch(url, {
-            method: "PUT"
+            method: "PUT",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
         })
         .then(response => {
             if(!response.ok){
@@ -103,10 +113,15 @@ export default function FilasPagosEmp (
     
     const actualizarAPagado = () => {
         const url = `http://localhost:3000/PagoEmp/pagado/${idP}`
+        const token = localStorage.getItem('token');
 
         if(estatusTramite !=="Pagado"){
             fetch(url, {
-                method: "PUT"
+                method: "PUT",
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
             })
             .then(response => {
                 if(!response.ok){
@@ -141,9 +156,10 @@ export default function FilasPagosEmp (
                     title: "Error",
                     text: errorMessage,
                     icon: "error",
-                    timer: 1000                    
+                    timer: 1000
                 });
-                return false
+                autentificar();
+                return false;
             });
             
         } else {

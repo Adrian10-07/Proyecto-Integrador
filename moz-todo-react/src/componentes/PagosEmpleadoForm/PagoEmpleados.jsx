@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { IoMdPersonAdd } from "react-icons/io";
 import { FaUserEdit } from "react-icons/fa";
 import { LuHome } from "react-icons/lu";
@@ -7,19 +7,23 @@ import { MdNoteAdd } from "react-icons/md";
 import { IoSearchSharp } from "react-icons/io5";
 import { FaFilter } from "react-icons/fa";
 import FilasPagosEmp from './FilasPagos/FilasPagosEmp';
-
-import { Link } from 'react-router-dom';
+import Swal from 'sweetalert2';
+import { LogInfoContext } from '../../LogInfo';
+import { Link, useNavigate } from 'react-router-dom';
 
 
 export default function PagoEmpleados() {
   const [pagEmp, setPagEmp] = useState([]); //Necesario para obtener recursos
   const [pagPro, setPagPro] = useState([]);
   const [error, setError] = useState(null); //Indica error al obtener recursos
+  const { isLoggedIn, setIsLoggedIn } = useContext(LogInfoContext);
+  const navigate = useNavigate();
 
   const buscarOFiltrar = () => {
     //busqueda solo del personal
     const url1 = "http://localhost:3000/PagoEmp/searchP";
     const url2 = "http://localhost:3000/PagoEmp/searchPro";
+    const token = localStorage.getItem('token');
     
     let data1 = {
         nombreB:"",
@@ -69,9 +73,12 @@ export default function PagoEmpleados() {
 
     fetch(url1, {
       method: "POST",
-      headers: { "Content-Type": "application/json"},
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
       body: JSON.stringify(data1)
-     })
+    })
     .then(response => {
       if(!response.ok){
         throw new Error('Error al imprimir los pagos: ' + response.status);
@@ -83,13 +90,17 @@ export default function PagoEmpleados() {
     })
     .catch(error => {
       setError(error.message);
+      authentificateUser();
     });
 
     fetch(url2, {
       method: "POST",
-      headers: { "Content-Type": "application/json"},
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
       body: JSON.stringify(data2)
-     })
+    })
     .then(response => {
       if(!response.ok){
         throw new Error('Error al imprimir los pagos: ' + response.status);
@@ -101,12 +112,84 @@ export default function PagoEmpleados() {
     })
     .catch(error => {
       setError(error.message);
+      authentificateUser();
     });
   }
 
   useEffect(()=>{
     buscarOFiltrar();
   }, []);
+
+  const authentificateUser = async () => {
+    const token = localStorage.getItem('token');
+    if (!token || !isLoggedIn) {          
+      Swal.fire({
+        title: "Error",
+        text: "Usted no ha iniciado sesión",
+        icon: "error",
+      });
+      navigate('/')
+      return false;
+    } else {
+      const idUsuario = localStorage.getItem('idUser');
+      const url = `http://localhost:3000/usersJWT/verify/${idUsuario}`;
+      
+      try{
+        const response = await fetch(url, {
+          headers: { Authorization: `Bearer ${token}` }
+        })
+
+        if (!response.ok) {
+          const errorMessage = await respuesta.text(); 
+          Swal.fire({
+            title: 'Error',
+            text: 'Error inesperado. Inténtalo de nuevo más tarde.',
+            icon: 'error',
+            confirmButtonText: 'Aceptar'
+          });
+          localStorage.removeItem('token');
+          localStorage.removeItem('idUser');
+          localStorage.removeItem('typeUser')
+          navigate('/');
+          return;
+        }
+        else {
+          console.log("Token vigente");
+        }
+      }catch(error){
+        Swal.fire({
+          title: 'Error',
+          text: 'Token expirado, vuelva a iniciar sesion',
+          icon: 'error',
+          confirmButtonText: 'Aceptar'
+        });
+        console.log("Token expirado")
+        localStorage.removeItem('token');
+        localStorage.removeItem('idUser');
+        localStorage.removeItem('typeUser')
+        navigate('/')
+        return;
+      }
+    }
+    const tipoUsuario = localStorage.getItem('typeUser');
+    if(tipoUsuario == "employe"){
+        Swal.fire({
+            title: 'Error',
+            text: 'Ups, usted no tiene permitido estar aquí',
+            icon: 'error',
+            confirmButtonText: 'Aceptar'
+        })
+        setTimeout(() => {
+            navigate('/inicio');
+        }, 1000);
+    }
+  }
+
+  //Al cargar la page, ejecuta la funcion
+  useEffect(()=>{
+    authentificateUser();
+  }, []);
+
 
   return (
     <div>
@@ -161,7 +244,7 @@ export default function PagoEmpleados() {
           <tbody>
             {pagEmp.length > 0 ? (
               pagEmp.map((recurso) => (
-              <FilasPagosEmp key={recurso.id} idP={recurso.id} nombreEmp={recurso.nombre} apellidoP={recurso.apellido_p} apellidoM={recurso.apellido_m} carg={recurso.nombre_cargo} horasTra={recurso.horasTrabajadas} totalPago={recurso.totalPago}  fechaDeCorte={recurso.fechaPago} estatusTramite={recurso.tipo_estatus} actualizarLista={buscarOFiltrar}/>
+              <FilasPagosEmp key={recurso.id} idP={recurso.id} nombreEmp={recurso.nombre} apellidoP={recurso.apellido_p} apellidoM={recurso.apellido_m} carg={recurso.nombre_cargo} horasTra={recurso.horasTrabajadas} totalPago={recurso.totalPago}  fechaDeCorte={recurso.fechaPago} estatusTramite={recurso.tipo_estatus} actualizarLista={buscarOFiltrar} autentificar={authentificateUser}/>
               ))
             ) : (
               <tr>
@@ -170,7 +253,7 @@ export default function PagoEmpleados() {
             )}
             {pagPro.length > 0 ? (
               pagPro.map((recurso) => (
-                <FilasPagosEmp key={recurso.id} idP={recurso.id} nombreEmp={recurso.nombre} apellidoP={recurso.apellido_p} apellidoM={recurso.apellido_m} carg={"Docente"} horasTra={recurso.horasTrabajadas} totalPago={recurso.totalPago}  fechaDeCorte={recurso.fechaPago} estatusTramite={recurso.tipo_estatus} actualizarLista={buscarOFiltrar}/>
+                <FilasPagosEmp key={recurso.id} idP={recurso.id} nombreEmp={recurso.nombre} apellidoP={recurso.apellido_p} apellidoM={recurso.apellido_m} carg={"Docente"} horasTra={recurso.horasTrabajadas} totalPago={recurso.totalPago}  fechaDeCorte={recurso.fechaPago} estatusTramite={recurso.tipo_estatus} actualizarLista={buscarOFiltrar} autentificar={authentificateUser}/>
               ))
             ) : (
               <tr>

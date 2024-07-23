@@ -5,13 +5,21 @@ import { MdOutlineCancel } from "react-icons/md";
 import Logo2 from '../AlumnosForm/Alum-Add/AggAssets/Logo2.png';
 import Swal from 'sweetalert2';
 import './EditAlum.css';
-import { useState } from 'react';
-
+import { useState, useContext, useEffect } from 'react';
+import { LogInfoContext } from '../../LogInfo';
 
 export default function EditAlum() {
+  const { isLoggedIn, setIsLoggedIn } = useContext(LogInfoContext);
   const [coincidencias, setCoincidencias] = useState([]); //Necesario para obtener recursos
   const location = useLocation();
+  const navigate = useNavigate();
   const { data } = location.state || {};
+  if (!data) {
+    setTimeout(() => {
+      navigate('/alumnos');
+    }, 1000);
+    return <div>No data available</div>;
+  } else
   console.log(data.id)
 
   const handleSaveClick = () => {
@@ -46,12 +54,6 @@ export default function EditAlum() {
 
   };
 
-  if (!data) {
-    return <div>No data available</div>;
-  }
-
-  const navigate = useNavigate();
-
   const comprobarSiEsNumero = (cadenaAAnalizar) => {
       var valoresAceptados = /^[0-9]+$/;
       if (valoresAceptados.test(cadenaAAnalizar)){
@@ -64,6 +66,7 @@ export default function EditAlum() {
   }
 
   const comprobarSiHayDatosRepetidos = async (analizarNoControl, analizarCurp) => {
+      const token = localStorage.getItem('token');
       const url = `http://localhost:3000/alumnos/comprobarAlumnos`;
 
       const datoACoincidir = {
@@ -74,7 +77,10 @@ export default function EditAlum() {
       try {
           const response = await fetch(url, {
               method: "POST",
-              headers: { "Content-Type": "application/json" },
+              headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${token}`,
+              },
               body: JSON.stringify(datoACoincidir)
           });
 
@@ -100,6 +106,7 @@ export default function EditAlum() {
 
   const mandarCambiosALaBaseDeDatos = async () => {
       const url = `http://localhost:3000/alumnos/update/${data.id}`;
+      const token = localStorage.getItem('token');
       let dato = {
         nombre: "", 
         apellido_p: "", 
@@ -288,7 +295,10 @@ export default function EditAlum() {
 
         fetch(url, {
             method: "PUT",
-            headers: { "Content-Type": "application/json" },
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
             body: JSON.stringify(dato)
         })
             .then(response => {
@@ -313,11 +323,86 @@ export default function EditAlum() {
                 return true;
             })
             .catch(error => {
-                
-                //Agregar lógica para manejar el error en la interfaz de usuario
+              console.error('Error: ', error);
+              let errorMessage = "Error desconocido";
+              if (error.message.includes("NetworkError")) {
+                  errorMessage = "Error de red, por favor revisa tu conexión";
+              } else if (error.message.includes("404")) {
+                  errorMessage = "Endpoint no encontrado";
+              } else if (error.message.includes("500")) {
+                  errorMessage = "Error interno del servidor";
+              } else if (error.message.includes("datos duplicados")) {
+                  errorMessage = "Datos duplicados, por favor revisa la información ingresada";
+              }
+              Swal.fire({
+                  title: "Error",
+                  text: errorMessage,
+                  icon: "error",
+                  timer: 1000
+              });
+              authentificateUser();
+              return false;
             });
+      }
+  };
+
+  const authentificateUser = async () => {
+    const token = localStorage.getItem('token');
+    if (!token || !isLoggedIn) {          
+      Swal.fire({
+        title: "Error",
+        text: "Usted no ha iniciado sesión",
+        icon: "error",
+      });
+      navigate('/')
+      return false;
+    } else {
+      const idUsuario = localStorage.getItem('idUser');
+      const url = `http://localhost:3000/usersJWT/verify/${idUsuario}`;
+      
+      try{
+        const response = await fetch(url, {
+          headers: { Authorization: `Bearer ${token}` }
+        })
+
+        if (!response.ok) {
+          const errorMessage = await respuesta.text(); 
+          Swal.fire({
+            title: 'Error',
+            text: 'Error inesperado. Inténtalo de nuevo más tarde.',
+            icon: 'error',
+            confirmButtonText: 'Aceptar'
+          });
+          localStorage.removeItem('token');
+          localStorage.removeItem('idUser');
+          localStorage.removeItem('typeUser')
+          navigate('/');
+          return;
+        }
+        else {
+          console.log("Token vigente");
+        }
+      }catch(error){
+        Swal.fire({
+          title: 'Error',
+          text: 'Token expirado, vuelva a iniciar sesion',
+          icon: 'error',
+          confirmButtonText: 'Aceptar'
+        });
+        console.log("Token expirado")
+        localStorage.removeItem('token');
+        localStorage.removeItem('idUser');
+        localStorage.removeItem('typeUser')
+        navigate('/')
+        return;
+      }
     }
-};
+  }
+
+  //Al cargar la page, ejecuta la funcion
+  useEffect(()=>{
+      authentificateUser();
+  }, []);
 
 
   return (

@@ -4,10 +4,12 @@ import { FiSave } from "react-icons/fi";
 import { MdOutlineCancel } from "react-icons/md";
 import Swal from 'sweetalert2'
 import { useNavigate } from 'react-router-dom';
-import { useState } from "react";
+import { useState, useContext, useEffect } from "react";
+import { LogInfoContext } from "../../../LogInfo";
 
 export default function AddEmpleado (){
     const [coincidencias, setCoincidencias] = useState([]);
+    const { isLoggedIn, setIsLoggedIn } = useContext(LogInfoContext);
 
     const handleSaveClick = () => {
         Swal.fire({
@@ -40,6 +42,76 @@ export default function AddEmpleado (){
           })
     }
 
+    const authentificateUser = async () => {
+        const token = localStorage.getItem('token');
+        if (!token || !isLoggedIn) {          
+          Swal.fire({
+            title: "Error",
+            text: "Usted no ha iniciado sesión",
+            icon: "error",
+          });
+          navigate('/')
+          return false;
+        } else {
+          const idUsuario = localStorage.getItem('idUser');
+          const url = `http://localhost:3000/usersJWT/verify/${idUsuario}`;
+          
+          try{
+            const response = await fetch(url, {
+              headers: { Authorization: `Bearer ${token}` }
+            })
+    
+            if (!response.ok) {
+              const errorMessage = await respuesta.text(); 
+              Swal.fire({
+                title: 'Error',
+                text: 'Error inesperado. Inténtalo de nuevo más tarde.',
+                icon: 'error',
+                confirmButtonText: 'Aceptar'
+              });
+              localStorage.removeItem('token');
+              localStorage.removeItem('idUser');
+              localStorage.removeItem('typeUser')
+              navigate('/');
+              return;
+            }
+            else {
+              console.log("Token vigente");
+            }
+          }catch(error){
+            Swal.fire({
+              title: 'Error',
+              text: 'Token expirado, vuelva a iniciar sesion',
+              icon: 'error',
+              confirmButtonText: 'Aceptar'
+            });
+            console.log("Token expirado")
+            localStorage.removeItem('token');
+            localStorage.removeItem('idUser');
+            localStorage.removeItem('typeUser')
+            navigate('/')
+            return;
+          }
+        }
+        const tipoUsuario = localStorage.getItem('typeUser');
+        if(tipoUsuario == "employe"){
+            Swal.fire({
+                title: 'Error',
+                text: 'Ups, usted no tiene permitido estar aquí',
+                icon: 'error',
+                confirmButtonText: 'Aceptar'
+            })
+            setTimeout(() => {
+                navigate('/inicio');
+            }, 1000);
+        }
+      }
+    
+      //Al cargar la page, ejecuta la funcion
+    useEffect(()=>{
+        authentificateUser();
+    }, []);
+
     const navigate = useNavigate();
 
     const comprobarSiEsNumero = (cadenaAAnalizar) => {
@@ -66,6 +138,7 @@ export default function AddEmpleado (){
 
     const comprobarSiExisteElEmpleado = async (nombreEmpleado, apellidoPEmpleado, apellidoMEmpleado) => {
         const url = `http://localhost:3000/empleados/comprobarPersonal`;
+        const token = localStorage.getItem('token');
 
         const comprobarEmpleado = {
             nombreComp : nombreEmpleado, 
@@ -76,7 +149,10 @@ export default function AddEmpleado (){
         try {
             const response = await fetch(url, {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
                 body: JSON.stringify(comprobarEmpleado)
             });
     
@@ -102,6 +178,8 @@ export default function AddEmpleado (){
 
     const realizarRegistro = async () => {
             const url = "http://localhost:3000/empleados/addPersonal";
+            const token = localStorage.getItem('token');
+
             let data = {
                 nombre : "", 
                 apellido_p : "", 
@@ -169,7 +247,10 @@ export default function AddEmpleado (){
 
                 fetch(url, {
                     method: "POST",
-                    headers: { "Content-Type": "application/json" },
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`,
+                    },
                     body: JSON.stringify(data)
                 })
                 .then(response => {
@@ -211,6 +292,7 @@ export default function AddEmpleado (){
                         icon: "error",
                         timer: 1000
                     });
+                    authentificateUser();
                     return false;
                 });
             }            

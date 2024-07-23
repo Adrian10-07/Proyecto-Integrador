@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Logo2 from './AddAssets/Logo2.png';
 import { FiSave } from "react-icons/fi";
 import { MdOutlineCancel } from "react-icons/md";
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 import { IoSearchSharp } from "react-icons/io5";
+import { LogInfoContext } from '../../../LogInfo';
 import './AddTramite.css'
 
 export default function AddTramite() {
@@ -16,29 +17,82 @@ export default function AddTramite() {
         apellido_m:'',
         folio:''
     });
+    const { isLoggedIn, setIsLoggedIn } = useContext(LogInfoContext);
     const navigate = useNavigate();
+
+    const authentificateUser = async () => {
+        const token = localStorage.getItem('token');
+        if (!token || !isLoggedIn) {          
+          Swal.fire({
+            title: "Error",
+            text: "Usted no ha iniciado sesión",
+            icon: "error",
+          });
+          navigate('/')
+          return false;
+        } else {
+          const idUsuario = localStorage.getItem('idUser');
+          const url = `http://localhost:3000/usersJWT/verify/${idUsuario}`;
+          
+          try{
+            const response = await fetch(url, {
+              headers: { Authorization: `Bearer ${token}` }
+            })
+    
+            if (!response.ok) {
+              const errorMessage = await respuesta.text(); 
+              Swal.fire({
+                title: 'Error',
+                text: 'Error inesperado. Inténtalo de nuevo más tarde.',
+                icon: 'error',
+                confirmButtonText: 'Aceptar'
+              });
+              localStorage.removeItem('token');
+              localStorage.removeItem('idUser');
+              localStorage.removeItem('typeUser')
+              navigate('/');
+              return;
+            }
+            else {
+              console.log("Token vigente");
+            }
+          }catch(error){
+            Swal.fire({
+              title: 'Error',
+              text: 'Token expirado, vuelva a iniciar sesion',
+              icon: 'error',
+              confirmButtonText: 'Aceptar'
+            });
+            console.log("Token expirado")
+            localStorage.removeItem('token');
+            localStorage.removeItem('idUser');
+            localStorage.removeItem('typeUser')
+            navigate('/')
+            return;
+          }
+        }
+      }
+    
+      //Al cargar la page, ejecuta la funcion
+    useEffect(()=>{
+        authentificateUser();
+    }, []);
+    
 
     useEffect(() => {
         optionAlumnosAlumnos();
     }, []);
 
-    /*
-    const comprobarSiEsNumeroFlotante = (cadenaAAnalizar) => {
-    const valoresAceptados = /^-?\d+(\.\d+)?$/;
-    if (valoresAceptados.test(cadenaAAnalizar)) {
-        console.log(cadenaAAnalizar + " es un valor válido");
-        return true;
-    } else {
-        console.log(cadenaAAnalizar + " no es un valor válido");
-        return false;
-    }
-}
-    */
-
     const comprobarSiYaExisteElFolio = async (folioComprobar) => {
         const url = `http://localhost:3000/tramites/buscarCoincidencias/${folioComprobar}`;
+        const token = localStorage.getItem('token');
         try {
-            const response = await fetch(url);
+            const response = await fetch(url, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
+            });
     
             if (!response.ok) {
                 throw new Error('Error al buscar coincidencias: ' + response.status);
@@ -73,7 +127,7 @@ export default function AddTramite() {
 
     const optionAlumnosAlumnos = () => {
         const url = "http://localhost:3000/tramites/optionsAlumnos";
-
+        const token = localStorage.getItem('token');
         let dato = {
             "nombre_busqueda" : "", 
             "apellido_p_busqueda" : "", 
@@ -96,7 +150,10 @@ export default function AddTramite() {
 
         fetch(url, {
             method:'POST',
-            headers: { 'Content-Type':'application/json'},
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
             body:JSON.stringify(dato)
         })
         .then(response => {
@@ -110,12 +167,12 @@ export default function AddTramite() {
         })
         .catch(error => {
             console.error('Error fetching data: ', error);
-            Swal.fire('Error fetching data', error.message, 'error');
         });
     };
 
     const mandarALaBaseDeDatos = async () => {
             const url = 'http://localhost:3000/tramites/add';
+            const token = localStorage.getItem('token');
             let data = {
                 folio: "",
                 concepto: "",
@@ -171,7 +228,10 @@ export default function AddTramite() {
 
                 fetch(url, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`,
+                    },
                     body: JSON.stringify(data)
                 })
                 .then(response => {
@@ -213,6 +273,7 @@ export default function AddTramite() {
                         icon: "error",
                         timer: 1000
                     });
+                    authentificateUser();
                     return false;
                 });
             } 

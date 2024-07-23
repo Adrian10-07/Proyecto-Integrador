@@ -1,19 +1,22 @@
-import React, { useState, useEffect} from 'react';
+import React, { useState, useEffect, useContext} from 'react';
 import Logo2 from './AddAssets/Logo2.png';
 import { FiSave } from 'react-icons/fi';
 import { MdOutlineCancel } from 'react-icons/md';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 import { IoSearchSharp } from 'react-icons/io5';
+import { LogInfoContext } from '../../../LogInfo';
 import './AddPagoPersonal.css'
 
 export default function AddPagoPersonal () {
     const [namePersonal, setNamePersonal] = useState([]);
+    const { isLoggedIn, setIsLoggedIn } = useContext(LogInfoContext);
     const navigate = useNavigate();
     const [totalPago, setTotalPago] = useState(0);
 
     const optionPersonal = () => {
         const url = "http://localhost:3000/PagoEmp/buscarPers";
+        const token = localStorage.getItem('token');
 
         let dato = {
             nombre_busqueda:"",
@@ -33,7 +36,10 @@ export default function AddPagoPersonal () {
 
         fetch(url, {
             method:'POST',
-            headers: { 'Content-Type':'application/json'},
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
             body:JSON.stringify(dato)
         })
         .then(response => {
@@ -47,7 +53,6 @@ export default function AddPagoPersonal () {
         })
         .catch(error => {
             console.error('Error fetching data: ', error);
-            Swal.fire('Error fetching data', error.message, 'error');
         });
     }
 
@@ -76,7 +81,13 @@ export default function AddPagoPersonal () {
         }
         else {
             const url = `http://localhost:3000/PagoEmp/calcularMontoPer/${idPersonalSelect}`
-            fetch(url)
+            const token = localStorage.getItem('token');
+            fetch(url, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
+            })
             .then(response => {
                 if (!response.ok) {
                     throw new Error('No conecta');
@@ -90,7 +101,7 @@ export default function AddPagoPersonal () {
             })
             .catch(error => {
                 console.error('Error fetching data: ', error);
-                Swal.fire('Error fetching data', error.message, 'error');
+                authentificateUser();
             });
             
         }
@@ -98,6 +109,7 @@ export default function AddPagoPersonal () {
 
     const dbPersonal = () => {
             const url = "http://localhost:3000/PagoEmp/pagoPer";
+            const token = localStorage.getItem('token');
             let data = {
                 horasTrabajadas: "",
                 totalPago: "",
@@ -125,7 +137,10 @@ export default function AddPagoPersonal () {
 
                 fetch(url, {
                     method: 'POST',
-                    headers: { 'Content-Type':'application/json' },
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`,
+                    },
                     body: JSON.stringify(data)
                 })
                 .then(response => {
@@ -167,6 +182,7 @@ export default function AddPagoPersonal () {
                         icon: "error",
                         timer: 1000
                     });
+                    authentificateUser()
                     return false;
                 });
             }
@@ -202,6 +218,76 @@ export default function AddPagoPersonal () {
             }
           })
     };
+
+    const authentificateUser = async () => {
+        const token = localStorage.getItem('token');
+        if (!token || !isLoggedIn) {          
+          Swal.fire({
+            title: "Error",
+            text: "Usted no ha iniciado sesión",
+            icon: "error",
+          });
+          navigate('/')
+          return false;
+        } else {
+          const idUsuario = localStorage.getItem('idUser');
+          const url = `http://localhost:3000/usersJWT/verify/${idUsuario}`;
+          
+          try{
+            const response = await fetch(url, {
+              headers: { Authorization: `Bearer ${token}` }
+            })
+    
+            if (!response.ok) {
+              const errorMessage = await respuesta.text(); 
+              Swal.fire({
+                title: 'Error',
+                text: 'Error inesperado. Inténtalo de nuevo más tarde.',
+                icon: 'error',
+                confirmButtonText: 'Aceptar'
+              });
+              localStorage.removeItem('token');
+              localStorage.removeItem('idUser');
+              localStorage.removeItem('typeUser')
+              navigate('/');
+              return;
+            }
+            else {
+              console.log("Token vigente");
+            }
+          }catch(error){
+            Swal.fire({
+              title: 'Error',
+              text: 'Token expirado, vuelva a iniciar sesion',
+              icon: 'error',
+              confirmButtonText: 'Aceptar'
+            });
+            console.log("Token expirado")
+            localStorage.removeItem('token');
+            localStorage.removeItem('idUser');
+            localStorage.removeItem('typeUser')
+            navigate('/')
+            return;
+          }
+        }
+        const tipoUsuario = localStorage.getItem('typeUser');
+        if(tipoUsuario == "employe"){
+            Swal.fire({
+                title: 'Error',
+                text: 'Ups, usted no tiene permitido estar aquí',
+                icon: 'error',
+                confirmButtonText: 'Aceptar'
+            })
+            setTimeout(() => {
+                navigate('/inicio');
+            }, 1000);
+        }
+    }
+    
+      //Al cargar la page, ejecuta la funcion
+    useEffect(()=>{
+        authentificateUser();
+    }, []);
 
     useEffect(() => {
         optionPersonal();

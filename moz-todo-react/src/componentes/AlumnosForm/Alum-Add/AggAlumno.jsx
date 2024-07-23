@@ -1,18 +1,18 @@
-import React, {useState} from 'react'
+import React, {useState, useContext, useEffect} from 'react'
 import './AggAlumno.css'
 import Logo2 from './AggAssets/Logo2.png';
 import { FiSave } from "react-icons/fi";
 import { MdOutlineCancel } from "react-icons/md";
 import Swal from 'sweetalert2'
 import { useNavigate } from 'react-router-dom';
-
+import { LogInfoContext } from '../../../LogInfo';
 
     
 
 export default function AggAlumno() {
     const [coincidencias, setCoincidencias] = useState([]); //Necesario para obtener recursos
     const [error, setError] = useState(null);
-
+    const { isLoggedIn, setIsLoggedIn } = useContext(LogInfoContext);
 
     const handleSaveClick = () => {
         Swal.fire({
@@ -59,6 +59,7 @@ export default function AggAlumno() {
     }
 
     const comprobarSiHayDatosRepetidos = async (analizarNoControl, analizarCurp) => {
+        const token = localStorage.getItem('token');
         const url = `http://localhost:3000/alumnos/comprobarAlumnos`;
     
         const datoACoincidir = {
@@ -69,7 +70,10 @@ export default function AggAlumno() {
         try {
             const response = await fetch(url, {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
                 body: JSON.stringify(datoACoincidir)
             });
     
@@ -89,12 +93,13 @@ export default function AggAlumno() {
             }
         } catch (error) {
             console.log("Error: " + error);
+            authentificateUser();
             return false;
         }
     };
     
     const mandarALaBaseDeDatos = async () => {
-        
+        const token = localStorage.getItem('token');
         const url = "http://localhost:3000/alumnos/addAlumno";
         let data = {
             nombre: "", 
@@ -210,7 +215,10 @@ export default function AggAlumno() {
 
             fetch(url, {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
                 body: JSON.stringify(data)
             })
                 .then(response => {
@@ -252,14 +260,72 @@ export default function AggAlumno() {
                         icon: "error",
                         timer: 1000
                     });
+                    authentificateUser();
                     return false;
                 });
             }
     };
 
+    const authentificateUser = async () => {
+        const token = localStorage.getItem('token');
+        if (!token || !isLoggedIn) {          
+          Swal.fire({
+            title: "Error",
+            text: "Usted no ha iniciado sesión",
+            icon: "error",
+          });
+          navigate('/')
+          return false;
+        } else {
+          const idUsuario = localStorage.getItem('idUser');
+          const url = `http://localhost:3000/usersJWT/verify/${idUsuario}`;
+          
+          try{
+            const response = await fetch(url, {
+              headers: { Authorization: `Bearer ${token}` }
+            })
+    
+            if (!response.ok) {
+              const errorMessage = await respuesta.text(); 
+              Swal.fire({
+                title: 'Error',
+                text: 'Error inesperado. Inténtalo de nuevo más tarde.',
+                icon: 'error',
+                confirmButtonText: 'Aceptar'
+              });
+              localStorage.removeItem('token');
+              localStorage.removeItem('idUser');
+              localStorage.removeItem('typeUser')
+              navigate('/');
+              return;
+            }
+            else {
+              console.log("Token vigente");
+            }
+          }catch(error){
+            Swal.fire({
+              title: 'Error',
+              text: 'Token expirado, vuelva a iniciar sesion',
+              icon: 'error',
+              confirmButtonText: 'Aceptar'
+            });
+            console.log("Token expirado")
+            localStorage.removeItem('token');
+            localStorage.removeItem('idUser');
+            localStorage.removeItem('typeUser')
+            navigate('/')
+            return;
+          }
+        }
+    }
+    
+      //Al cargar la page, ejecuta la funcion
+    useEffect(()=>{
+        authentificateUser();
+    }, []);
+    
 
-
-  return (
+    return (
     <div>
         <header className='header'>
             <img src={Logo2} alt="Left" className='header-image-left' />

@@ -22,6 +22,7 @@ import EditUser from './componentes/UsuariosForm/EditUser/EditUser';
 
 import App from './App';
 
+import { LogInfoProvider } from './LogInfo.jsx';
 
 const router = createBrowserRouter([
   {
@@ -104,7 +105,8 @@ const router = createBrowserRouter([
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <React.StrictMode>
+  <LogInfoProvider>
     <RouterProvider  router = {router}/>
-  </React.StrictMode>
+  </LogInfoProvider>
+
 );

@@ -1,13 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { FiSave } from "react-icons/fi";
 import { MdOutlineCancel } from "react-icons/md";
 import Swal from 'sweetalert2';
+import { LogInfoContext } from "../../../LogInfo";
 
 export default function EditUser (){
     const location = useLocation();
     const navigate = useNavigate();
     const [coincidencias, setCoincidencias] = useState([]);
+    const { isLoggedIn, setIsLoggedIn } = useContext(LogInfoContext);
     const { data } = location.state || {};
 
     const [newName, setNewName] = useState("");
@@ -15,8 +17,17 @@ export default function EditUser (){
     const [newPwd, setNewPwd] = useState("");
     const [confirmPwd, setConfirmPwd] = useState("");
 
+    if (!data) {
+        setTimeout(() => {
+          navigate('/usuarios');
+        }, 1000);
+        return <div>No data available</div>;
+    } else
+    console.log(data.id)
+
     const comprobarSiElUsuarioYaExiste = async (userNameComp) => {
         const url = `http://localhost:3000/usersJWT/compUser`;
+        const token = localStorage.getItem('token');
 
         let comprobarUser = {
             idPersonalAOcupar: "", 
@@ -26,7 +37,10 @@ export default function EditUser (){
         try {
             const response = await fetch(url, {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
                 body: JSON.stringify(comprobarUser)
             });
     
@@ -46,6 +60,7 @@ export default function EditUser (){
             }
         } catch (error) {
             console.log("Error: " + error);
+            authentificateUser();
             return false;
         }
     }
@@ -79,7 +94,7 @@ export default function EditUser (){
     }
 
     const editarTipo = () => {
-        if(newTipo == 0){
+        if(newTipo == ""){
             Swal.fire({
                 title: "Error",
                 text: "Seleccione un tipo de usuario",
@@ -88,6 +103,18 @@ export default function EditUser (){
             });
             return false;
         } else {
+            if(newTipo == "admin"){
+                const tipoUsuario = localStorage.getItem('typeUser');
+                if(tipoUsuario != "master"){
+                    Swal.fire({
+                        title: "No autorizado",
+                        text: "Usted no tiene permiso para cambiar el tipo de usuario a administrador",
+                        icon: "error",
+                        timer: 1000                    
+                    });
+                    return false
+                }
+            }
             Swal.fire({
                 title: "Éxito",
                 text: "Guarde los cambios para efectuar el cambio",
@@ -100,6 +127,7 @@ export default function EditUser (){
 
     const editarUsuario = async () => {
         const url = `http://localhost:3000/usersJWT/update/${data.id}`;
+        const token = localStorage.getItem('token');
 
         let user = {
             nombre: newName || data.nombre_usuario,
@@ -134,9 +162,25 @@ export default function EditUser (){
         } else {
             user.password = newPwd;
 
+            if(newTipo == "admin"){
+                const tipoUsuario = localStorage.getItem('typeUser');
+                if(tipoUsuario != "master"){
+                    Swal.fire({
+                        title: "No autorizado",
+                        text: "Usted no tiene permiso para cambiar el tipo de usuario a administrador",
+                        icon: "error",
+                        timer: 1000                    
+                    });
+                    return false
+                }
+            }
+
             fetch(url, {
                 method: "PUT",
-                headers: { "Content-Type": "application/json" },
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
                 body: JSON.stringify(user)
             })
             .then(response => {
@@ -178,6 +222,7 @@ export default function EditUser (){
                     icon: "error",
                     timer: 1000
                 });
+                authentificateUser();
                 return false;
             });
         }
@@ -213,6 +258,77 @@ export default function EditUser (){
           }
         })
     };
+
+    const authentificateUser = async () => {
+        const token = localStorage.getItem('token');
+        if (!token || !isLoggedIn) {          
+          Swal.fire({
+            title: "Error",
+            text: "Usted no ha iniciado sesión",
+            icon: "error",
+          });
+          navigate('/')
+          return false;
+        } else {
+          const idUsuario = localStorage.getItem('idUser');
+          const url = `http://localhost:3000/usersJWT/verify/${idUsuario}`;
+          
+          try{
+            const response = await fetch(url, {
+              headers: { Authorization: `Bearer ${token}` }
+            })
+    
+            if (!response.ok) {
+              const errorMessage = await respuesta.text(); 
+              Swal.fire({
+                title: 'Error',
+                text: 'Error inesperado. Inténtalo de nuevo más tarde.',
+                icon: 'error',
+                confirmButtonText: 'Aceptar'
+              });
+              localStorage.removeItem('token');
+              localStorage.removeItem('idUser');
+              localStorage.removeItem('typeUser')
+              navigate('/');
+              return;
+            }
+            else {
+              console.log("Token vigente");
+            }
+          }catch(error){
+            Swal.fire({
+              title: 'Error',
+              text: 'Token expirado, vuelva a iniciar sesion',
+              icon: 'error',
+              confirmButtonText: 'Aceptar'
+            });
+            console.log("Token expirado")
+            localStorage.removeItem('token');
+            localStorage.removeItem('idUser');
+            localStorage.removeItem('typeUser')
+            navigate('/')
+            return;
+          }
+        }
+        const tipoUsuario = localStorage.getItem('typeUser');
+        if(tipoUsuario == "employe"){
+            Swal.fire({
+                title: 'Error',
+                text: 'Ups, usted no tiene permitido estar aquí',
+                icon: 'error',
+                confirmButtonText: 'Aceptar'
+            })
+            setTimeout(() => {
+                navigate('/inicio');
+            }, 1000);
+        }
+    }
+    
+      //Al cargar la page, ejecuta la funcion
+    useEffect(()=>{
+        authentificateUser();
+    }, []);
+
     
     return (
         <div>
@@ -238,7 +354,7 @@ export default function EditUser (){
                             value={newTipo}
                             onChange={(e) => setNewTipo(e.target.value)}
                         >
-                            <option value={0}>Seleccionar tipo de usuario</option>
+                            <option value={""}>Seleccionar tipo de usuario</option>
                             <option value={"employe"}>Personal</option>
                             <option value={"admin"}>Administrador</option>
                         </select>

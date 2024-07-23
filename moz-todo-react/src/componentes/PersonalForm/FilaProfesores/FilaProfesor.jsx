@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import ModalProfesor from "./ModalProfesor/ModalProfesor";
 
-export default function FilaProfesor ({proId, proNombre, proApellioP, proApellidoM, proEspecialidad, proEstatus}){
+export default function FilaProfesor ({proId, proNombre, proApellioP, proApellidoM, proEspecialidad, proEstatus, autentificar}){
     
     let profIdProp = proId;
 
@@ -13,7 +13,7 @@ export default function FilaProfesor ({proId, proNombre, proApellioP, proApellid
             <td>Docente</td>
             <td>{proEspecialidad}</td>
             <td>{proEstatus}</td>
-            <td><ModalProfesor idTeacher={profIdProp}/></td>
+            <td><ModalProfesor idTeacher={profIdProp} autenticación={autentificar}/></td>
         </tr>
     );
 }

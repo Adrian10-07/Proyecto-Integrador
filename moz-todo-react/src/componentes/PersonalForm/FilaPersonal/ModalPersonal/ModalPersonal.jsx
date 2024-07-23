@@ -7,9 +7,8 @@ import { useNavigate } from 'react-router-dom';
 import './ModalPersonal.css' // Importa la hoja de estilos
 //import Logo2 from './AssetsDAlumn/Logo2.png';
 import { FaUserEdit } from "react-icons/fa";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-export default function ModalPersonal ({idEmploye}){
+export default function ModalPersonal ({idEmploye, autentificacion}){
     const [open, setOpen] = useState(false);
     const [data, setData] = useState(null);
     const [error, setError] = useState(null);
@@ -23,9 +22,15 @@ export default function ModalPersonal ({idEmploye}){
     };
 
     const imprimirDatosDelEmpleado = () => {
+        const token = localStorage.getItem('token');
         const url = `http://localhost:3000/empleados/viewSpecificEmploye`
 
-        fetch(`${url}/${idEmploye}`)
+        fetch(`${url}/${idEmploye}`, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+        })
         .then(response => {
             if (!response.ok) {
               throw new Error('Error al imprimir los datos del empleado: ' + response.status);
@@ -38,6 +43,7 @@ export default function ModalPersonal ({idEmploye}){
         .catch(error => {
             console.error('Error fetching data:', error);
             setError(error.message);
+            autentificacion();
         });
     }
 
@@ -46,6 +52,39 @@ export default function ModalPersonal ({idEmploye}){
             imprimirDatosDelEmpleado();
         }
     }, [open]);
+
+    const tipoUsuario = localStorage.getItem('typeUser');
+    if(tipoUsuario == "employe"){
+        return (
+        <div>
+            <Button onClick={handleOpen}> <FaUserEdit /> </Button>
+            <Modal
+                open={open}
+                onClose={handleClose}
+            >
+                <Box className="modal-box">
+                    <header>
+                        <h2>Datos del empleado</h2>
+                    </header>
+                    {error && <p>Error: {error}</p>}
+                    {!error && data && (
+                        <div>
+                                <p>Nombre: {data.nombre || "N/A"} {data.apellido_p || "N/A"} {data.apellido_m || "N/A"}</p>
+                                <p>Telefono: {data.telefono || "N/A"}</p>
+                                <p>Correo: {data.correo || "N/A"}</p>
+                                <p>CURP: {data.curp || "N/A"}</p>
+                                <p>Estatus: {data.tipo_estatus || "N/A"}</p>
+                                <p>Area: {data.nombre_area || "N/A"}</p>
+                                <p>Cargo: {data.nombre_cargo || "N/A"}</p>
+
+                        </div>
+                    )}
+                    <Button onClick={handleClose}>Cerrar</Button>
+                </Box>
+            </Modal>
+        </div>
+        );
+    }
 
     return (
         <div>

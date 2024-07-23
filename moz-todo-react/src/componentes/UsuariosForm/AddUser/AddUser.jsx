@@ -1,16 +1,19 @@
-import React, { useState, useEffect} from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { FiSave } from 'react-icons/fi';
 import { MdOutlineCancel } from 'react-icons/md';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 import { IoSearchSharp } from 'react-icons/io5';
+import { LogInfoContext } from '../../../LogInfo';
 
 export default function AddUser (){
     const [namePersonal, setNamePersonal] = useState([]);
     const [coincidencias, setCoincidencias] = useState([]);
+    const { isLoggedIn, setIsLoggedIn } = useContext(LogInfoContext);
     const navigate = useNavigate();
 
     const optionPersonal = () => {
+        const token = localStorage.getItem('token');
         const url = "http://localhost:3000/PagoEmp/buscarPers";
 
         let dato = {
@@ -31,7 +34,10 @@ export default function AddUser (){
 
         fetch(url, {
             method:'POST',
-            headers: { 'Content-Type':'application/json'},
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
             body:JSON.stringify(dato)
         })
         .then(response => {
@@ -45,12 +51,12 @@ export default function AddUser (){
         })
         .catch(error => {
             console.error('Error fetching data: ', error);
-            Swal.fire('Error fetching data', error.message, 'error');
         });
     }
 
     const comprobarSiElUsuarioYaExiste = async (idEmploye, userNameComp) => {
         const url = `http://localhost:3000/usersJWT/compUser`
+        const token = localStorage.getItem('token');
 
         let comprobarUser = {
             idPersonalAOcupar : idEmploye, 
@@ -60,7 +66,10 @@ export default function AddUser (){
         try {
             const response = await fetch(url, {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
                 body: JSON.stringify(comprobarUser)
             });
     
@@ -86,6 +95,7 @@ export default function AddUser (){
 
     const registrarUsuario = async () => {
         const url = `http://localhost:3000/usersJWT/add`;
+        const token = localStorage.getItem('token');
 
         let userNombre = document.getElementById("inputUserName").value;
         let tipoUsuario = document.getElementById("selectTipo").value;
@@ -126,6 +136,20 @@ export default function AddUser (){
             });
             return false;
         } else {
+
+            if(tipoUsuario == "admin"){
+                const tipoUsuario = localStorage.getItem('typeUser');
+                if(tipoUsuario != "master"){
+                    Swal.fire({
+                        title: "No autorizado",
+                        text: "Usted no tiene permiso para crear otro usuario administrador",
+                        icon: "error",
+                        timer: 2000                    
+                    });
+                    return false
+                }
+            }
+
             let user = {
                 nombre: userNombre, 
                 password: password, 
@@ -135,7 +159,10 @@ export default function AddUser (){
 
             fetch(url, {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
                 body: JSON.stringify(user)
             })
             .then(response => {
@@ -177,6 +204,7 @@ export default function AddUser (){
                     icon: "error",
                     timer: 1000
                 });
+                authentificateUser();
                 return false;
             });
         }
@@ -212,6 +240,76 @@ export default function AddUser (){
             }
           })
     };
+
+    const authentificateUser = async () => {
+        const token = localStorage.getItem('token');
+        if (!token || !isLoggedIn) {          
+          Swal.fire({
+            title: "Error",
+            text: "Usted no ha iniciado sesión",
+            icon: "error",
+          });
+          navigate('/')
+          return false;
+        } else {
+          const idUsuario = localStorage.getItem('idUser');
+          const url = `http://localhost:3000/usersJWT/verify/${idUsuario}`;
+          
+          try{
+            const response = await fetch(url, {
+              headers: { Authorization: `Bearer ${token}` }
+            })
+    
+            if (!response.ok) {
+              const errorMessage = await respuesta.text(); 
+              Swal.fire({
+                title: 'Error',
+                text: 'Error inesperado. Inténtalo de nuevo más tarde.',
+                icon: 'error',
+                confirmButtonText: 'Aceptar'
+              });
+              localStorage.removeItem('token');
+              localStorage.removeItem('idUser');
+              localStorage.removeItem('typeUser')
+              navigate('/');
+              return;
+            }
+            else {
+              console.log("Token vigente");
+            }
+          }catch(error){
+            Swal.fire({
+              title: 'Error',
+              text: 'Token expirado, vuelva a iniciar sesion',
+              icon: 'error',
+              confirmButtonText: 'Aceptar'
+            });
+            console.log("Token expirado")
+            localStorage.removeItem('token');
+            localStorage.removeItem('idUser');
+            localStorage.removeItem('typeUser')
+            navigate('/')
+            return;
+          }
+        }
+        const tipoUsuario = localStorage.getItem('typeUser');
+        if(tipoUsuario == "employe"){
+            Swal.fire({
+                title: 'Error',
+                text: 'Ups, usted no tiene permitido estar aquí',
+                icon: 'error',
+                confirmButtonText: 'Aceptar'
+            })
+            setTimeout(() => {
+                navigate('/inicio');
+            }, 1000);
+        }
+    }
+    
+      //Al cargar la page, ejecuta la funcion
+    useEffect(()=>{
+        authentificateUser();
+    }, []);
 
 
     useEffect(() => {

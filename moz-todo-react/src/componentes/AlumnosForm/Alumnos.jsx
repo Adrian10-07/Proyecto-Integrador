@@ -1,48 +1,27 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { IoMdPersonAdd } from "react-icons/io";
 import { FaUserEdit } from "react-icons/fa";
 import { LuHome } from "react-icons/lu";
 import { ImExit, ImIcoMoon } from "react-icons/im";
 import EditModal from './ModalesForm/EditAlumno/EditModal';
 import FilaDate from './filasAlumnos/FilaDate';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FaFilter } from "react-icons/fa";
 import './Alumnos.css';
 import { IoSearchSharp } from "react-icons/io5";
-
+import { LogInfoContext } from '../../LogInfo';
 
 export default function Alumnos() {
   const [data, setData] = useState([]);
-
-  
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [selectedAlumnoId, setSelectedAlumnoId] = useState(null);
+  const { isLoggedIn, setIsLoggedIn } = useContext(LogInfoContext);
   const [recursos, setRecursos] = useState([]); //Necesario para obtener recursos
   const [error, setError] = useState(null); //Indica error al obtener recursos
-
-  const handleEdit = (id) => {
-    setSelectedAlumnoId(id);
-    setIsEditModalOpen(true);
-  };
-
-  const closeEditModal = () => {
-    setIsEditModalOpen(false);
-  };
-
-  const handleDelete = () => {
-    setRecursos(recursos.filter(item => item.id !== selectedAlumnoId));
-    closeEditModal();
-  };
-
-  const handleSave = () => {
-    // Aquí puedes agregar la lógica para guardar los cambios
-    console.log('Save changes for item with id:', selectedAlumnoId);
-    closeEditModal();
-  };
+  const navigate = useNavigate();
 
   //Funcion que imprime los datos de los alumnos en la tabla
   const operacionDeImpresionBusquedaYFiltro = () => {
     const url = "http://localhost:3000/alumnos/searchAlumnos";
+    const token = localStorage.getItem('token');
     //Inicia objeto que va a mandar los datos a la API
     let data = {
       nombre_busqueda: "",
@@ -86,7 +65,10 @@ export default function Alumnos() {
     //Envia la consulta a la API
     fetch(url, {
       method: "POST",
-      headers: { "Content-Type": "application/json"},
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
       body: JSON.stringify(data)
     })
     //Si hay error, imprime esto
@@ -102,8 +84,66 @@ export default function Alumnos() {
     })
     .catch(error => {
       setError(error.message);
+      authentificateUser();
     });
   }
+
+  const authentificateUser = async () => {
+    const token = localStorage.getItem('token');
+    if (!token || !isLoggedIn) {          
+      Swal.fire({
+        title: "Error",
+        text: "Usted no ha iniciado sesión",
+        icon: "error",
+      });
+      navigate('/')
+      return false;
+    } else {
+      const idUsuario = localStorage.getItem('idUser');
+      const url = `http://localhost:3000/usersJWT/verify/${idUsuario}`;
+      
+      try{
+        const response = await fetch(url, {
+          headers: { Authorization: `Bearer ${token}` }
+        })
+
+        if (!response.ok) {
+          const errorMessage = await respuesta.text(); 
+          Swal.fire({
+            title: 'Error',
+            text: 'Error inesperado. Inténtalo de nuevo más tarde.',
+            icon: 'error',
+            confirmButtonText: 'Aceptar'
+          });
+          localStorage.removeItem('token');
+          localStorage.removeItem('idUser');
+          localStorage.removeItem('typeUser')
+          navigate('/');
+          return;
+        }
+        else {
+          console.log("Token vigente");
+        }
+      }catch(error){
+        Swal.fire({
+          title: 'Error',
+          text: 'Token expirado, vuelva a iniciar sesion',
+          icon: 'error',
+          confirmButtonText: 'Aceptar'
+        });
+        console.log("Token expirado")
+        localStorage.removeItem('token');
+        localStorage.removeItem('idUser');
+        localStorage.removeItem('typeUser')
+        navigate('/')
+        return;
+      }
+    }
+  }
+
+  useEffect(()=>{
+    authentificateUser();
+  },[])
 
   //Al cargar la page, ejecuta la funcion
   useEffect(()=>{
@@ -168,7 +208,7 @@ export default function Alumnos() {
             {//Imprime los datos del recurso obtenido, por for each
               recursos.length > 0 ? (
               recursos.map((recurso) => (
-                <FilaDate key={recurso.id} idAlumno={recurso.id} noControlAlumno={recurso.noControl} nombreAlumno={recurso.nombre} apellidoPAlumno={recurso.apellido_p} apellidoMAlumno={recurso.apellido_m} gradoAlumno={recurso.grado} grupoAlumno={recurso.grupo} turnoAlumno={recurso.turno} estatusAlumno={recurso.tipo_estatus} />
+                <FilaDate key={recurso.id} idAlumno={recurso.id} noControlAlumno={recurso.noControl} nombreAlumno={recurso.nombre} apellidoPAlumno={recurso.apellido_p} apellidoMAlumno={recurso.apellido_m} gradoAlumno={recurso.grado} grupoAlumno={recurso.grupo} turnoAlumno={recurso.turno} estatusAlumno={recurso.tipo_estatus} autenticar={authentificateUser} />
               ))
             ) : (
               <tr>

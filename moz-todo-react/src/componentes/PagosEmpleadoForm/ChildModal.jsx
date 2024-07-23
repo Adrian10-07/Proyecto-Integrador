@@ -7,12 +7,9 @@ import { useNavigate } from 'react-router-dom';
 import './ChildModal.css'; // Importa la hoja de estilos
 import Logo2 from './AssetsDAlumn/Logo2.png';
 import { FaUserEdit } from "react-icons/fa";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {faPenToSquare} from '@fortawesome/free-solid-svg-icons';
-import { IoCloseCircleSharp } from "react-icons/io5"; //<IoCloseCircleSharp />
-import { MdOutlineEditNote } from "react-icons/md";
+import Swal from 'sweetalert2';
   
-export default function NestedModal({ valueId }) {
+export default function NestedModal({ valueId, autentificacion }) {
   const [open, setOpen] = useState(false);
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
@@ -26,9 +23,15 @@ export default function NestedModal({ valueId }) {
   };
 
   const imprimirDatoDeUnAlumno = async () => {
+    const token = localStorage.getItem('token');
     const url = 'http://localhost:3000/alumnos';
 
-    fetch(`${url}/${valueId}`)
+    fetch(`${url}/${valueId}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+    })
       .then(response => {
         if (!response.ok) {
           throw new Error('Error al imprimir los alumnos: ' + response.status);
@@ -41,6 +44,7 @@ export default function NestedModal({ valueId }) {
       .catch(error => {
         console.error('Error fetching data:', error);
         setError(error.message);
+        autentificacion();
       });
   };
 

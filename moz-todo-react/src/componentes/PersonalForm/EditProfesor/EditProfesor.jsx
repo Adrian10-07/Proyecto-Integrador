@@ -1,19 +1,28 @@
 import * as React from 'react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { FiSave } from "react-icons/fi";
 import { MdOutlineCancel } from "react-icons/md";
 import FilaMateria from './FilaMateria/FilaMateria';
+import { LogInfoContext } from '../../../LogInfo';
 //import Logo2 from '../AlumnosForm/Alum-Add/AggAssets/Logo2.png';
 import Swal from 'sweetalert2';
 import './EditProfesor.css';
 
 export default function EditProfesor (){
     const location = useLocation();
+    const { isLoggedIn, setIsLoggedIn } = useContext(LogInfoContext);
     const [coincidencias, setCoincidencias] = useState([]);
     const [dataMat, setDataMat] = useState([]);
     const [error, setError] = useState(null);
     const { data } = location.state || {};
+    const navigate = useNavigate();
+    if (!data) {
+        setTimeout(() => {
+            navigate('/empleados');
+        }, 1000);
+        return <div>No data available</div>;
+    } else
     console.log(data.id)
 
     const handleSaveClick = () => {
@@ -47,12 +56,6 @@ export default function EditProfesor (){
           })
     }
 
-    if (!data) {
-        return <div>No data available</div>;
-    }
-
-    const navigate = useNavigate();
-
     const comprobarSiEsNumero = (cadenaAAnalizar) => {
         var valoresAceptados = /^[0-9]+$/;
         if (valoresAceptados.test(cadenaAAnalizar)){
@@ -77,6 +80,7 @@ export default function EditProfesor (){
 
     const comprobarSiExisteElMaestro = async (nombreEmpleado, apellidoPEmpleado, apellidoMEmpleado) => {
         const url = `http://localhost:3000/empleados/comprobarProfesores`;
+        const token = localStorage.getItem('token');
 
         const comprobarProfe = {
             nombreComp : nombreEmpleado, 
@@ -87,7 +91,10 @@ export default function EditProfesor (){
         try {
             const response = await fetch(url, {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
                 body: JSON.stringify(comprobarProfe)
             });
     
@@ -114,6 +121,7 @@ export default function EditProfesor (){
 
     const actualizarMaestro = async () => {
             const url = `http://localhost:3000/empleados/updateProfesor/${data.id}`
+            const token = localStorage.getItem('token');
 
             let dato = {
                 nombre : "", 
@@ -188,7 +196,10 @@ export default function EditProfesor (){
 
                 fetch(url, {
                     method: "PUT",
-                    headers: { "Content-Type": "application/json" },
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`,
+                    },
                     body: JSON.stringify(dato)
                 })
                 .then(response => {
@@ -230,6 +241,7 @@ export default function EditProfesor (){
                         icon: "error",
                         timer: 1000
                     });
+                    authentificateUser()
                     return false;
                 });
             }   
@@ -237,8 +249,14 @@ export default function EditProfesor (){
 
     const imprimirMateriasDelProfesor = () => {
         const url = `http://localhost:3000/empleados/showMat`
+        const token = localStorage.getItem('token');
 
-        fetch(`${url}/${data.id}`)
+        fetch(`${url}/${data.id}`, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+        })
         .then(response => {
             if (!response.ok) {
               throw new Error('Error al imprimir los datos del profesor: ' + response.status);
@@ -251,11 +269,13 @@ export default function EditProfesor (){
         .catch(error => {
             console.error('Error fetching data:', error);
             setError(error.message);
+            authentificateUser();
         });
     }
 
     const agregarMateria = () => {
         const url = `http://localhost:3000/empleados/materias`
+        const token = localStorage.getItem('token');
 
         let dataMateria = {
             idMateria : "",
@@ -274,14 +294,17 @@ export default function EditProfesor (){
                     icon: "error",
                     timer: 1000
                 });
-                return; // Salir de la función si la materia ya está asignada
+                return; 
             }
 
             dataMateria.idMateria = registrarMateria;
 
             fetch(url, {
                 method: "POST",
-                headers: { "Content-Type": "application/json"},
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
                 body: JSON.stringify(dataMateria)
             })
             .then(response => {
@@ -297,9 +320,80 @@ export default function EditProfesor (){
             })
             .catch(error => {
                 setError(error.message);
+                authentificateUser();
             });
         }
     }
+
+    const authentificateUser = async () => {
+        const token = localStorage.getItem('token');
+        if (!token || !isLoggedIn) {          
+          Swal.fire({
+            title: "Error",
+            text: "Usted no ha iniciado sesión",
+            icon: "error",
+          });
+          navigate('/')
+          return false;
+        } else {
+          const idUsuario = localStorage.getItem('idUser');
+          const url = `http://localhost:3000/usersJWT/verify/${idUsuario}`;
+          
+          try{
+            const response = await fetch(url, {
+              headers: { Authorization: `Bearer ${token}` }
+            })
+    
+            if (!response.ok) {
+              const errorMessage = await respuesta.text(); 
+              Swal.fire({
+                title: 'Error',
+                text: 'Error inesperado. Inténtalo de nuevo más tarde.',
+                icon: 'error',
+                confirmButtonText: 'Aceptar'
+              });
+              localStorage.removeItem('token');
+              localStorage.removeItem('idUser');
+              localStorage.removeItem('typeUser')
+              navigate('/');
+              return;
+            }
+            else {
+              console.log("Token vigente");
+            }
+          }catch(error){
+            Swal.fire({
+              title: 'Error',
+              text: 'Token expirado, vuelva a iniciar sesion',
+              icon: 'error',
+              confirmButtonText: 'Aceptar'
+            });
+            console.log("Token expirado")
+            localStorage.removeItem('token');
+            localStorage.removeItem('idUser');
+            localStorage.removeItem('typeUser')
+            navigate('/')
+            return;
+          }
+        }
+        const tipoUsuario = localStorage.getItem('typeUser');
+        if(tipoUsuario == "employe"){
+            Swal.fire({
+                title: 'Error',
+                text: 'Ups, usted no tiene permitido estar aquí',
+                icon: 'error',
+                confirmButtonText: 'Aceptar'
+            })
+            setTimeout(() => {
+                navigate('/inicio');
+            }, 1000);
+        }
+    }
+    
+      //Al cargar la page, ejecuta la funcion
+    useEffect(()=>{
+        authentificateUser();
+    }, []);
 
     useEffect(() => {
         imprimirMateriasDelProfesor();
@@ -354,7 +448,7 @@ export default function EditProfesor (){
                                 {!dataMat.length && <tr><td>No imparte ninguna Materia</td></tr>}
                                 {!error && dataMat.length > 0 && (
                                     dataMat.map((materia, index) => (
-                                        <FilaMateria key={index} idProfesor={data.id} idMateria={materia.id} nombreMateria={materia.nombre} actualizar={imprimirMateriasDelProfesor}/>
+                                        <FilaMateria key={index} idProfesor={data.id} idMateria={materia.id} nombreMateria={materia.nombre} actualizar={imprimirMateriasDelProfesor} autentificar={authentificateUser}/>
                                     ))
                                 )}
                                 <tr>
