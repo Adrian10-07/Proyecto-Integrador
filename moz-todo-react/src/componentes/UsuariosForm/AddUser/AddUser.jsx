@@ -5,6 +5,8 @@ import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 import { IoSearchSharp } from 'react-icons/io5';
 import { LogInfoContext } from '../../../LogInfo';
+import './AddUser.css'
+import HeaderPaginas from '../../HeaderForm/HeaderPaginas/HeaderPaginas';
 
 export default function AddUser (){
     const [namePersonal, setNamePersonal] = useState([]);
@@ -323,37 +325,39 @@ export default function AddUser (){
             </header>
 
             <div className='Inputadd'>
-                    <p>Crear</p>
-                <div className='pagoPersonal'>
-                    <div className='box_personal'>
-                        <input type="text" placeholder='Nombre del usuario' id='inputUserName' maxLength={35}/>
-                        <select id="selectTipo">
-                            <option value={0}>Seleccionar tipo de usuario</option>
-                            <option value={"employe"}>Personal</option>
-                            <option value={"admin"}>Administrador</option>
-                        </select>
-                    </div>
+    <p>Crear</p>
+    <div className='pagoPersonal'>
+        <div className='box_personal'>
+            <input type="text" placeholder='Nombre del usuario' id='inputUserName' maxLength={35}/>
+            <select id="selectTipo">
+                <option value={0}>Seleccionar tipo de usuario</option>
+                <option value={"employe"}>Personal</option>
+                <option value={"admin"}>Administrador</option>
+            </select>
+        </div>
 
-                    <div className='searchPersonal'>
-                        <input type='text' placeholder='Nombre' id='inputPersonalName' maxLength={45}/>
-                        <input type="text" placeholder='apellido paterno' id='inputPersonalApellidop' maxLength={45}/>
-                        <input type="text" placeholder='apelllido materno' id='inputPersonalApellidom' maxLength={45}/>
-                        <button className='Buscar' onClick={optionPersonal}>< IoSearchSharp />Buscar</button>
-                    </div>
-                    <div className='searchPersonal'>
-                        <select name='nombre' id="inputIdPersonal">
-                            <option value={"not valid"}>Personal</option>
-                            {namePersonal.map(elemento => (
-                                <option key={elemento.id} value={elemento.id}>{elemento.nombre} {elemento.apellido_p} {elemento.apellido_m}</option>
-                            ))}
-                        </select>
-                    </div>
-                    <div>
-                        <input type='password' placeholder='Contraseña' id='inputPassword' maxLength={20}/>
-                        <input type='password' placeholder='Confirmar' id="inputCPassword" maxLength={20}/>
-                    </div>
-                </div>
-            </div>
+        <div className='searchPersonal'>
+            <input type='text' placeholder='Nombre' id='inputPersonalName' maxLength={45}/>
+            <input type="text" placeholder='Apellido Paterno' id='inputPersonalApellidop' maxLength={45}/>
+            <input type="text" placeholder='Apellido Materno' id='inputPersonalApellidom' maxLength={45}/>
+            <button className='Buscar' onClick={optionPersonal}><IoSearchSharp />Buscar</button>
+        </div>
+
+        <div className='searchPersonal'>
+            <select name='nombre' id="inputIdPersonal">
+                <option value={"not valid"}>Personal</option>
+                {namePersonal.map(elemento => (
+                    <option key={elemento.id} value={elemento.id}>{elemento.nombre} {elemento.apellido_p} {elemento.apellido_m}</option>
+                ))}
+            </select>
+        </div>
+
+        <div className='Passwordd'>
+            <input type='password' placeholder='Contraseña' id='inputPassword' maxLength={20}/>
+            <input type='password' placeholder='Confirmar' id="inputCPassword" maxLength={20}/>
+        </div>
+    </div>
+</div>
             <div className='botones'>
                 <button onClick={handleCancelClick} className='uno'><MdOutlineCancel className='icon-cancel' /></button>
                 <button onClick={handleSaveClick} className='dos'><FiSave className='icon-save' /></button>

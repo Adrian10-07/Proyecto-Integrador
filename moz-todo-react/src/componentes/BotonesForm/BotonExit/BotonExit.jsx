@@ -3,9 +3,9 @@ import { ImExit } from "react-icons/im";
 import { LogInfoContext } from "../../../LogInfo";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import './ButtonLogout.css'
+import './BotonExit.css'
 
-export default function ButtonLogout (){
+export default function BotonExit (){
     const { isLoggedIn, setIsLoggedIn } = useContext(LogInfoContext);
     const navigate = useNavigate();
 

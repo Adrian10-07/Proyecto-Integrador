@@ -9,8 +9,17 @@ import { Link } from 'react-router-dom';
 import { LogInfoContext } from '../../LogInfo';
 import Swal from 'sweetalert2';
 import './Tramites.css';
+import HeaderPaginas from '../HeaderForm/HeaderPaginas/HeaderPaginas';
+import BotonExit from '../BotonesForm/BotonExit/BotonExit';
+import BotonInicio from '../BotonesForm/BotonInicio/BotonInicio';
+import { useNavigate } from 'react-router-dom';
+
+
+
 
 export default function Tramites() {
+  const navigate = useNavigate();
+  
   const [recursos, setRecursos] = useState([]); //Necesario para obtener recursos
   const [error, setError] = useState(null); //Indica error al obtener recursos
   const { isLoggedIn, setIsLoggedIn } = useContext(LogInfoContext);
@@ -155,13 +164,12 @@ export default function Tramites() {
 
   return (
     <div>
-      <div className='header-Pagos'>
-        <Link to={'/inicio'}>
-          <button className='home-left-button-pagos'><LuHome className='icon-home-pagos' /></button>
-        </Link>
-        
-        <div className='content'>Trámites</div>
-        <button className='exit-right-button-pagos'><ImExit className='icon-exit-pagos' /></button>
+      <div >
+
+        <HeaderPaginas title={"Tramites"}/>
+        <BotonExit/>
+        <BotonInicio/>
+
       </div>
 
       <div className='search-container-pagos'>

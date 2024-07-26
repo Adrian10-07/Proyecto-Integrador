@@ -6,6 +6,7 @@ import { MdOutlineCancel } from "react-icons/md";
 import Swal from 'sweetalert2'
 import { useNavigate } from 'react-router-dom';
 import { LogInfoContext } from '../../../LogInfo';
+import HeaderPaginas from '../../HeaderForm/HeaderPaginas/HeaderPaginas';
 
     
 
@@ -327,15 +328,15 @@ export default function AggAlumno() {
 
     return (
     <div>
-        <header className='header'>
-            <img src={Logo2} alt="Left" className='header-image-left' />
-            <h1>             Datos del Alumno
-            </h1>
-             <img src={Logo2} alt="Left" className='header-image-rigth' />
 
-        </header>
+        <div>
+            <HeaderPaginas title={"Registrar Alumno"}/>
+
+        </div>
+
 
         <div className='Inputsagg'>
+
         <div className='D-Alumno'>
                     <p id='CO'>Campos obligatorios:</p>
                     <div className='con1'>
@@ -357,12 +358,12 @@ export default function AggAlumno() {
                         <input type="tel" placeholder='Telefono*' id='inputTelefono' maxLength={12}/>
                         <input type="email" placeholder='Correo Electronico*' id='inputCorreo' maxLength={45} />
                         <input type="text" placeholder='CURP*' id='inputCurp' maxLength={18}/>
-                    </div>
-                    <div className='con4'>
                         <input type="text" placeholder='Nivel académico actual' id='inputlvlAcademic' maxLength={45}/>
                     </div>
+
                 </div>
                 <div>
+                    <br />
                     <h2>Datos del Tutor</h2>
                     <div className='D-Tutor'>
                         <input type="text" placeholder='Nombre*' id='inputNombreTutor' maxLength={45}/>
@@ -372,6 +373,7 @@ export default function AggAlumno() {
                     </div>
                 </div>
                 <div>
+                    <br />
                     <h2>Datos del Examen de Diagnostico del curso Pre-universitario</h2>
                     <div className='D-Diagnostico'>
                         <h4>Examen Diagnostico Ceneval "EXANII II"</h4>
@@ -380,22 +382,23 @@ export default function AggAlumno() {
                             <input type="text" placeholder='Universidad a la que aplica' id='inputUniversidadAspira' maxLength={45}/>
                             <input type="text" placeholder='Carrera a la que aplica' id='inputCarreraAspira' maxLength={45}/>
                         </div>
-                        <div className='con1'>
+                        <div className='con3'>
                             <label>Fecha de inicio del curso</label>
                             <input type='date' id='inputFechaCurso' />
                             <label>Fecha del examen de Diagnostico</label>
                             <input type='date' id='inputFechaExamen' />
                         </div>
+                        <br />
                         <h4>Puntajes del examen</h4>
                         <div className='con5'>
                             <input type="number" placeholder='Pensamiento Matematico' id='inputMatScore' max={100} min={0}/>
                             <input type="number" placeholder='Pensamiento Analitico' id='inputAnalitScore' max={100} min={0}/>
                             <input type="number" placeholder='Estructura de la lengua' id='inputLangScore' max={100} min={0}/>
                             <input type="number" placeholder='Comprension Lectora' id='inputLectScore' max={100} min={0}/>
-                        </div>
-                        <div className='con6'>
                             <input type="number" placeholder='Puntaje general' id='inputGenScore' max={100} min={0}/>
+
                         </div>
+
                     </div>
                 </div>
             <div className='botones'>

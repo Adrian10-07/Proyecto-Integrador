@@ -7,6 +7,10 @@ import CardsOptions from './CardsInicio/CardsOptions';
 import { LogInfoContext } from '../../LogInfo';
 import Swal from 'sweetalert2'
 import { useNavigate } from 'react-router-dom';
+import HeaderPaginas from '../HeaderForm/HeaderPaginas/HeaderPaginas';
+import BotonExit from '../BotonesForm/BotonExit/BotonExit';
+
+
 
 export default function Inicio() {
   const { isLoggedIn, setIsLoggedIn } = useContext(LogInfoContext);
@@ -67,72 +71,23 @@ export default function Inicio() {
     }
   }
 
-  const cerrarSesion = () => {
-    Swal.fire({
-      title: "¿Desea cerrar la sesión?",
-      showCancelButton: true,
-      confirmButtonText: "Salir",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        setTimeout(() => {
-          navigate('/');
-        }, 1000);
-        localStorage.removeItem('token');
-        localStorage.removeItem('idUser');
-        localStorage.removeItem('typeUser');
-        setIsLoggedIn(false);
-      }
-    });
-  }
-  
   useEffect(()=>{
     authentificateUser();
   }, []);
 
   const tipoUsuario = localStorage.getItem('typeUser');
   if(tipoUsuario == "employe"){
-    return (
-    <div className='menu'>
 
-      <div className='header'>
-          <header>
-            <h1>Instituto Montebello</h1>
-
-              <button className='menu-exit' onClick={cerrarSesion}><ImExit className='icon-exit'/></button>            
-
-          </header>
-      </div>
-        
-      <div className='content-cards'>
-        <CardsOptions
-          icono={faUserGraduate} action={"Alumnos"} widhtFont={90} enlace={'/alumnos'}
-        />
-        <CardsOptions
-          icono={faChalkboardUser} action={"Empleados/ Profesores"} widhtFont={90} enlace={'/empleados'}
-        />
-        <CardsOptions
-          icono={faMoneyBill} action={"Informes de pago de trámites"} widhtFont={90} enlace={'/tramites'}
-        />
-      </div>
-
-    </div>
-    );
   }
 
   return (
+    
     <div className='menu'>
-
-      <div className='header'>
-          <header>
-            <h1>Instituto Montebello</h1>
-
-            
-              <button className='menu-exit' onClick={cerrarSesion}><ImExit className='icon-exit'/></button>
-            
-
-          </header>
+      <div>
+        <HeaderPaginas title={"Instituto Montebello"}/>
+        <BotonExit/>
       </div>
-        
+
       <div className='content-cards'>
           <CardsOptions
             icono={faCircleUser} action={"Usuarios"} widhtFont={100} enlace={'/usuarios'}
@@ -141,12 +96,15 @@ export default function Inicio() {
         <CardsOptions
           icono={faUserGraduate} action={"Alumnos"} widhtFont={90} enlace={'/alumnos'}
         />
+
         <CardsOptions
           icono={faChalkboardUser} action={"Empleados/ Profesores"} widhtFont={90} enlace={'/empleados'}
         />
+
         <CardsOptions
           icono={faMoneyBill} action={"Informes de pago de trámites"} widhtFont={90} enlace={'/tramites'}
         />
+
         <CardsOptions
           icono={faMoneyBill} action={"Informes de pago del personal"} widhtFont={90} enlace={'/pagosEmp'}
         />

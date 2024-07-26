@@ -4,6 +4,8 @@ import { FiSave } from "react-icons/fi";
 import { MdOutlineCancel } from "react-icons/md";
 import Swal from 'sweetalert2';
 import { LogInfoContext } from "../../../LogInfo";
+import HeaderPaginas from "../../HeaderForm/HeaderPaginas/HeaderPaginas";
+import './EditUser.css'
 
 export default function EditUser (){
     const location = useLocation();
@@ -332,54 +334,57 @@ export default function EditUser (){
     
     return (
         <div>
-            <header className='header'>
-                Editar información del Usuario
-            </header>
-
-            <div className='Inputadd'>
-                <p>Crear</p>
-                <div className='pagoPersonal'>
-                    <div className='box_personal'>
-                        <input 
-                            type="text" 
-                            placeholder='Nombre del usuario' 
-                            id='inputUserName' 
-                            maxLength={35}
-                            value={newName}
-                            onChange={(e) => setNewName(e.target.value)}
-                        />
-                        <button onClick={editarNombre}>Cambiar nombre</button>
-                        <select 
-                            id="selectTipo"
-                            value={newTipo}
-                            onChange={(e) => setNewTipo(e.target.value)}
-                        >
-                            <option value={""}>Seleccionar tipo de usuario</option>
-                            <option value={"employe"}>Personal</option>
-                            <option value={"admin"}>Administrador</option>
-                        </select>
-                        <button onClick={editarTipo}>Cambiar tipo de usuario</button>
-                    </div>
-                    <div>
-                        <input 
-                            type='password' 
-                            placeholder='Contraseña' 
-                            id='inputPassword' 
-                            maxLength={20}
-                            value={newPwd}
-                            onChange={(e) => setNewPwd(e.target.value)}
-                        />
-                        <input 
-                            type='password' 
-                            placeholder='Confirmar' 
-                            id="inputCPassword" 
-                            maxLength={20}
-                            value={confirmPwd}
-                            onChange={(e) => setConfirmPwd(e.target.value)}
-                        />
-                    </div>
-                </div>
+            <div>
+                <HeaderPaginas title={"Editar Usuario"}/>
             </div>
+
+
+            <div className='EditUser'>
+    <div className='Edit'>
+        <div className='editU'>
+            <input 
+                type="text" 
+                placeholder='Nombre del usuario' 
+                id='inputUserName' 
+                maxLength={35}
+                value={newName}
+                onChange={(e) => setNewName(e.target.value)}
+            />
+            <button onClick={editarNombre}>Cambiar nombre</button>
+        </div>
+        <div className='editU'>
+            <select 
+                id="selectTipo"
+                value={newTipo}
+                onChange={(e) => setNewTipo(e.target.value)}
+            >
+                <option value={""}>Seleccionar tipo de usuario</option>
+                <option value={"employe"}>Personal</option>
+                <option value={"admin"}>Administrador</option>
+            </select>
+            <button onClick={editarTipo}>Cambiar tipo de usuario</button>
+        </div>
+        <div className='editU'>
+            <input 
+                type='password' 
+                placeholder='Contraseña' 
+                id='inputPassword' 
+                maxLength={20}
+                value={newPwd}
+                onChange={(e) => setNewPwd(e.target.value)}
+            />
+            <input 
+                type='password' 
+                placeholder='Confirmar' 
+                id="inputCPassword" 
+                maxLength={20}
+                value={confirmPwd}
+                onChange={(e) => setConfirmPwd(e.target.value)}
+            />
+        </div>
+    </div>
+</div>
+
             <div className='botones'>
                 <button onClick={handleCancelClick} className='uno'><MdOutlineCancel className='icon-cancel' /></button>
                 <button onClick={handleSaveClick} className='dos'><FiSave className='icon-save' /></button>

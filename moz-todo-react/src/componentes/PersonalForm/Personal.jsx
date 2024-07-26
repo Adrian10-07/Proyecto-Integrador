@@ -10,7 +10,9 @@ import FilaProfesor from "./FilaProfesores/FilaProfesor";
 import { LogInfoContext } from "../../LogInfo";
 import Swal from 'sweetalert2'
 import './Personal.css';
-
+import HeaderPaginas from "../HeaderForm/HeaderPaginas/HeaderPaginas";
+import BotonExit from "../BotonesForm/BotonExit/BotonExit";
+import BotonInicio from "../BotonesForm/BotonInicio/BotonInicio";
 
 export default function Personal (){
     const [dataPer, setDataPer] = useState([]);
@@ -223,18 +225,11 @@ export default function Personal (){
     const tipoUsuario = localStorage.getItem('typeUser');
     if(tipoUsuario == "employe"){
         return(
+        <div>
             <div>
-            <div className='header-Personal'>
-                <Link to={'/inicio'}>
-                    <button className='home-left-button-personal'><LuHome className='icon-home-personal' /></button>
-                </Link>
+
         
-            <div className='content-personal'>Personal y Maestros</div>
-            <a href={'/'}>
-                <button className='exit-right-button-personal'><ImExit className='icon-exit-personal' /></button>
-            </a>
-        
-        </div>
+            </div>
 
         <div className='search-container-personal'>
             <input type="search-A" placeholder='Nombre' id='search-container-personalMaestro-inputSearchName'/>
@@ -320,17 +315,13 @@ export default function Personal (){
 
     return(
         <div>
-            <div className='header-Personal'>
-                <Link to={'/inicio'}>
-                    <button className='home-left-button-personal'><LuHome className='icon-home-personal' /></button>
-                </Link>
+            <div>   
+                <HeaderPaginas title={"Empleados y Maestros"}/>
+                <BotonExit/>
+                <BotonInicio/>
+
         
-            <div className='content-personal'>Personal y Maestros</div>
-            <a href={'/'}>
-                <button className='exit-right-button-personal'><ImExit className='icon-exit-personal' /></button>
-            </a>
-        
-        </div>
+            </div>
 
         <div className='search-container-personal'>
             <input type="search-A" placeholder='Nombre' id='search-container-personalMaestro-inputSearchName'/>

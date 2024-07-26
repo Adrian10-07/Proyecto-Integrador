@@ -6,15 +6,7 @@ body {
     padding: 0;
 }
 
-.header {
-    background-color: rgba(31, 145, 168, 1);
-    color: white;
-    padding: 50px 0;
-    text-align: center;
-    font-size: 40px;
-    font-weight: bold;
-    position: relative;
-}
+
 
 .image-add-right {
     height: 100px;

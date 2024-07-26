@@ -1,8 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { IoMdPersonAdd } from "react-icons/io";
-import { FaUserEdit } from "react-icons/fa";
-import { LuHome } from "react-icons/lu";
-import { ImExit, ImIcoMoon } from "react-icons/im";
+
 import { MdNoteAdd } from "react-icons/md";
 import { IoSearchSharp } from "react-icons/io5";
 import { FaFilter } from "react-icons/fa";
@@ -10,6 +7,13 @@ import FilasPagosEmp from './FilasPagos/FilasPagosEmp';
 import Swal from 'sweetalert2';
 import { LogInfoContext } from '../../LogInfo';
 import { Link, useNavigate } from 'react-router-dom';
+import HeaderPaginas from '../HeaderForm/HeaderPaginas/HeaderPaginas';
+import BotonExit from '../BotonesForm/BotonExit/BotonExit';
+import BotonInicio from '../BotonesForm/BotonInicio/BotonInicio';
+import './PagoEmpleados.css'
+
+
+
 
 
 export default function PagoEmpleados() {
@@ -193,16 +197,15 @@ export default function PagoEmpleados() {
 
   return (
     <div>
-      <div className='header-Pagos'>
-        <Link to={'/inicio'}>
-          <button className='home-left-button-pagos'><LuHome className='icon-home-pagos' /></button>
-        </Link>
-        
-        <div className='content'>Pagos de empleados</div>
-        <button className='exit-right-button-pagos'><ImExit className='icon-exit-pagos' /></button>
+      <div>
+
+        <HeaderPaginas title={"Pago de Empleados"}/>
+        <BotonExit/>
+        <BotonInicio/>
+
       </div>
 
-      <div className='search-container-pagos'>
+      <div className='search-container-pagos-empleados'>
         <input type='search-A' placeholder='Nombre' id='search-container-pagos-inputSearchNombre'/>
         <input type='search-A' placeholder='Ape. P.' id='search-container-pagos-inputSearchApellidoP'/>
         <input type="search-A" placeholder='Ape. M' id='search-container-pagos-inputSearchApellidoM'/>
@@ -211,14 +214,14 @@ export default function PagoEmpleados() {
         <button id='search-container-pagos-aplicarBusqueda' onClick={buscarOFiltrar}><IoSearchSharp /></button>
 
         <a href={'/addPer'}>
-          <button className='add-pago'>PagoEmpleado< MdNoteAdd /></button>
+          <button className='add-pago-empleados'>Pago_Empleado< MdNoteAdd /></button>
         </a>
         <a href={'/addPro'}>
-          <button className='add-pago'>PagoMaestro< MdNoteAdd /></button>
+          <button className='add-pago-empleados'>Pago_Maestro< MdNoteAdd /></button>
         </a>
       </div>
 
-      <div className='search-container-pagos'>
+      <div className='search-container-pagos-empleados'>
         <select id='search-container-pagos-estatus'>
           <option id='status-pago' value="">Seleccionar estatus</option>
           <option value={1}>Pendiente</option>
@@ -229,7 +232,7 @@ export default function PagoEmpleados() {
         <button id='filter-pago' onClick={buscarOFiltrar}><FaFilter /></button>
       </div>
 
-      <div className='table-tramites'>
+      <div className='table-tramites-empleados'>
         <table>
           <thead>
             <tr> 

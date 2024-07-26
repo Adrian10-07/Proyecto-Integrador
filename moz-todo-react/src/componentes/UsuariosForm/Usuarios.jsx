@@ -3,11 +3,15 @@ import { IoMdPersonAdd } from "react-icons/io";
 import { FaUserEdit } from "react-icons/fa";
 import { LuHome } from "react-icons/lu";
 import { ImExit } from "react-icons/im";
+import { FaUserPlus } from "react-icons/fa6";
 import { Link, useNavigate } from 'react-router-dom';
 import FilaUsuarios from './FilaUsuarios/FilaUsuarios';
 import Swal from 'sweetalert2';
 import { LogInfoContext } from '../../LogInfo';
 import './Usuarios.css';
+import HeaderPaginas from '../HeaderForm/HeaderPaginas/HeaderPaginas';
+import BotonExit from '../BotonesForm/BotonExit/BotonExit';
+import BotonInicio from '../BotonesForm/BotonInicio/BotonInicio';
 
 const TableComponent = () => {
   const [error, setError] = useState(null);
@@ -118,18 +122,17 @@ const TableComponent = () => {
 
   return (
     <div>
-      <div className='header'>
-        <Link to={'/inicio'}>
-          <button className='home-left-button'><LuHome className='icon-home' /></button>
-        </Link>
-        <div className='header-content'>Usuarios</div>
-        <button className='header-right-button'><ImExit className='icon-exit' /></button>
+      <div>
+        <HeaderPaginas title={"Usuarios"}/>
+        <BotonExit/>
+        <BotonInicio/>
       </div>
 
-      <div>
+      <div >
         <Link to={"/aggUsers"}>
-          <button>Agregar</button>
+          <button className='add-user'><FaUserPlus/></button>
         </Link>
+
       </div>
 
       <div className='table'>      

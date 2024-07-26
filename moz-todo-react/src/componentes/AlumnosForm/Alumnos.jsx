@@ -10,6 +10,9 @@ import { FaFilter } from "react-icons/fa";
 import './Alumnos.css';
 import { IoSearchSharp } from "react-icons/io5";
 import { LogInfoContext } from '../../LogInfo';
+import HeaderPaginas from '../HeaderForm/HeaderPaginas/HeaderPaginas';
+import BotonExit from '../BotonesForm/BotonExit/BotonExit';
+import BotonInicio from '../BotonesForm/BotonInicio/BotonInicio';
 
 export default function Alumnos() {
   const [data, setData] = useState([]);
@@ -152,15 +155,12 @@ export default function Alumnos() {
 
   return (
     <div>
-      <div className='header-Alumnos'>
-        <Link to={'/inicio'}>
-          <button className='home-left-button'><LuHome className='icon-home' /></button>
-        </Link>
-        
-        <div className='content'>Alumnos</div>
-        <a href={'/'}>
-          <button className='exit-right-button'><ImExit className='icon-exit' /></button>
-        </a>
+      <div>
+        <HeaderPaginas title={"Alumnos"}/>
+        <BotonExit/>
+        <BotonInicio/>
+
+
         
       </div>
 
