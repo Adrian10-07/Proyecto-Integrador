@@ -35,7 +35,6 @@ export default function EditUser (){
         const token = localStorage.getItem('token');
 
         let comprobarUser = {
-            idPersonalAOcupar: "", 
             idNombreAComprobar: userNameComp
         };
 

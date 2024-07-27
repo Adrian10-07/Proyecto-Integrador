@@ -145,7 +145,7 @@ const Usuarios = () => {
               <th>ID</th>
               <th>Nombre de Usuario</th>
               <th>Tipo de Usuario</th>
-              <th>Empleado al que fue Asignado</th>
+              <th>Área del Usuario</th>
             </tr>
           </thead>
           <tbody>

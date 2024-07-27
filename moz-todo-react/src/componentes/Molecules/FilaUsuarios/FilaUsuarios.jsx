@@ -110,7 +110,7 @@ export default function FilaUsuarios ({data, actualizar, autentificar}){
             <td>{data.id}</td>
             <td>{data.nombre_usuario}</td>
             <td>{data.tipo}</td>
-            <td>{data.nombre} {data.apellido_p} {data.apellido_m}</td>
+            <td>{data.nombre_area}</td>
             <td><button onClick={editUser}>Editar</button></td>
             <td><button onClick={handleSaveClick}>Borrar</button></td>
         </tr>

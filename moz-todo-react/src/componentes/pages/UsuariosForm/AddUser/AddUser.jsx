@@ -11,59 +11,15 @@ import './AddUser.css'
 //El formulario, es una plantilla, los botones de guardar y cancelar son dos átomos en sí mismos,
 //Y juntos conforman una molécula, y el conjunto de inputs conformar el ser vivo
 export default function AddUser (){
-    const [namePersonal, setNamePersonal] = useState([]);
     const [coincidencias, setCoincidencias] = useState([]);
     const { isLoggedIn, setIsLoggedIn } = useContext(LogInfoContext);
     const navigate = useNavigate();
 
-    const optionPersonal = () => {
-        const token = localStorage.getItem('token');
-        const url = "http://localhost:3000/PagoEmp/buscarPers";
-
-        let dato = {
-            nombre_busqueda:"",
-            apellido_p_busqueda:"",
-            apellido_m_busqueda:""
-        }
-
-        let buscarPorNombre = document.getElementById("inputPersonalName").value;
-        if(buscarPorNombre)
-            dato.nombre_busqueda = buscarPorNombre;
-        let buscarPorApellidoP = document.getElementById('inputPersonalApellidop').value;
-        if (buscarPorApellidoP) 
-            dato.apellido_p_busqueda = buscarPorApellidoP;
-        let buscarPorApellidoM = document.getElementById('inputPersonalApellidom').value;
-        if (buscarPorApellidoM)
-            dato.apellido_m_busqueda = buscarPorApellidoM;
-
-        fetch(url, {
-            method:'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`,
-            },
-            body:JSON.stringify(dato)
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('No conecta');
-            }
-            return response.json();
-        })
-        .then(data => {
-            setNamePersonal(data);
-        })
-        .catch(error => {
-            console.error('Error fetching data: ', error);
-        });
-    }
-
-    const comprobarSiElUsuarioYaExiste = async (idEmploye, userNameComp) => {
+    const comprobarSiElUsuarioYaExiste = async (userNameComp) => {
         const url = `http://localhost:3000/usersJWT/compUser`
         const token = localStorage.getItem('token');
 
         let comprobarUser = {
-            idPersonalAOcupar : idEmploye, 
             idNombreAComprobar : userNameComp
         }
 
@@ -103,11 +59,11 @@ export default function AddUser (){
 
         let userNombre = document.getElementById("inputUserName").value;
         let tipoUsuario = document.getElementById("selectTipo").value;
-        let personalAsignado = document.getElementById("inputIdPersonal").value;
+        let areaAsignado = document.getElementById("selectArea").value;
         let password = document.getElementById("inputPassword").value;
         let confirmPassword = document.getElementById("inputCPassword").value;
 
-        if(!userNombre || tipoUsuario == 0 || personalAsignado == "not valid" || !password || !confirmPassword){
+        if(!userNombre || tipoUsuario == 0 || areaAsignado == "" || !password || !confirmPassword){
             Swal.fire({
                 title: "Error",
                 text: "Hay campos sin llenar",
@@ -115,7 +71,7 @@ export default function AddUser (){
                 timer: 1000
             });
             return false;
-        } else if (await comprobarSiElUsuarioYaExiste(personalAsignado, userNombre)){
+        } else if (await comprobarSiElUsuarioYaExiste(userNombre)){
             Swal.fire({
                 title: "Error",
                 text: "Al parecer ya hay un usuario con ese nombre, o el personal ya cuenta con un usuario",
@@ -152,13 +108,22 @@ export default function AddUser (){
                     });
                     return false
                 }
+                if(areaAsignado == 5){
+                    Swal.fire({
+                        title: "No autorizado",
+                        text: "No se puede crear un usuario administrador para el área de apoyo Contable y Administrativo",
+                        icon: "error",
+                        timer: 2000                    
+                    });
+                    return false
+                }
             }
 
             let user = {
                 nombre: userNombre, 
                 password: password, 
                 tipo: tipoUsuario, 
-                idpersonal: personalAsignado
+                idpersonal: areaAsignado
             }
 
             fetch(url, {
@@ -315,11 +280,6 @@ export default function AddUser (){
         authentificateUser();
     }, []);
 
-
-    useEffect(() => {
-        optionPersonal();
-    }, []);
-
     return(
         <div >
             <header className='header'>
@@ -339,18 +299,12 @@ export default function AddUser (){
         </div>
 
         <div className='searchPersonal'>
-            <input type='text' placeholder='Nombre' id='inputPersonalName' maxLength={45}/>
-            <input type="text" placeholder='Apellido Paterno' id='inputPersonalApellidop' maxLength={45}/>
-            <input type="text" placeholder='Apellido Materno' id='inputPersonalApellidom' maxLength={45}/>
-            <button className='Buscar' onClick={optionPersonal}><IoSearchSharp />Buscar</button>
-        </div>
-
-        <div className='searchPersonal'>
-            <select name='nombre' id="inputIdPersonal">
-                <option value={"not valid"}>Personal</option>
-                {namePersonal.map(elemento => (
-                    <option key={elemento.id} value={elemento.id}>{elemento.nombre} {elemento.apellido_p} {elemento.apellido_m}</option>
-                ))}
+            <select id="selectArea">
+                <option value="">Seleccionar area del usuario</option>
+                <option value={1}>Dirección General</option>
+                <option value={2}>Dirección Administrativa</option>
+                <option value={3}>Dirección Académica</option>
+                <option value={5}>Apoyo Contable y Administrativo</option>
             </select>
         </div>
 
