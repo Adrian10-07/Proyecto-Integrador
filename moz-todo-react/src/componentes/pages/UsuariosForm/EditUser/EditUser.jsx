@@ -4,9 +4,9 @@ import { FiSave } from "react-icons/fi";
 import { MdOutlineCancel } from "react-icons/md";
 import Swal from 'sweetalert2';
 import { LogInfoContext } from "../../../../LogInfo";
-import HeaderPaginas from "../../../Molecules/HeaderPaginas/HeaderPaginas";
 import './EditUser.css'
-
+import HeaderSubP from "../../../Molecules/HeaderSubP/HeaderSubP";
+import BotonReturn from "../../../Atoms/BotonReturn/BotonReturn";
 //Por un lado, el header o cabecera es una molécula, por su nivel de complejidad, y por el otro,
 //El formulario, es una plantilla, los botones de guardar y cancelar son dos átomos en sí mismos,
 //Y juntos conforman una molécula, y el conjunto de inputs conformar el ser vivo
@@ -337,7 +337,8 @@ export default function EditUser (){
     return (
         <div>
             <div>
-                <HeaderPaginas title={"Editar Usuario"}/>
+                <HeaderSubP title={"Editar Usuario"}/>
+                <BotonReturn/>
             </div>
 
 

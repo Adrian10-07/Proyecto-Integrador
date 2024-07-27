@@ -7,7 +7,8 @@ import Swal from 'sweetalert2';
 import './EditAlum.css';
 import { useState, useContext, useEffect } from 'react';
 import { LogInfoContext } from '../../../../LogInfo';
-
+import HeaderSubP from '../../../Molecules/HeaderSubP/HeaderSubP';
+import BotonReturn from '../../../Atoms/BotonReturn/BotonReturn';
 //Por un lado, el header o cabecera es una molécula, por su nivel de complejidad, y por el otro,
 //El formulario, es una plantilla, los botones de guardar y cancelar son dos átomos en sí mismos,
 //Y juntos conforman una molécula, y el conjunto de inputs conformar el ser vivo
@@ -410,82 +411,114 @@ export default function EditAlum() {
 
   return (
     <div>
-      <header className='header-Edit'>
-            <img src={Logo2} alt="Left" className='image-left-Edit' />
-             Datos del Alumno
-             <img src={Logo2} alt="Left" className='image-rigth-Edit' />
+      <div>
+        <HeaderSubP title={"Editar Datos Alumno"}/>
+        <BotonReturn enlace={'/alumnos'}/>
+      </div>
 
-        </header>
       <div className='Inputsagg'>
-        <div className='D-Alumno'>
-          <p>Siendo los campos con * obligatorios</p>
-          <div className='con1'>
+    <div className='D-Alumno'>
+        <div className='con1'>
+            <label htmlFor='inputNoControl'>No. Control</label>
             <input type='text' placeholder={data.noControl || 'N/A'} id='inputNoControl' maxLength={10}/>
+            <label htmlFor='inputNombre'>Nombre*</label>
             <input type="text" placeholder={data.nombre || 'Nombre*'} id='inputNombre' maxLength={45}/>
+            <label htmlFor='inputApellidoP'>Apellido Paterno*</label>
             <input type="text" placeholder={data.apellido_p || 'Apellido Paterno*'} id='inputApellidoP' maxLength={45}/>
+            <label htmlFor='inputApellidoM'>Apellido Materno*</label>
             <input type="text" placeholder={data.apellido_m || 'Apellido Materno*'} id='inputApellidoM' maxLength={45}/>
-          </div>
-          <div className='con2-Edit'>
+        </div>
+        <div className='con2-Edit'>
+            <label htmlFor='inputGrado'>Grado*</label>
             <input type='number' placeholder={data.grado || 'Grado*'} id='inputGrado'/>
+            <label htmlFor='inputGrupo'>Grupo*</label>
             <input type='text' placeholder={data.grupo || 'Grupo*'} id='inputGrupo' maxLength={1}/>
+            <label htmlFor='inputTurno'>Turno</label>
             <select id='inputTurno'>
-              <option value={0}>Seleccionar Turno</option>
-              <option value={1}>Matutino</option>
-              <option value={2}>Vespertino</option>
+                <option value={0}>Seleccionar Turno</option>
+                <option value={1}>Matutino</option>
+                <option value={2}>Vespertino</option>
             </select>
+            <label htmlFor='inputEstatus'>Estatus</label>
             <select id='inputEstatus'>
-              <option value={0}>Seleccionar Estatus</option>
-              <option value={1}>Activo</option>
-              <option value={2}>Inactivo</option>
-              <option value={3}>Dado de baja</option>
-              <option value={4}>Egresado</option>
+                <option value={0}>Seleccionar Estatus</option>
+                <option value={1}>Activo</option>
+                <option value={2}>Inactivo</option>
+                <option value={3}>Dado de baja</option>
+                <option value={4}>Egresado</option>
             </select>
-          </div>
-          <div className='con2'>
+        </div>
+        <div className='con2'>
+            <label htmlFor='inputTelefono'>Teléfono*</label>
             <input type="number" placeholder={data.telefono || 'Telefono*'} id='inputTelefono' maxLength={12}/>
+            <label htmlFor='inputCorreo'>Correo Electrónico*</label>
             <input type="text" placeholder={data.correo || 'Correo Electronico*'} id='inputCorreo' maxLength={45}/>
+            <label htmlFor='inputCurp'>CURP*</label>
             <input type="text" placeholder={data.curp || 'CURP*'} id='inputCurp' maxLength={18}/>
-          </div>
-          <div className='con4'>
+        </div>
+        <div className='con4'>
+            <label htmlFor='inputlvlAcademic'>Nivel académico actual</label>
             <input type="text" placeholder={data.nivelAcademico || 'Nivel académico actual'} id='inputlvlAcademic' maxLength={45}/>
-          </div>
         </div>
-        <div>
-          <h2>Datos del Tutor</h2>
-          <div className='D-Tutor'>
+    </div>
+    <div>
+        <h2>Datos del Tutor</h2>
+        <br />
+        <br />
+        <div className='D-Tutor'>
+            <label htmlFor='inputNombreTutor'>Nombre*</label>
             <input type="text" placeholder={data.nombre_tutor || 'Nombre*'} id='inputNombreTutor' maxLength={45}/>
+            <label htmlFor='inputApellidoPTutor'>Apellido Paterno*</label>
             <input type="text" placeholder={data.apellidoP_tutor || 'Apellido Paterno*'} id='inputApellidoPTutor' maxLength={45}/>
+            <label htmlFor='inputApellidoMTutor'>Apellido Materno*</label>
             <input type="text" placeholder={data.apellidoM_tutor || 'Apellido Materno*'} id='inputApellidoMTutor' maxLength={45}/>
+            <label htmlFor='inputTelefonoTutor'>Teléfono*</label>
             <input type="number" placeholder={data.telefono_tutor || 'Telefono*'} id='inputTelefonoTutor' maxLength={12}/>
-          </div>
         </div>
-        <div>
-          <h2>Datos del Examen de Diagnostico del curso Pre-universitario</h2>
-          <div className='D-Diagnostico-Edit'>
+    </div>
+    <div>
+      <br />
+      <br />
+        <h2>Datos del Examen de Diagnostico del curso Pre-universitario</h2>
+        <br />
+        <br />
+        <div className='D-Diagnostico-Edit'>
             <h4>Examen Diagnostico Ceneval "EXANII II"</h4>
             <div className='con5'>
-              <input type='text' placeholder={data.escuelaProcedente || 'Colegio de proveniencia'} id='inputColegioProveniente' maxLength={45}/>
-              <input type="text" placeholder={data.colegioAspirado || 'Universidad a la que aplica'} id='inputUniversidadAspira' maxLength={45}/>
-              <input type="text" placeholder={data.carreraAspirada || 'Carrera a la que aplica'} id='inputCarreraAspira' maxLength={45}/>
+                <label htmlFor='inputColegioProveniente'>Colegio de proveniencia</label>
+                <input type='text' placeholder={data.escuelaProcedente || 'Colegio de proveniencia'} id='inputColegioProveniente' maxLength={45}/>
+                <label htmlFor='inputUniversidadAspira'>Universidad a la que aplica</label>
+                <input type="text" placeholder={data.colegioAspirado || 'Universidad a la que aplica'} id='inputUniversidadAspira' maxLength={45}/>
+                <label htmlFor='inputCarreraAspira'>Carrera a la que aplica</label>
+                <input type="text" placeholder={data.carreraAspirada || 'Carrera a la que aplica'} id='inputCarreraAspira' maxLength={45}/>
             </div>
             <div className='con5-Edit'>
-              <label>Fecha de inicio del curso</label>
-              <input type='date' id='inputFechaCurso' />
-              <label>Fecha del examen de Diagnostico</label>
-              <input type='date' id='inputFechaExamen' />
+                <label htmlFor='inputFechaCurso'>Fecha de inicio del curso</label>
+                <input type='date' id='inputFechaCurso' />
+                <label htmlFor='inputFechaExamen'>Fecha del examen de Diagnostico</label>
+                <input type='date' id='inputFechaExamen' />
             </div>
+            <br />
+            <br />
             <h4>Puntajes del examen</h4>
             <div className='con6-Edit'>
-              <input type="number" placeholder={data.nivelMatematico || 'Pensamiento Matematico'} id='inputMatScore' />
-              <input type="number" placeholder={data.nivelAnalitico || 'Pensamiento Analitico'} id='inputAnalitScore' />
-              <input type="number" placeholder={data.nivelLinguistico || 'Estructura de la lengua'} id='inputLangScore' />
-              <input type="number" placeholder={data.nivelComprension || 'Comprension Lectora'} id='inputLectScore' />
+                <label htmlFor='inputMatScore'>Pensamiento Matemático</label>
+                <input type="number" placeholder={data.nivelMatematico || 'Pensamiento Matematico'} id='inputMatScore' />
+                <label htmlFor='inputAnalitScore'>Pensamiento Analítico</label>
+                <input type="number" placeholder={data.nivelAnalitico || 'Pensamiento Analitico'} id='inputAnalitScore' />
+                <label htmlFor='inputLangScore'>Estructura de la lengua</label>
+                <input type="number" placeholder={data.nivelLinguistico || 'Estructura de la lengua'} id='inputLangScore' />
+                <label htmlFor='inputLectScore'>Comprensión Lectora</label>
+                <input type="number" placeholder={data.nivelComprension || 'Comprension Lectora'} id='inputLectScore' />
             </div>
             <div className='con7-Edit'>
-              <input type="number" placeholder={data.nivelGeneral || 'Puntaje general'} id='inputGenScore' />
+                <label htmlFor='inputGenScore'>Puntaje general</label>
+                <input type="number" placeholder={data.nivelGeneral || 'Puntaje general'} id='inputGenScore' />
             </div>
-          </div>
         </div>
+    </div>
+
+
         <div className='botones-Edit'>
           <button onClick={handleCancelClick} className='uno-Edit'>
             <MdOutlineCancel className='icon-cancel-Edit' />

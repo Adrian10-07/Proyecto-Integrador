@@ -1,13 +1,19 @@
 .modal-box {
   position: absolute;
-  top: 45%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  top: 25%;
+  left: 40%;
+  transform: translate(-20%, -40%);
   width: 90vw; /* Cambiar el tamaño del modal a 80% del ancho de la ventana */
-  max-width: 800px; /* Asegurarse de que no sea mayor de 600px */
+  max-width: 700px; /* Asegurarse de que no sea mayor de 600px */
   background-color: rgb(255, 255, 255);
   border: none;
   box-shadow: 24px;
+  text-align: center;
+  
+}
+
+#pd, #pd2 {
+  color: rgb(77, 9, 237);
 }
 
   
@@ -21,7 +27,7 @@
 #header-DAlmun h2{
   color: white;
   position: relative;
-  bottom: -40px;
+  bottom: -50px;
   
 }
 
@@ -31,7 +37,7 @@
 }
 .image-left{
   right: 300px;
-  top: 135px;
+  top: 120px;
   margin-bottom: 0px;
   }
 
@@ -44,6 +50,28 @@
 }
 .image-right{
 left: 300px;
-bottom: 50px;
+bottom: 20px;
 margin-bottom: 0px;
+}
+button.EditA, button.CloseA {
+  background-color: #ff0000;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  margin: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button.EditA:hover, button.CloseA:hover {
+  background-color: #ec5755;
+}
+
+button.EditA {
+  background-color: rgba(31, 145, 168, 1);
+}
+
+button.EditA:hover {
+  background-color: #0056b3;
 }

@@ -1,52 +1,18 @@
-body {
-    font-family: Arial, sans-serif;
+.Inputsagg-EditEmplead{
+    width: 100%;
+    margin: 0 auto;
     background-color: #ffffff;
-    margin:0;
-    padding: 0;
-}
-
-.header-EditEmplead {
-    position: relative;
-    background-color: rgba(31, 145, 168, 1);
-    padding: 30px 0;
-    width: 100%;
-    color: #ffffff;
-    display: flex;
-    justify-content: center;
-    font-size: 30px;
-}
-
-
-
-.header-image-left{
-    height: 80px;
-    position: relative;
-}
-.header-image-left{
-    right: 400px;
-    bottom: -180px;
-    }
-.header-image-rigth{
-    width: auto;
-    height: 130px;
-    position: relative;
-}
-.header-image-rigth{
-left: 400px;
-bottom: 100px;
-}
-
-.con1-EditEmplead, .con2-EditEmplead, .con3-EditEmplead, .con4-EditEmplead, .con5-EditEmplead, .con6-EditEmplead, .con7-EditEmplead {
-    display: flex;
-    width: 100%;
-    align-items: center;
-    align-content: center;
+    padding: 30px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    margin-top: 100px;
+    text-align: center;
 }
 
 
 
 .Inputsagg-EditEmplead{
-    width: 100%;
+    width: 70%;
 }
 
 .Inputsagg-EditEmplead{
@@ -61,12 +27,14 @@ bottom: 100px;
     border-radius: 10px;
     border: none;
     transition: background-color 0.3s;
-    left: 200px;
+    left: -100px;
     margin-top: 100PX;
     margin-left: 190px;
     margin-bottom: 50px;
     color: rgba(224, 224, 224, 1);
     font-size: medium;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
     
 }
 
@@ -93,11 +61,24 @@ bottom: 100px;
     font-size: 50px;
 }
 
-#selectEstatus, #selectArea, #selectCargo {
+#selectEstatus, #selectArea, #selectCargoE, #inputSueldo {
     border-radius: 10px;
     border: 1px solid rgba(224, 224, 224, 1);
     color: rgb(147, 143, 143);
     padding: 1em 3em;
     margin: 10px 5px;
 }
-
+.con1-EditEmplead input{
+    border-radius: 10px;
+    border: 1px solid rgba(224, 224, 224, 1);
+    color: rgb(147, 143, 143);
+    padding: 1em 3em;
+    margin: 10px 5px;   
+}
+.con2-EditEmplead input{
+    border-radius: 10px;
+    border: 1px solid rgba(224, 224, 224, 1);
+    color: rgb(147, 143, 143);
+    padding: 1em 3em;
+    margin: 10px 5px;
+}

@@ -1,8 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { IoMdPersonAdd } from "react-icons/io";
-import { FaUserEdit } from "react-icons/fa";
-import { LuHome } from "react-icons/lu";
-import { ImExit, ImIcoMoon } from "react-icons/im";
+
 import FilaDate from '../../../Molecules/filasAlumnos/FilaDate';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaFilter } from "react-icons/fa";

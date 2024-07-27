@@ -100,6 +100,7 @@ export default function ModalPersonal ({idEmploye, autentificacion}){
                     {error && <p>Error: {error}</p>}
                     {!error && data && (
                         <div>
+                            <br />
                                 <p>Nombre: {data.nombre || "N/A"} {data.apellido_p || "N/A"} {data.apellido_m || "N/A"}</p>
                                 <p>Telefono: {data.telefono || "N/A"}</p>
                                 <p>Correo: {data.correo || "N/A"}</p>
@@ -108,13 +109,14 @@ export default function ModalPersonal ({idEmploye, autentificacion}){
                                 <p>Area: {data.nombre_area || "N/A"}</p>
                                 <p>Cargo: {data.nombre_cargo || "N/A"}</p>
                                 <p>Sueldo: {data.sueldoHora || "N/A"}</p>
+                                <br />
 
-                                <Button onClick={() => navigate('/editEmpleado', { state: { data } })}>
+                                <Button className='EditA' onClick={() => navigate('/editEmpleado', { state: { data } })}>
                                     Editar
                                 </Button>
                         </div>
                     )}
-                    <Button onClick={handleClose}>Cerrar</Button>
+                    <Button className='CloseA' onClick={handleClose}>Cerrar</Button>
                 </Box>
             </Modal>
         </div>

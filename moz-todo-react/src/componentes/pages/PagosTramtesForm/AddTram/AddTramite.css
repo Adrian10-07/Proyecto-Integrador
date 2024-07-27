@@ -54,7 +54,7 @@ label {
     color: rgba(130, 130, 130, 1);
 }
 
-label input[type="date"], #inputFecha {
+.fecha {
     display: block;
     padding: 10px;
     border: 1px solid rgba(224, 224, 224, 1);
@@ -62,6 +62,7 @@ label input[type="date"], #inputFecha {
     font-size: 16px;
     color: rgba(130, 130, 130, 1);
     position: relative;
+    
 }
 
 .con2,

@@ -7,7 +7,8 @@ import { useNavigate } from 'react-router-dom';
 import { IoSearchSharp } from 'react-icons/io5';
 import { LogInfoContext } from '../../../../LogInfo';
 import './AddPagoPersonal.css'
-
+import HeaderSubP from '../../../Molecules/HeaderSubP/HeaderSubP';
+import BotonReturn from '../../../Atoms/BotonReturn/BotonReturn';
 //Por un lado, el header o cabecera es una molécula, por su nivel de complejidad, y por el otro,
 //El formulario, es una plantilla, los botones de guardar y cancelar son dos átomos en sí mismos,
 //Y juntos conforman una molécula, y el conjunto de inputs conformar el ser vivo
@@ -121,7 +122,7 @@ export default function AddPagoPersonal () {
             };
             let registrarHoras = document.getElementById('inputHoras').value;
             let registrarTotal = totalPago;
-            let registrarFecha = document.getElementById('inputFecha').value;
+            let registrarFecha = document.getElementById('inputFecha3').value;
             let registraridPersonal = document.getElementById('inputIdPersonal').value;
 
             if (!registrarHoras || registrarTotal <= 0 || !registrarFecha ||registraridPersonal == "not valid") {
@@ -299,18 +300,17 @@ export default function AddPagoPersonal () {
 
     return (
         <div >
-            <header className='header'>
-                <img src={Logo2} alt="Left" className='image-add-left' />
-                Pago de trámites
-                <img src={Logo2} alt="Right" className='image-add-right' />
-            </header>
+            <div>
+                <HeaderSubP title={"Pago Personal"}/>
+                <BotonReturn enlace={'/pagosEmp'}/>
+            </div>
 
             <div className='Inputadd'>
                     <p>Generar</p>
                 <div className='pagoPersonal'>
                     <div className='box_personal'>
                         <input type="number" placeholder='Horas trabajadas' id='inputHoras' maxLength={10}/>
-                        <input type="date" id='inputFecha' />
+                        <input type="date" id='inputFecha3' />
                         
                     </div>
                     <div className='searchPersonal'>

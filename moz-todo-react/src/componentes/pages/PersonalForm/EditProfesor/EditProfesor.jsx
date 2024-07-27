@@ -8,6 +8,8 @@ import { LogInfoContext } from '../../../../LogInfo';
 //import Logo2 from '../AlumnosForm/Alum-Add/AggAssets/Logo2.png';
 import Swal from 'sweetalert2';
 import './EditProfesor.css';
+import HeaderSubP from '../../../Molecules/HeaderSubP/HeaderSubP';
+import BotonReturn from '../../../Atoms/BotonReturn/BotonReturn';
 
 //Por un lado, el header o cabecera es una molécula, por su nivel de complejidad, y por el otro,
 //El formulario, es una plantilla, los botones de guardar y cancelar son dos átomos en sí mismos,
@@ -404,11 +406,12 @@ export default function EditProfesor (){
 
     return (
     <div>
-        <header className='header'>
-            <h1>             Datos del Profesor
-            </h1>
 
-        </header>
+        <div>
+            <HeaderSubP title={"Editar Datos Maestro"}/>
+            <BotonReturn enlace={'/empleados'}/>
+        </div>
+
 
         <div className='Inputsagg'>
             <div className='D-Alumno'>
@@ -438,7 +441,7 @@ export default function EditProfesor (){
                         </select>
                         <input type="number" placeholder={data.sueldoPorHora} id="inputSueldo" maxLength={8}/>
                     </div>
-                    <div className='con1'>
+                    <div className='con1p'>
                         <table>
                             <thead>
                                 <tr>

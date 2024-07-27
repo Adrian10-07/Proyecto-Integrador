@@ -136,6 +136,7 @@ export default function ModalProfesor ({idTeacher, autenticacion}){
                     {error && <p>Error: {error}</p>}
                     {!error && data && (
                         <div>
+                            <br />
                                 <p>Nombre: {data.nombre || "N/A"} {data.apellido_p || "N/A"} {data.apellido_m || "N/A"}</p>
                                 <p>Telefono: {data.telefono || "N/A"}</p>
                                 <p>Correo: {data.correo || "N/A"}</p>
@@ -143,8 +144,10 @@ export default function ModalProfesor ({idTeacher, autenticacion}){
                                 <p>Estatus: {data.tipo_estatus || "N/A"}</p>
                                 <p>Especialidad: {data.nombre_especialidad || "N/A"}</p>
                                 <p>Sueldo: {data.sueldoPorHora || "N/A"}</p>
+                                <br/>
 
                                 <h5>Materias que imparte:</h5>
+                                <br/>
                                 <ul>
                                     {error && <li>Error: {error}</li>}
                                     {!dataMat.length && <li>No imparte ninguna Materia</li>}
@@ -153,13 +156,15 @@ export default function ModalProfesor ({idTeacher, autenticacion}){
                                             <li key={index}>{materia.nombre}</li>
                                         ))
                                     )}
+                                    <br/>
                                 </ul>
-                                <Button onClick={() => navigate('/editProfesor', { state: { data } })}>
+                                
+                                <Button className='EditA' onClick={() => navigate('/editProfesor', { state: { data } })}>
                                     Editar
                                 </Button>
                         </div>
                     )}
-                    <Button onClick={handleClose}>Cerrar</Button>
+                    <Button className='CloseA' onClick={handleClose}>Cerrar</Button>
                 </Box>
             </Modal>
         </div>

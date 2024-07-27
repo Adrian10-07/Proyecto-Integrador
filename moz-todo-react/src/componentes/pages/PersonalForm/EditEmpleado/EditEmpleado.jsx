@@ -7,7 +7,8 @@ import { useState, useContext, useEffect } from 'react';
 import Swal from 'sweetalert2';
 import { LogInfoContext } from '../../../../LogInfo';
 import './EditEmpleado.css'
-
+import HeaderSubP from '../../../Molecules/HeaderSubP/HeaderSubP';
+import BotonReturn from '../../../Atoms/BotonReturn/BotonReturn';
 //Por un lado, el header o cabecera es una molécula, por su nivel de complejidad, y por el otro,
 //El formulario, es una plantilla, los botones de guardar y cancelar son dos átomos en sí mismos,
 //Y juntos conforman una molécula, y el conjunto de inputs conformar el ser vivo
@@ -325,17 +326,17 @@ export default function EditEmpleado (){
 
     return(
     <div>
-                <header className='header-EditEmplead'>
-            <h1>             
-                Editar Empleado
-            </h1>
-             
 
-        </header>
+        <div>
+            <HeaderSubP title={"Editar Datos Empleado"}/>
+            <BotonReturn enlace={'/empleados'}/>
+        </div>
+
+
 
 
         <div className='Inputsagg-EditEmplead'>
-            <div className='D-Alumno'>
+            <div className='D-Empleado'>
                     <div className='con1-EditEmplead'>
                         <input type="text" placeholder={data.nombre} id='inputNombre' maxLength={45}/>
                         <input type="text" placeholder={data.apellido_p} id='inputApellidoP' maxLength={45}/>
@@ -363,7 +364,7 @@ export default function EditEmpleado (){
                             <option value={6}>Cafetería</option>
                             <option value={7}>Limpieza y Servicios</option>
                         </select>
-                        <select id="selectCargo">
+                        <select id="selectCargoE">
                             <option value={0}>Seleccionar Cargo</option>
                             <option value={2}>Coordinador</option>
                             <option value={3}>Administrativo</option>

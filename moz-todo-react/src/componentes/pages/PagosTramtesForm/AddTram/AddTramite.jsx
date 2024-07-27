@@ -7,6 +7,8 @@ import { useNavigate } from 'react-router-dom';
 import { IoSearchSharp } from "react-icons/io5";
 import { LogInfoContext } from '../../../../LogInfo';
 import './AddTramite.css'
+import HeaderSubP from '../../../Molecules/HeaderSubP/HeaderSubP';
+import BotonReturn from '../../../Atoms/BotonReturn/BotonReturn';
 
 //Por un lado, el header o cabecera es una molécula, por su nivel de complejidad, y por el otro,
 //El formulario, es una plantilla, los botones de guardar y cancelar son dos átomos en sí mismos,
@@ -187,7 +189,7 @@ export default function AddTramite() {
             let registrarFolio = document.getElementById('inputFolio').value;
             let registrarConcepto = document.getElementById('inputConcepto').value;
             let registrarMonto = document.getElementById('inputMonto').value;
-            let registrarFecha = document.getElementById('inputFecha').value;
+            let registrarFecha = document.getElementById('inputFecha2').value;
             let registrarid_alumno = document.getElementById('inputId_alumno').value;
 
             if (!registrarFolio || !registrarConcepto || !registrarMonto || !registrarFecha || !registrarid_alumno || registrarid_alumno == "not valid") {
@@ -315,11 +317,11 @@ export default function AddTramite() {
 
     return (
         <div>
-            <header className='header'>
-                <img src={Logo2} alt="Left" className='image-add-left' />
-                Pago de trámites
-                <img src={Logo2} alt="Right" className='image-add-right' />
-            </header>
+            <div>
+                <HeaderSubP title={"Generar Tramite"}/>
+                <BotonReturn enlace={'/tramites'}/>
+            </div>
+
 
             <div className='Inputadd'>
                     <p>Generar Folio</p>
@@ -328,7 +330,7 @@ export default function AddTramite() {
                         <input type="text" placeholder='folio' id='inputFolio' maxLength={32}/>
                         <input type="text" placeholder='concepto' id='inputConcepto' maxLength={75}/>
                         <input type="number" placeholder='monto' id='inputMonto' maxLength={8}/>
-                        <input type="date" id='inputFecha' />
+                        <input className='fecha' type="date" id='inputFecha2' />
                         
                     </div>
                     <p>Seleccionar Alumno</p>

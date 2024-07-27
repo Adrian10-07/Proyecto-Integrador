@@ -5,6 +5,9 @@ import Swal from 'sweetalert2'
 import { useNavigate } from 'react-router-dom';
 import { useState, useContext, useEffect } from "react";
 import { LogInfoContext } from "../../../../LogInfo";
+import HeaderSubP from "../../../Molecules/HeaderSubP/HeaderSubP";
+import BotonReturn from "../../../Atoms/BotonReturn/BotonReturn";
+
 
 //Por un lado, el header o cabecera es una molécula, por su nivel de complejidad, y por el otro,
 //El formulario, es una plantilla, los botones de guardar y cancelar son dos átomos en sí mismos,
@@ -299,13 +302,11 @@ export default function AddProfesor (){
 
     return (
     <div>
-        <header className='header'>
-            
-            <h1>             Datos del Profesor
-            </h1>
-             
+        <div>
+            <HeaderSubP title={"Registro Maestro"}/>
+            <BotonReturn enlace={'/empleados'}/>
+        </div>
 
-        </header>
 
         <div className='Inputsagg'>
             <div className='D-Alumno'>

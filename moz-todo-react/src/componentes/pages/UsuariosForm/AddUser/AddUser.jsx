@@ -6,7 +6,8 @@ import { useNavigate } from 'react-router-dom';
 import { IoSearchSharp } from 'react-icons/io5';
 import { LogInfoContext } from '../../../../LogInfo';
 import './AddUser.css'
-
+import HeaderSubP from '../../../Molecules/HeaderSubP/HeaderSubP';
+import BotonReturn from '../../../Atoms/BotonReturn/BotonReturn';
 //Por un lado, el header o cabecera es una molécula, por su nivel de complejidad, y por el otro,
 //El formulario, es una plantilla, los botones de guardar y cancelar son dos átomos en sí mismos,
 //Y juntos conforman una molécula, y el conjunto de inputs conformar el ser vivo
@@ -282,14 +283,20 @@ export default function AddUser (){
 
     return(
         <div >
-            <header className='header'>
-                Registro de Usuario
-            </header>
 
-            <div className='Inputadd'>
-    <p>Crear</p>
-    <div className='pagoPersonal'>
-        <div className='box_personal'>
+            <div>
+                <HeaderSubP title={"Registro de Usuario"}/>
+                <BotonReturn enlace={"/usuarios"}/>
+            </div>
+
+
+
+
+        <div className='Inputadd'>
+            <p>Registro de Usuario</p>
+            <p>Si usted es un usuario administrador solo puede crear otros usuarios de tipo "Empleado"</p>
+            <div className='pagoPersonal'>
+            <div className='box_personal'>
             <input type="text" placeholder='Nombre del usuario' id='inputUserName' maxLength={35}/>
             <select id="selectTipo">
                 <option value={0}>Seleccionar tipo de usuario</option>
@@ -297,7 +304,7 @@ export default function AddUser (){
                 <option value={"admin"}>Administrador</option>
             </select>
         </div>
-
+            <p>Solo se pueden crear usuarios administradores en las áreas de dirección general, académica y administrativa</p>
         <div className='searchPersonal'>
             <select id="selectArea">
                 <option value="">Seleccionar area del usuario</option>
@@ -310,7 +317,7 @@ export default function AddUser (){
 
         <div className='Passwordd'>
             <input type='password' placeholder='Contraseña' id='inputPassword' maxLength={20}/>
-            <input type='password' placeholder='Confirmar' id="inputCPassword" maxLength={20}/>
+            <input type='password' placeholder='Confirmar Contraseña' id="inputCPassword" maxLength={20}/>
         </div>
     </div>
 </div>

@@ -6,7 +6,8 @@ import { MdOutlineCancel } from "react-icons/md";
 import Swal from 'sweetalert2'
 import { useNavigate } from 'react-router-dom';
 import { LogInfoContext } from '../../../../LogInfo';
-import HeaderPaginas from '../../../Molecules/HeaderPaginas/HeaderPaginas';
+import BotonReturn from '../../../Atoms/BotonReturn/BotonReturn';
+import HeaderSubP from '../../../Molecules/HeaderSubP/HeaderSubP';
 
 //Por un lado, el header o cabecera es una molécula, por su nivel de complejidad, y por el otro,
 //El formulario, es una plantilla, los botones de guardar y cancelar son dos átomos en sí mismos,
@@ -331,7 +332,7 @@ export default function AggAlumno() {
     <div>
 
         <div>
-            <HeaderPaginas title={"Registrar Alumno"}/>
+            <HeaderSubP title={"Registrar Alumno"}/>
 
         </div>
 
@@ -339,6 +340,8 @@ export default function AggAlumno() {
         <div className='Inputsagg'>
 
         <div className='D-Alumno'>
+                    <BotonReturn enlace={'/alumnos'}/>
+
                     <p id='CO'>Campos obligatorios:</p>
                     <div className='con1'>
                         <input type='text' placeholder='No. Control' id='inputNoControl' maxLength={10}/>

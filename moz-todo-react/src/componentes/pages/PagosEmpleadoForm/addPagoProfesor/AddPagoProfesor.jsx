@@ -7,6 +7,8 @@ import { useNavigate } from 'react-router-dom';
 import { IoSearchSharp } from 'react-icons/io5';
 import { LogInfoContext } from '../../../../LogInfo';
 import './AddPagoProfesor.css'
+import HeaderSubP from '../../../Molecules/HeaderSubP/HeaderSubP';
+import BotonReturn from '../../../Atoms/BotonReturn/BotonReturn';
 
 //Por un lado, el header o cabecera es una molécula, por su nivel de complejidad, y por el otro,
 //El formulario, es una plantilla, los botones de guardar y cancelar son dos átomos en sí mismos,
@@ -122,7 +124,7 @@ export default function AddPagoProfesor () {
             };
             let registrarHoras = document.getElementById('inputHoras').value;
             let registrarTotal = totalPago;
-            let registrarFecha = document.getElementById('inputFecha').value;
+            let registrarFecha = document.getElementById('inputFecha4').value;
             let registraridProfesor = document.getElementById('inputIdProfesor').value;
 
             if (!registrarHoras || registrarTotal <= 0 || !registrarFecha ||registraridProfesor == "not valid") {
@@ -299,18 +301,18 @@ export default function AddPagoProfesor () {
 
     return (
         <div>
-            <header className='header'>
-                <img src={Logo2} alt="Left" className='image-add-left' />
-                Pago de profesores
-                <img src={Logo2} alt="Right" className='image-add-right' />
-            </header>
+            <div>
+                <HeaderSubP title={"Pago Maestros"}/>
+                <BotonReturn enlace={'/pagosEmp'}/>
+            </div>
+
 
             <div className='Inputadd'>
                     <p>Generar</p>
                 <div className='pagoProfesor'>
                     <div className='box_profesor'>
                         <input type="number" placeholder='Horas trabajadas' id='inputHoras' maxLength={10}/>
-                        <input type="date" id='inputFecha' />
+                        <input type="date" id='inputFecha4' />
                         
                     </div>
                     <div className='searchProfesor'>

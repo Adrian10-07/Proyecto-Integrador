@@ -72,7 +72,9 @@ export default function NestedModal({ valueId, autentificacion }) {
           {error && <p>Error: {error}</p>}
           {!error && data && (
           <div >
-            <p>Datos del Alumno:</p>
+            <br />
+            <p id='pd2'>Datos del Alumno:</p>
+            <br />
             <ul>
               <li>Nombre: {data.nombre || "N/A"} {data.apellido_p || "N/A"} {data.apellido_m || "N/A"}</li>
               <li>Grado: {data.grado || "N/A"}</li>
@@ -87,7 +89,9 @@ export default function NestedModal({ valueId, autentificacion }) {
               <li>Teléfono del tutor: {data.telefono_tutor || "N/A"}</li>
               <li>Nivel académico: {data.nivelAcademico || "N/A"}</li>
             </ul>
+            <br />
             <p id='pd'>Datos del Examen del Curso Pre-Universitari:</p>
+            <br />
             <ul>
               <li>Colegio de proveniencia: {data.escuelaProcedente}</li>
               <li>Universidad a la que aspira: {data.colegioAspirado || "N/A"}</li>
