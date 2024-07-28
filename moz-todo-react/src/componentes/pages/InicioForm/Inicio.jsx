@@ -77,7 +77,7 @@ export default function Inicio() {
 
   const tipoUsuario = localStorage.getItem('typeUser');
   if(tipoUsuario == "employe"){
-
+    
   }
 
   return (

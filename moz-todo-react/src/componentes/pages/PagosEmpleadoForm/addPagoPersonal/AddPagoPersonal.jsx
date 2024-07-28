@@ -322,7 +322,7 @@ export default function AddPagoPersonal () {
                     </div>
                     <div className='searchPersonal'>
                         <select name='nombre' id="inputIdPersonal">
-                            <option value={"not valid"}>Personal</option>
+                            <option value={"not valid"}>Seleccionar Empleado</option>
                             {namePersonal.map(elemento => (
                                 <option key={elemento.id} value={elemento.id}>{elemento.nombre} {elemento.apellido_p} {elemento.apellido_m}</option>
                             ))}
