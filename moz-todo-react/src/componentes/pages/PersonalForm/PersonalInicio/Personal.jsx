@@ -174,7 +174,7 @@ export default function Personal (){
           return false;
         } else {
           const idUsuario = localStorage.getItem('idUser');
-          const url = `http://localhost:3000/usersJWT/verify/${idUsuario}`;
+          const url = `https://saiemapi.integrador.xyz/usersJWT/verify/${idUsuario}`;
           
           try{
             const response = await fetch(url, {
