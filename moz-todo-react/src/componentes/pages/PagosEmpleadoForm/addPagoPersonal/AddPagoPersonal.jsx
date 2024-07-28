@@ -307,6 +307,9 @@ export default function AddPagoPersonal () {
 
             <div className='Inputadd'>
                     <p>Generar</p>
+                    <br />
+                    <p>Para guardar el informe, tiene que ingresar las horas trabajadas y seleccionar el personal, y clickear en el botón calcular</p>
+
                 <div className='pagoPersonal'>
                     <div className='box_personal'>
                         <input type="number" placeholder='Horas trabajadas' id='inputHoras' maxLength={10}/>
@@ -320,9 +323,12 @@ export default function AddPagoPersonal () {
                         <button className='Buscar' onClick={optionPersonal}>< IoSearchSharp />Buscar</button>
                         
                     </div>
+                    <br />
+                    <p>seleccionar empleado</p>
                     <div className='searchPersonal'>
+                        
                         <select name='nombre' id="inputIdPersonal">
-                            <option value={"not valid"}>Seleccionar Empleado</option>
+                            <option value={"not valid"}>Empleado</option>
                             {namePersonal.map(elemento => (
                                 <option key={elemento.id} value={elemento.id}>{elemento.nombre} {elemento.apellido_p} {elemento.apellido_m}</option>
                             ))}

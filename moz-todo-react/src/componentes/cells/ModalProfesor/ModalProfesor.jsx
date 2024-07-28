@@ -90,9 +90,10 @@ export default function ModalProfesor ({idTeacher, autenticacion}){
                 onClose={handleClose}
             >
                 <Box className="modal-box">
-                    <header>
-                        <h2>Datos del empleado</h2>
+                    <header className='header'>
+                        <h1>Datos del Maestro</h1>
                     </header>
+                    <br />
                     {error && <p>Error: {error}</p>}
                     {!error && data && (
                         <div>
@@ -113,9 +114,10 @@ export default function ModalProfesor ({idTeacher, autenticacion}){
                                         ))
                                     )}
                                 </ul>
+                                <br />
                         </div>
                     )}
-                    <Button onClick={handleClose}>Cerrar</Button>
+                    <Button className='CloseA' onClick={handleClose}>Cerrar</Button>
                 </Box>
             </Modal>
         </div>
@@ -130,8 +132,8 @@ export default function ModalProfesor ({idTeacher, autenticacion}){
                 onClose={handleClose}
             >
                 <Box className="modal-box">
-                    <header>
-                        <h2>Datos del empleado</h2>
+                    <header className='header'>
+                        <h1>Datos del Maestro</h1>
                     </header>
                     {error && <p>Error: {error}</p>}
                     {!error && data && (

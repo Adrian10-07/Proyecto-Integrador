@@ -414,71 +414,88 @@ export default function EditProfesor (){
 
 
         <div className='Inputsagg'>
-            <div className='D-Alumno'>
-                    <div className='con1'>
-                        <input type="text" placeholder={data.nombre} id='inputNombre' maxLength={45}/>
-                        <input type="text" placeholder={data.apellido_p} id='inputApellidoP' maxLength={45}/>
-                        <input type="text" placeholder={data.apellido_m} id='inputApellidoM' maxLength={45}/>
-                        <select id='selectEstatus'>
-                            <option id='status' value={0}>Seleccionar status</option>
-                            <option value={1}>Activo</option>
-                            <option value={2}>Inactivo</option>
-                            <option value={3}>Dado de baja</option>
-                        </select>
-                    </div>
-                    <div className='con2'>
-                        <input type="tel" placeholder={data.telefono} id='inputTelefono' maxLength={12}/>
-                        <input type="email" placeholder={data.correo} id='inputCorreo' maxLength={45} />
-                        <input type="text" placeholder={data.curp} id='inputCurp' maxLength={18}/>
-                    </div>
-                    <div className='con1'>
-                        <select id="selectEspecialidad">
-                            <option value={0}>Seleccionar especialidad</option>
-                            <option value={1}>Ciencias: Físico-Matemático</option>
-                            <option value={2}>Ciencias: Químico-Biológicas</option>
-                            <option value={3}>Ciencias Sociales y Humanidades</option>
-                            <option value={4}>Lengua y Comunicación</option>
-                        </select>
-                        <input type="number" placeholder={data.sueldoPorHora} id="inputSueldo" maxLength={8}/>
-                    </div>
-                    <div className='con1p'>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Materias</th>
-                                </tr>
-                                
-                            </thead>
-                            <tbody>
-                                {error && <tr><td>Error: {error}</td></tr>}
-                                {!dataMat.length && <tr><td>No imparte ninguna Materia</td></tr>}
-                                {!error && dataMat.length > 0 && (
-                                    dataMat.map((materia, index) => (
-                                        <FilaMateria key={index} idProfesor={data.id} idMateria={materia.id} nombreMateria={materia.nombre} actualizar={imprimirMateriasDelProfesor} autentificar={authentificateUser}/>
-                                    ))
-                                )}
-                                <tr>
-                                    <td><select id='selectMateria'>
-                                        <option value="">Seleccionar materia</option>
-                                        <option value={1}>Pensamiento Matemático</option>
-                                        <option value={2}>Pensamiento Analítico</option>
-                                        <option value={3}>Física</option>
-                                        <option value={4}>Química</option>
-                                        <option value={5}>Biología</option>
-                                        <option value={6}>Ciencias de la Salud</option>
-                                        <option value={7}>Historia Universal y de México</option>
-                                        <option value={8}>Geografia</option>
-                                        <option value={9}>Filosofía</option>
-                                        <option value={10}>Estructura de la Lengua</option>
-                                        <option value={11}>Comprensión Lectora</option>
-                                        <option value={12}>Literatura</option>
-                                    </select></td>
-                                    <td><button onClick={agregarMateria}>Agregar</button></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+    <div className='D-Alumno'>
+        <div className='con1'>
+            <label htmlFor='inputNombre'>Nombre</label>
+            <input type="text" placeholder={data.nombre} id='inputNombre' maxLength={45}/>
+            
+            <label htmlFor='inputApellidoP'>Apellido Paterno</label>
+            <input type="text" placeholder={data.apellido_p} id='inputApellidoP' maxLength={45}/>
+            
+            <label htmlFor='inputApellidoM'>Apellido Materno</label>
+            <input type="text" placeholder={data.apellido_m} id='inputApellidoM' maxLength={45}/>
+            
+            <label htmlFor='selectEstatus'>Estatus</label>
+            <select id='selectEstatus'>
+                <option id='status' value={0}>Seleccionar status</option>
+                <option value={1}>Activo</option>
+                <option value={2}>Inactivo</option>
+                <option value={3}>Dado de baja</option>
+            </select>
+        </div>
+        <div className='con2'>
+            <label htmlFor='inputTelefono'>Teléfono</label>
+            <input type="tel" placeholder={data.telefono} id='inputTelefono' maxLength={12}/>
+            
+            <label htmlFor='inputCorreo'>Correo</label>
+            <input type="email" placeholder={data.correo} id='inputCorreo' maxLength={45} />
+            
+            <label htmlFor='inputCurp'>CURP</label>
+            <input type="text" placeholder={data.curp} id='inputCurp' maxLength={18}/>
+        </div>
+        <div className='con1'>
+            <select id="selectEspecialidad">
+                <option value={0}>Seleccionar especialidad</option>
+                <option value={1}>Ciencias: Físico-Matemático</option>
+                <option value={2}>Ciencias: Químico-Biológicas</option>
+                <option value={3}>Ciencias Sociales y Humanidades</option>
+                <option value={4}>Lengua y Comunicación</option>
+            </select>
+            
+            <label htmlFor='inputSueldo'>Sueldo por Hora</label>
+            <input type="number" placeholder={data.sueldoPorHora} id="inputSueldo" maxLength={8}/>
+        </div>
+        <div className='con1p'>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Materias</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {error && <tr><td>Error: {error}</td></tr>}
+                    {!dataMat.length && <tr><td>No imparte ninguna Materia</td></tr>}
+                    {!error && dataMat.length > 0 && (
+                        dataMat.map((materia, index) => (
+                            <FilaMateria key={index} idProfesor={data.id} idMateria={materia.id} nombreMateria={materia.nombre} actualizar={imprimirMateriasDelProfesor} autentificar={authentificateUser}/>
+                        ))
+                    )}
+                    <tr>
+                        <td>
+                            <select id='selectMateria'>
+                                <option value="">Seleccionar materia</option>
+                                <option value={1}>Pensamiento Matemático</option>
+                                <option value={2}>Pensamiento Analítico</option>
+                                <option value={3}>Física</option>
+                                <option value={4}>Química</option>
+                                <option value={5}>Biología</option>
+                                <option value={6}>Ciencias de la Salud</option>
+                                <option value={7}>Historia Universal y de México</option>
+                                <option value={8}>Geografia</option>
+                                <option value={9}>Filosofía</option>
+                                <option value={10}>Estructura de la Lengua</option>
+                                <option value={11}>Comprensión Lectora</option>
+                                <option value={12}>Literatura</option>
+                            </select>
+                        </td>
+                        <td><button onClick={agregarMateria}>Agregar</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
             <div className='botones'>
 
                 <button onClick={handleCancelClick} className='uno'><MdOutlineCancel className='icon-cancel' /></button>

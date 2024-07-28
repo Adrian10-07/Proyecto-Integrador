@@ -230,7 +230,11 @@ export default function Personal (){
         return(
         <div>
             <div>
-
+            <div>   
+                <HeaderPaginas title={"Empleados y Maestros"}/>
+                <BotonExit/>
+                <BotonInicio/>
+            </div>
         
             </div>
 

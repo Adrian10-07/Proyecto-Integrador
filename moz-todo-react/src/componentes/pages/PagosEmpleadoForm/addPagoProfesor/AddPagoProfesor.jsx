@@ -308,7 +308,9 @@ export default function AddPagoProfesor () {
 
 
             <div className='Inputadd'>
-                    <p>Generar</p>
+                    <h1>Generar</h1>
+                        br
+                    <p>Para guardar el informe, tiene que ingresar las horas trabajadas y seleccionar el personal, y clickear en el botón calcular</p>
                 <div className='pagoProfesor'>
                     <div className='box_profesor'>
                         <input type="number" placeholder='Horas trabajadas' id='inputHoras' maxLength={10}/>
@@ -323,6 +325,9 @@ export default function AddPagoProfesor () {
                         
                     </div>
                     <div className='searchProfesor'>
+                        <br />
+                    <p>Seleccionar Profesor</p>
+                    
                         <select name='nombre' id="inputIdProfesor">
                             <option value={"not valid"}>profesores</option>
                             {nameProfesor.map(elemento => (
@@ -330,6 +335,7 @@ export default function AddPagoProfesor () {
                             ))}
                         </select>
                     </div>
+                    <br />
                     <div>
                         <h4>Calculando pago:</h4>
                         <button className='calcular' onClick={calcularTotalAPagar}>Calcular</button>

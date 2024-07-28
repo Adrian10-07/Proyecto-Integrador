@@ -336,44 +336,63 @@ export default function EditEmpleado (){
 
 
         <div className='Inputsagg-EditEmplead'>
-            <div className='D-Empleado'>
-                    <div className='con1-EditEmplead'>
-                        <input type="text" placeholder={data.nombre} id='inputNombre' maxLength={45}/>
-                        <input type="text" placeholder={data.apellido_p} id='inputApellidoP' maxLength={45}/>
-                        <input type="text" placeholder={data.apellido_m} id='inputApellidoM' maxLength={45}/>
-                        <select id='selectEstatus'>
-                            <option id='status' value={0}>Seleccionar status</option>
-                            <option value={1}>Activo</option>
-                            <option value={2}>Inactivo</option>
-                            <option value={3}>Dado de baja</option>
-                        </select>
-                    </div>
-                    <div className='con2-EditEmplead'>
-                        <input type="tel" placeholder={data.telefono} id='inputTelefono' maxLength={12}/>
-                        <input type="email" placeholder={data.correo} id='inputCorreo' maxLength={45} />
-                        <input type="text" placeholder={data.curp} id='inputCurp' maxLength={18}/>
-                    </div>
-                    <div className='con3-EditEmplead'>
-                        <select id="selectArea">
-                            <option value={0}>Seleccionar Area</option>
-                            <option value={1}>Dirección General</option>
-                            <option value={2}>Dirección Administrativa</option>
-                            <option value={3}>Dirección Académica</option>
-                            <option value={4}>Dirección de Orientación Vocacional</option>
-                            <option value={5}>Apoyo Contable y Administrativo</option>
-                            <option value={6}>Cafetería</option>
-                            <option value={7}>Limpieza y Servicios</option>
-                        </select>
-                        <select id="selectCargoE">
-                            <option value={0}>Seleccionar Cargo</option>
-                            <option value={2}>Coordinador</option>
-                            <option value={3}>Administrativo</option>
-                            <option value={4}>Directivo</option>
-                            <option value={5}>Contador</option>
-                        </select>
-                        <input type="number" placeholder={data.sueldoHora} id="inputSueldo" maxLength={8}/>
-                    </div>
-                </div>
+    <div className='D-Empleado'>
+        <div className='con1-EditEmplead'>
+            <label htmlFor='inputNombre'>Nombre</label>
+            <input type="text" placeholder={data.nombre} id='inputNombre' maxLength={45}/>
+            
+            <label htmlFor='inputApellidoP'>Apellido Paterno</label>
+            <input type="text" placeholder={data.apellido_p} id='inputApellidoP' maxLength={45}/>
+            
+            <label htmlFor='inputApellidoM'>Apellido Materno</label>
+            <input type="text" placeholder={data.apellido_m} id='inputApellidoM' maxLength={45}/>
+            
+            <label htmlFor='selectEstatus'>Estatus</label>
+            <select id='selectEstatus'>
+                <option id='status' value={0}>Seleccionar status</option>
+                <option value={1}>Activo</option>
+                <option value={2}>Inactivo</option>
+                <option value={3}>Dado de baja</option>
+            </select>
+        </div>
+        <div className='con2-EditEmplead'>
+            <label htmlFor='inputTelefono'>Teléfono</label>
+            <input type="tel" placeholder={data.telefono} id='inputTelefono' maxLength={12}/>
+            
+            <label htmlFor='inputCorreo'>Correo</label>
+            <input type="email" placeholder={data.correo} id='inputCorreo' maxLength={45} />
+            
+            <label htmlFor='inputCurp'>CURP</label>
+            <input type="text" placeholder={data.curp} id='inputCurp' maxLength={18}/>
+        </div>
+        <div className='con3-EditEmplead'>
+            <label htmlFor='selectArea'>Área</label>
+            <select id="selectArea">
+                <option value={0}>Seleccionar Area</option>
+                <option value={1}>Dirección General</option>
+                <option value={2}>Dirección Administrativa</option>
+                <option value={3}>Dirección Académica</option>
+                <option value={4}>Dirección de Orientación Vocacional</option>
+                <option value={5}>Apoyo Contable y Administrativo</option>
+                <option value={6}>Cafetería</option>
+                <option value={7}>Limpieza y Servicios</option>
+            </select>
+            
+            <label htmlFor='selectCargoE'>Cargo</label>
+            <select id="selectCargoE">
+                <option value={0}>Seleccionar Cargo</option>
+                <option value={2}>Coordinador</option>
+                <option value={3}>Administrativo</option>
+                <option value={4}>Directivo</option>
+                <option value={5}>Contador</option>
+            </select>
+            
+            <label htmlFor='inputSueldo'>Sueldo por Hora</label>
+            <input type="number" placeholder={data.sueldoHora} id="inputSueldo" maxLength={8}/>
+        </div>
+    </div>
+
+
             <div className='botones-EditEmplead'>
 
                 <button onClick={handleCancelClick} className='uno'><MdOutlineCancel className='icon-cancel' /></button>
