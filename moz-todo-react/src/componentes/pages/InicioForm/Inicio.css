@@ -51,3 +51,10 @@
   color: transparent;
 }
 
+.imageinicio{
+  height: 100px;
+  position: absolute;
+  left: 150px; /* Ajusta la posición derecha según necesites */
+  top: 20%; 
+  transform: translateY(-50%);
+}

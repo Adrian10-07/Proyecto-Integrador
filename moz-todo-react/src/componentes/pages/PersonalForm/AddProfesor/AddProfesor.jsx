@@ -7,6 +7,7 @@ import { useState, useContext, useEffect } from "react";
 import { LogInfoContext } from "../../../../LogInfo";
 import HeaderSubP from "../../../Molecules/HeaderSubP/HeaderSubP";
 import BotonReturn from "../../../Atoms/BotonReturn/BotonReturn";
+import Footer from "../../../cells/Footer/Footer";
 
 
 //Por un lado, el header o cabecera es una molécula, por su nivel de complejidad, y por el otro,
@@ -338,7 +339,11 @@ export default function AddProfesor (){
                 <button onClick={handleSaveClick} className='dos'><FiSave className='icon-save'/></button>
 
             </div>
-        </div>
+
+        </div> 
+            <div>
+                <Footer/>
+            </div>
     </div>
     );
 }

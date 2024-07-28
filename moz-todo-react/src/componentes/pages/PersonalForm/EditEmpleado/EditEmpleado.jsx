@@ -9,6 +9,9 @@ import { LogInfoContext } from '../../../../LogInfo';
 import './EditEmpleado.css'
 import HeaderSubP from '../../../Molecules/HeaderSubP/HeaderSubP';
 import BotonReturn from '../../../Atoms/BotonReturn/BotonReturn';
+import Footer from '../../../cells/Footer/Footer';
+
+
 //Por un lado, el header o cabecera es una molécula, por su nivel de complejidad, y por el otro,
 //El formulario, es una plantilla, los botones de guardar y cancelar son dos átomos en sí mismos,
 //Y juntos conforman una molécula, y el conjunto de inputs conformar el ser vivo
@@ -399,6 +402,9 @@ export default function EditEmpleado (){
                 <button onClick={handleSaveClick} className='dos'><FiSave className='icon-save'/></button>
 
             </div>
+        </div>
+        <div>
+        <Footer/>
         </div>
     </div>
     );

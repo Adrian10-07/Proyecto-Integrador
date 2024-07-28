@@ -12,6 +12,7 @@ import './Usuarios.css';
 import HeaderPaginas from '../../../Molecules/HeaderPaginas/HeaderPaginas';
 import BotonExit from '../../../Atoms/BotonExit/BotonExit';
 import BotonInicio from '../../../Atoms/BotonInicio/BotonInicio';
+import Footer from '../../../cells/Footer/Footer';
 
 //El header, al componerse de elementos simples, es una molécula, y por otro lado, tanto la barra de
 //búsqueda y filtro y la tabla son parte de la plantilla, siendo la barra y la tabla dos organismos
@@ -154,6 +155,9 @@ const Usuarios = () => {
             ))}
           </tbody>
         </table>
+      </div>
+      <div>
+        <Footer/>
       </div>
     </div>
   );

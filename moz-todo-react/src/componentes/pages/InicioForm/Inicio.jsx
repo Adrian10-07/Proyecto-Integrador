@@ -9,7 +9,8 @@ import Swal from 'sweetalert2'
 import { useNavigate } from 'react-router-dom';
 import HeaderPaginas from '../../Molecules/HeaderPaginas/HeaderPaginas';
 import BotonExit from '../../Atoms/BotonExit/BotonExit';
-
+import Footer from '../../cells/Footer/Footer';
+import LogoC from '../InicioForm/AssetsInicio/LogoC.png'
 //La cabecera de la página, al ser un componente muy sencillo, sería una molécula, y el contenedor
 //de las cards un ser vivo, además cada card es una molécula
 export default function Inicio() {
@@ -133,6 +134,12 @@ export default function Inicio() {
         />
       </div>
 
+      <div>
+        <Footer/>
+      </div>
+
     </div>
+
+    
   );
 }

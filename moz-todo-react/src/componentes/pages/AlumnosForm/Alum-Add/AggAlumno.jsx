@@ -8,6 +8,8 @@ import { useNavigate } from 'react-router-dom';
 import { LogInfoContext } from '../../../../LogInfo';
 import BotonReturn from '../../../Atoms/BotonReturn/BotonReturn';
 import HeaderSubP from '../../../Molecules/HeaderSubP/HeaderSubP';
+import Footer from "../../../cells/Footer/Footer";
+
 
 //Por un lado, el header o cabecera es una molécula, por su nivel de complejidad, y por el otro,
 //El formulario, es una plantilla, los botones de guardar y cancelar son dos átomos en sí mismos,
@@ -411,6 +413,9 @@ export default function AggAlumno() {
             <button onClick={handleSaveClick} className='dos'><FiSave className='icon-save'/></button>
 
             </div>
+        </div>
+        <div>
+            <Footer/>
         </div>
     </div>
   )
