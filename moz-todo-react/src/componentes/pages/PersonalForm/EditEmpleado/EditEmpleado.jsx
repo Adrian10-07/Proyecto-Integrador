@@ -149,7 +149,7 @@ export default function EditEmpleado (){
             let correoRegistro = document.getElementById("inputCorreo").value;
             let curpRegistro = document.getElementById("inputCurp").value;
             let areaRegistro = document.getElementById("selectArea").value;
-            let cargoRegistro = document.getElementById("selectCargo").value;
+            let cargoRegistro = document.getElementById("selectCargoE").value;
             let sueldoRegisro = document.getElementById("inputSueldo").value;
             let estatusRegistro = document.getElementById("selectEstatus").value;
 
