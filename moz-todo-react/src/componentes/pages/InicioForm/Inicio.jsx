@@ -77,7 +77,30 @@ export default function Inicio() {
 
   const tipoUsuario = localStorage.getItem('typeUser');
   if(tipoUsuario == "employe"){
+    return(
+      <div className='menu'>
+      <div>
+        <HeaderPaginas title={"Instituto Montebello"}/>
+        <BotonExit/>
+      </div>
 
+      <div className='content-cards'>  
+        <CardsOptions
+          icono={faUserGraduate} action={"Alumnos"} widhtFont={90} enlace={'/alumnos'}
+        />
+
+        <CardsOptions
+          icono={faChalkboardUser} action={"Empleados/ Profesores"} widhtFont={90} enlace={'/empleados'}
+        />
+
+        <CardsOptions
+          icono={faMoneyBill} action={"Informes de pago de trámites"} widhtFont={90} enlace={'/tramites'}
+        />
+      </div>
+
+    </div>
+    );
+    
   }
 
   return (
