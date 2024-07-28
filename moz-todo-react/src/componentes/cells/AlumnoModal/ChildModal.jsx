@@ -7,7 +7,6 @@ import { useNavigate } from 'react-router-dom';
 import './ChildModal.css'; // Importa la hoja de estilos
 import Logo2 from './AssetsDAlumn/Logo2.png';
 import { FaUserEdit } from "react-icons/fa";
-import Swal from 'sweetalert2';
   
 export default function NestedModal({ valueId, autentificacion }) {
   const [open, setOpen] = useState(false);
@@ -46,6 +45,12 @@ export default function NestedModal({ valueId, autentificacion }) {
         setError(error.message);
         autentificacion();
       });
+  };
+
+  const formatearFecha = (fecha) => {
+    if (!fecha) return "N/A";
+    const date = new Date(fecha);
+    return date.toLocaleDateString('es-ES', { year: 'numeric', month: '2-digit', day: '2-digit' });
   };
 
   useEffect(() => {
@@ -96,8 +101,8 @@ export default function NestedModal({ valueId, autentificacion }) {
               <li>Colegio de proveniencia: {data.escuelaProcedente}</li>
               <li>Universidad a la que aspira: {data.colegioAspirado || "N/A"}</li>
               <li>Carrera a la que aspira: {data.carreraAspirada || "N/A"}</li>
-              <li>Fecha de inicio del curso: {data.fechaInicioCurso || "N/A"}</li>
-              <li>Fecha de examen de diagnóstico: {data.fechaExamenDiagnostico || "N/A"}</li>
+              <li>Fecha de inicio del curso: {formatearFecha(data.fechaInicioCurso)}</li>
+              <li>Fecha de examen de diagnóstico: {formatearFecha(data.fechaExamenDiagnostico)}</li>
               <li>Pensamiento Matemático: {data.nivelMatematico || "N/A"}</li>
               <li>Pensamiento Analítico: {data.nivelAnalitico || "N/A"}</li>
               <li>Nivel Lingüístico: {data.nivelLinguistico || "N/A"}</li>
