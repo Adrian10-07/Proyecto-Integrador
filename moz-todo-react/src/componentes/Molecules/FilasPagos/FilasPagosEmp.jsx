@@ -60,7 +60,7 @@ export default function FilasPagosEmp (
     }, []);
 
     const actualizarAProximoAPagar = () => {
-        const url = `http://localhost:3000/PagoEmp/proximo/${idP}`;
+        const url = `https://saiemapi.integrador.xyz/PagoEmp/proximo/${idP}`;
         const token = localStorage.getItem('token');
 
         fetch(url, {
@@ -86,7 +86,7 @@ export default function FilasPagosEmp (
     }
 
     const actualizarAAtrasado = () => {
-        const url = `http://localhost:3000/PagoEmp/atrasado/${idP}`;
+        const url = `https://saiemapi.integrador.xyz/PagoEmp/atrasado/${idP}`;
         const token = localStorage.getItem('token');
 
         fetch(url, {
@@ -112,7 +112,7 @@ export default function FilasPagosEmp (
     }
     
     const actualizarAPagado = () => {
-        const url = `http://localhost:3000/PagoEmp/pagado/${idP}`
+        const url = `https://saiemapi.integrador.xyz/PagoEmp/pagado/${idP}`
         const token = localStorage.getItem('token');
 
         if(estatusTramite !=="Pagado"){

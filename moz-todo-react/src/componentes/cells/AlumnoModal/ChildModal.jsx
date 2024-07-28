@@ -23,7 +23,7 @@ export default function NestedModal({ valueId, autentificacion }) {
 
   const imprimirDatoDeUnAlumno = async () => {
     const token = localStorage.getItem('token');
-    const url = 'http://localhost:3000/alumnos';
+    const url = 'https://saiemapi.integrador.xyz/alumnos';
 
     fetch(`${url}/${valueId}`, {
       headers: {

@@ -65,7 +65,7 @@ export default function AggAlumno() {
 
     const comprobarSiHayDatosRepetidos = async (analizarNoControl, analizarCurp) => {
         const token = localStorage.getItem('token');
-        const url = `http://localhost:3000/alumnos/comprobarAlumnos`;
+        const url = `https://saiemapi.integrador.xyz/alumnos/comprobarAlumnos`;
     
         const datoACoincidir = {
             noControl: analizarNoControl,
@@ -105,7 +105,7 @@ export default function AggAlumno() {
     
     const mandarALaBaseDeDatos = async () => {
         const token = localStorage.getItem('token');
-        const url = "http://localhost:3000/alumnos/addAlumno";
+        const url = "https://saiemapi.integrador.xyz/alumnos/addAlumno";
         let data = {
             nombre: "", 
             apellido_p: "", 
@@ -283,7 +283,7 @@ export default function AggAlumno() {
           return false;
         } else {
           const idUsuario = localStorage.getItem('idUser');
-          const url = `http://localhost:3000/usersJWT/verify/${idUsuario}`;
+          const url = `https://saiemapi.integrador.xyz/usersJWT/verify/${idUsuario}`;
           
           try{
             const response = await fetch(url, {

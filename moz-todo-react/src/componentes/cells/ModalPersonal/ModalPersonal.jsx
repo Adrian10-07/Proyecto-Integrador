@@ -23,7 +23,7 @@ export default function ModalPersonal ({idEmploye, autentificacion}){
 
     const imprimirDatosDelEmpleado = () => {
         const token = localStorage.getItem('token');
-        const url = `http://localhost:3000/empleados/viewSpecificEmploye`
+        const url = `https://saiemapi.integrador.xyz/empleados/viewSpecificEmploye`
 
         fetch(`${url}/${idEmploye}`, {
             headers: {

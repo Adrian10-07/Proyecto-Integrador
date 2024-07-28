@@ -85,7 +85,7 @@ export default function EditProfesor (){
     }
 
     const comprobarSiExisteElMaestro = async (nombreEmpleado, apellidoPEmpleado, apellidoMEmpleado) => {
-        const url = `http://localhost:3000/empleados/comprobarProfesores`;
+        const url = `https://saiemapi.integrador.xyz/empleados/comprobarProfesores`;
         const token = localStorage.getItem('token');
 
         const comprobarProfe = {
@@ -126,7 +126,7 @@ export default function EditProfesor (){
 
 
     const actualizarMaestro = async () => {
-            const url = `http://localhost:3000/empleados/updateProfesor/${data.id}`
+            const url = `https://saiemapi.integrador.xyz/empleados/updateProfesor/${data.id}`
             const token = localStorage.getItem('token');
 
             let dato = {
@@ -254,7 +254,7 @@ export default function EditProfesor (){
     }
 
     const imprimirMateriasDelProfesor = () => {
-        const url = `http://localhost:3000/empleados/showMat`
+        const url = `https://saiemapi.integrador.xyz/empleados/showMat`
         const token = localStorage.getItem('token');
 
         fetch(`${url}/${data.id}`, {
@@ -280,7 +280,7 @@ export default function EditProfesor (){
     }
 
     const agregarMateria = () => {
-        const url = `http://localhost:3000/empleados/materias`
+        const url = `https://saiemapi.integrador.xyz/empleados/materias`
         const token = localStorage.getItem('token');
 
         let dataMateria = {
@@ -343,7 +343,7 @@ export default function EditProfesor (){
           return false;
         } else {
           const idUsuario = localStorage.getItem('idUser');
-          const url = `http://localhost:3000/usersJWT/verify/${idUsuario}`;
+          const url = `https://saiemapi.integrador.xyz/usersJWT/verify/${idUsuario}`;
           
           try{
             const response = await fetch(url, {

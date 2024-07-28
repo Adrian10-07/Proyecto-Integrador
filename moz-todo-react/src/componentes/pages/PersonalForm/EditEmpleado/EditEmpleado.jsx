@@ -86,7 +86,7 @@ export default function EditEmpleado (){
     }
 
     const comprobarSiExisteElEmpleado = async (nombreEmpleado, apellidoPEmpleado, apellidoMEmpleado) => {
-        const url = `http://localhost:3000/empleados/comprobarPersonal`;
+        const url = `https://saiemapi.integrador.xyz/empleados/comprobarPersonal`;
         const token = localStorage.getItem('token');
 
         const comprobarEmpleado = {
@@ -126,7 +126,7 @@ export default function EditEmpleado (){
     }
 
     const actualizarEmpleado = async () => {
-            const url = `http://localhost:3000/empleados/updatePersonal/${data.id}`
+            const url = `https://saiemapi.integrador.xyz/empleados/updatePersonal/${data.id}`
             const token = localStorage.getItem('token');
 
             let dato = {
@@ -268,7 +268,7 @@ export default function EditEmpleado (){
           return false;
         } else {
           const idUsuario = localStorage.getItem('idUser');
-          const url = `http://localhost:3000/usersJWT/verify/${idUsuario}`;
+          const url = `https://saiemapi.integrador.xyz/usersJWT/verify/${idUsuario}`;
           
           try{
             const response = await fetch(url, {

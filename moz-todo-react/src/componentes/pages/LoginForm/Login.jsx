@@ -14,7 +14,7 @@ export default function Login() {
   const { isLoggedIn, setIsLoggedIn } = useContext(LogInfoContext);
 
   const iniciarSesion = async () => {
-    const url = `http://localhost:3000/usersJWT/login`;
+    const url = `https://saiemapi.integrador.xyz/usersJWT/login`;
 
     let username = document.getElementById('inputUsername').value;
     let password = document.getElementById('inputPassword').value;

@@ -58,7 +58,7 @@ export default function Personal (){
       }
 
     const operacionDeImpresionBusquedaYFiltroDeEmpleados = (buscarNombre, buscarApellidoP, buscarApellidoM, buscarEstatus, buscarArea, buscarCargo) => {
-        const url = "http://localhost:3000/empleados/searchPer";
+        const url = "https://saiemapi.integrador.xyz/empleados/searchPer";
         const token = localStorage.getItem('token');
         //Inicia objeto que va a mandar los datos a la API
         let data = {
@@ -113,7 +113,7 @@ export default function Personal (){
     }  
 
     const operacionDeImpresionBusquedaYFiltroDeProfesores = (buscarNombre, buscarApellidoP, buscarApellidoM, buscarEstatus, buscarEspecialidad) => {
-        const url = "http://localhost:3000/empleados/searchPro";
+        const url = "https://saiemapi.integrador.xyz/empleados/searchPro";
         const token = localStorage.getItem('token');
         //Inicia objeto que va a mandar los datos a la API
         let data = {

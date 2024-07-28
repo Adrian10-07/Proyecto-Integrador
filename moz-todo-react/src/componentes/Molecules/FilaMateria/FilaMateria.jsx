@@ -3,7 +3,7 @@ import React from "react";
 export default function FilaMateria ({idProfesor, idMateria, nombreMateria, actualizar, autentificar}){
 
     const quitarMateria = () => {
-        const url = `http://localhost:3000/empleados/deltMat`
+        const url = `https://saiemapi.integrador.xyz/empleados/deltMat`
         const token = localStorage.getItem('token');
 
         const dataMater = {

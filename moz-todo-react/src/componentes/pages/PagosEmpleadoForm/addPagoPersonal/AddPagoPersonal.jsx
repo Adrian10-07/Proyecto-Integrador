@@ -23,7 +23,7 @@ export default function AddPagoPersonal () {
     const [totalPago, setTotalPago] = useState(0);
 
     const optionPersonal = () => {
-        const url = "http://localhost:3000/PagoEmp/buscarPers";
+        const url = "https://saiemapi.integrador.xyz/PagoEmp/buscarPers";
         const token = localStorage.getItem('token');
 
         let dato = {
@@ -88,7 +88,7 @@ export default function AddPagoPersonal () {
             return false;
         }
         else {
-            const url = `http://localhost:3000/PagoEmp/calcularMontoPer/${idPersonalSelect}`
+            const url = `https://saiemapi.integrador.xyz/PagoEmp/calcularMontoPer/${idPersonalSelect}`
             const token = localStorage.getItem('token');
             fetch(url, {
                 headers: {
@@ -116,7 +116,7 @@ export default function AddPagoPersonal () {
     }
 
     const dbPersonal = () => {
-            const url = "http://localhost:3000/PagoEmp/pagoPer";
+            const url = "https://saiemapi.integrador.xyz/PagoEmp/pagoPer";
             const token = localStorage.getItem('token');
             let data = {
                 horasTrabajadas: "",
@@ -239,7 +239,7 @@ export default function AddPagoPersonal () {
           return false;
         } else {
           const idUsuario = localStorage.getItem('idUser');
-          const url = `http://localhost:3000/usersJWT/verify/${idUsuario}`;
+          const url = `https://saiemapi.integrador.xyz/usersJWT/verify/${idUsuario}`;
           
           try{
             const response = await fetch(url, {

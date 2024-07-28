@@ -24,8 +24,8 @@ export default function PagoEmpleados() {
 
   const buscarOFiltrar = () => {
     //busqueda solo del personal
-    const url1 = "http://localhost:3000/PagoEmp/searchP";
-    const url2 = "http://localhost:3000/PagoEmp/searchPro";
+    const url1 = "https://saiemapi.integrador.xyz/PagoEmp/searchP";
+    const url2 = "https://saiemapi.integrador.xyz/PagoEmp/searchPro";
     const token = localStorage.getItem('token');
     
     let data1 = {
@@ -135,7 +135,7 @@ export default function PagoEmpleados() {
       return false;
     } else {
       const idUsuario = localStorage.getItem('idUser');
-      const url = `http://localhost:3000/usersJWT/verify/${idUsuario}`;
+      const url = `https://saiemapi.integrador.xyz/usersJWT/verify/${idUsuario}`;
       
       try{
         const response = await fetch(url, {

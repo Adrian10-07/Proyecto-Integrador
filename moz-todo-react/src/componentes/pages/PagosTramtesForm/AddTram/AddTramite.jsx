@@ -38,7 +38,7 @@ export default function AddTramite() {
           return false;
         } else {
           const idUsuario = localStorage.getItem('idUser');
-          const url = `http://localhost:3000/usersJWT/verify/${idUsuario}`;
+          const url = `https://saiemapi.integrador.xyz/usersJWT/verify/${idUsuario}`;
           
           try{
             const response = await fetch(url, {
@@ -90,7 +90,7 @@ export default function AddTramite() {
     }, []);
 
     const comprobarSiYaExisteElFolio = async (folioComprobar) => {
-        const url = `http://localhost:3000/tramites/buscarCoincidencias/${folioComprobar}`;
+        const url = `https://saiemapi.integrador.xyz/tramites/buscarCoincidencias/${folioComprobar}`;
         const token = localStorage.getItem('token');
         try {
             const response = await fetch(url, {
@@ -132,7 +132,7 @@ export default function AddTramite() {
     }
 
     const optionAlumnosAlumnos = () => {
-        const url = "http://localhost:3000/tramites/optionsAlumnos";
+        const url = "https://saiemapi.integrador.xyz/tramites/optionsAlumnos";
         const token = localStorage.getItem('token');
         let dato = {
             "nombre_busqueda" : "", 
@@ -177,7 +177,7 @@ export default function AddTramite() {
     };
 
     const mandarALaBaseDeDatos = async () => {
-            const url = 'http://localhost:3000/tramites/add';
+            const url = 'https://saiemapi.integrador.xyz/tramites/add';
             const token = localStorage.getItem('token');
             let data = {
                 folio: "",

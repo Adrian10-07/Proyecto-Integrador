@@ -25,7 +25,7 @@ export default function Tramites() {
   const { isLoggedIn, setIsLoggedIn } = useContext(LogInfoContext);
 
   const operacionDeImpresionBusquedaYFiltro = () => {
-    const url = "http://localhost:3000/tramites/search";
+    const url = "https://saiemapi.integrador.xyz/tramites/search";
     const token = localStorage.getItem('token');
     let data = {
       folio_busqueda: "",
@@ -111,7 +111,7 @@ export default function Tramites() {
       return false;
     } else {
       const idUsuario = localStorage.getItem('idUser');
-      const url = `http://localhost:3000/usersJWT/verify/${idUsuario}`;
+      const url = `https://saiemapi.integrador.xyz/usersJWT/verify/${idUsuario}`;
       
       try{
         const response = await fetch(url, {

@@ -23,7 +23,7 @@ export default function Alumnos() {
 
   //Funcion que imprime los datos de los alumnos en la tabla
   const operacionDeImpresionBusquedaYFiltro = () => {
-    const url = "http://localhost:3000/alumnos/searchAlumnos";
+    const url = "https://saiemapi.integrador.xyz/alumnos/searchAlumnos";
     const token = localStorage.getItem('token');
     //Inicia objeto que va a mandar los datos a la API
     let data = {
@@ -103,7 +103,7 @@ export default function Alumnos() {
       return false;
     } else {
       const idUsuario = localStorage.getItem('idUser');
-      const url = `http://localhost:3000/usersJWT/verify/${idUsuario}`;
+      const url = `https://saiemapi.integrador.xyz/usersJWT/verify/${idUsuario}`;
       
       try{
         const response = await fetch(url, {

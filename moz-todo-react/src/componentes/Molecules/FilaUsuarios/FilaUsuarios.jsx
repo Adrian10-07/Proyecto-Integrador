@@ -6,7 +6,7 @@ export default function FilaUsuarios ({data, actualizar, autentificar}){
     const navigate = useNavigate();
 
     const fetchDelete = () => {
-        const url = `http://localhost:3000/usersJWT/delete/${data.id}`
+        const url = `https://saiemapi.integrador.xyz/usersJWT/delete/${data.id}`
         const token = localStorage.getItem('token');
 
         fetch(url, {

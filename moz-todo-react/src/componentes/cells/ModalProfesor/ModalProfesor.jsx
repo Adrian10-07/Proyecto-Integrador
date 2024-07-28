@@ -22,7 +22,7 @@ export default function ModalProfesor ({idTeacher, autenticacion}){
     };
 
     const imprimirDatosDelProfesor = () => {
-        const url = `http://localhost:3000/empleados/viewSpecificTeacher`
+        const url = `https://saiemapi.integrador.xyz/empleados/viewSpecificTeacher`
         const token = localStorage.getItem('token');
 
         fetch(`${url}/${idTeacher}`, {
@@ -49,7 +49,7 @@ export default function ModalProfesor ({idTeacher, autenticacion}){
     }
 
     const imprimirMateriasDelProfesor = () => {
-        const url = `http://localhost:3000/empleados/showMat`
+        const url = `https://saiemapi.integrador.xyz/empleados/showMat`
         const token = localStorage.getItem('token');
 
         fetch(`${url}/${idTeacher}`, {

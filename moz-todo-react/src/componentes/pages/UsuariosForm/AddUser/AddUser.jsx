@@ -18,7 +18,7 @@ export default function AddUser (){
     const navigate = useNavigate();
 
     const comprobarSiElUsuarioYaExiste = async (userNameComp) => {
-        const url = `http://localhost:3000/usersJWT/compUser`
+        const url = `https://saiemapi.integrador.xyz/usersJWT/compUser`
         const token = localStorage.getItem('token');
 
         let comprobarUser = {
@@ -56,7 +56,7 @@ export default function AddUser (){
     }
 
     const registrarUsuario = async () => {
-        const url = `http://localhost:3000/usersJWT/add`;
+        const url = `https://saiemapi.integrador.xyz/usersJWT/add`;
         const token = localStorage.getItem('token');
 
         let userNombre = document.getElementById("inputUserName").value;
@@ -224,7 +224,7 @@ export default function AddUser (){
           return false;
         } else {
           const idUsuario = localStorage.getItem('idUser');
-          const url = `http://localhost:3000/usersJWT/verify/${idUsuario}`;
+          const url = `https://saiemapi.integrador.xyz/usersJWT/verify/${idUsuario}`;
           
           try{
             const response = await fetch(url, {

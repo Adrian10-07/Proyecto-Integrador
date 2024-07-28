@@ -60,7 +60,7 @@ export default function FilaTram (
     }, []);
 
     const actualizarAProximoAPagar = () => {
-        const url = `http://localhost:3000/tramites/changeNext/${idT}`;
+        const url = `https://saiemapi.integrador.xyz/tramites/changeNext/${idT}`;
         const token = localStorage.getItem('token');
 
         fetch(url, {
@@ -86,7 +86,7 @@ export default function FilaTram (
     }
 
     const actualizarAAtrasado = () => {
-        const url = `http://localhost:3000/tramites/changeArrears/${idT}`;
+        const url = `https://saiemapi.integrador.xyz/tramites/changeArrears/${idT}`;
         const token = localStorage.getItem('token');
 
         fetch(url, {
@@ -112,7 +112,7 @@ export default function FilaTram (
     }
     
     const actualizarAPagado = () => {
-        const url = `http://localhost:3000/tramites/changePaid/${idT}`
+        const url = `https://saiemapi.integrador.xyz/tramites/changePaid/${idT}`
         const token = localStorage.getItem('token');
 
         if(estatusTramiteT !=="Pagado"){

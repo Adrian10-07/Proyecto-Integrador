@@ -32,7 +32,7 @@ export default function EditUser (){
     console.log(data.id)
 
     const comprobarSiElUsuarioYaExiste = async (userNameComp) => {
-        const url = `http://localhost:3000/usersJWT/compUser`;
+        const url = `https://saiemapi.integrador.xyz/usersJWT/compUser`;
         const token = localStorage.getItem('token');
 
         let comprobarUser = {
@@ -131,7 +131,7 @@ export default function EditUser (){
     }
 
     const editarUsuario = async () => {
-        const url = `http://localhost:3000/usersJWT/update/${data.id}`;
+        const url = `https://saiemapi.integrador.xyz/usersJWT/update/${data.id}`;
         const token = localStorage.getItem('token');
 
         let user = {
@@ -276,7 +276,7 @@ export default function EditUser (){
           return false;
         } else {
           const idUsuario = localStorage.getItem('idUser');
-          const url = `http://localhost:3000/usersJWT/verify/${idUsuario}`;
+          const url = `https://saiemapi.integrador.xyz/usersJWT/verify/${idUsuario}`;
           
           try{
             const response = await fetch(url, {

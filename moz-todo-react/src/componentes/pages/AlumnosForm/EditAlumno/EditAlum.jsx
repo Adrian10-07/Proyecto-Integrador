@@ -72,7 +72,7 @@ export default function EditAlum() {
 
   const comprobarSiHayDatosRepetidos = async (analizarNoControl, analizarCurp) => {
       const token = localStorage.getItem('token');
-      const url = `http://localhost:3000/alumnos/comprobarAlumnos`;
+      const url = `https://saiemapi.integrador.xyz/alumnos/comprobarAlumnos`;
 
       const datoACoincidir = {
           noControl: analizarNoControl,
@@ -110,7 +110,7 @@ export default function EditAlum() {
   };
 
   const mandarCambiosALaBaseDeDatos = async () => {
-      const url = `http://localhost:3000/alumnos/update/${data.id}`;
+      const url = `https://saiemapi.integrador.xyz/alumnos/update/${data.id}`;
       const token = localStorage.getItem('token');
       let dato = {
         nombre: "", 
@@ -363,7 +363,7 @@ export default function EditAlum() {
       return false;
     } else {
       const idUsuario = localStorage.getItem('idUser');
-      const url = `http://localhost:3000/usersJWT/verify/${idUsuario}`;
+      const url = `https://saiemapi.integrador.xyz/usersJWT/verify/${idUsuario}`;
       
       try{
         const response = await fetch(url, {

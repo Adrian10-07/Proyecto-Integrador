@@ -24,7 +24,7 @@ const Usuarios = () => {
   const navigate = useNavigate();
 
   const imprimirUsuarios = () => {
-    const url = `http://localhost:3000/usersJWT/`;
+    const url = `https://saiemapi.integrador.xyz/usersJWT/`;
     const token = localStorage.getItem('token');
 
     fetch(url, {
