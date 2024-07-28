@@ -4,6 +4,7 @@ export default function FilaMateria ({idProfesor, idMateria, nombreMateria, actu
 
     const quitarMateria = () => {
         const url = `http://localhost:3000/empleados/deltMat`
+        const token = localStorage.getItem('token');
 
         const dataMater = {
             idProfesor : idProfesor, 
@@ -12,7 +13,10 @@ export default function FilaMateria ({idProfesor, idMateria, nombreMateria, actu
 
         fetch(url, {
             method: "POST",
-            headers: { "Content-Type": "application/json"},
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
             body: JSON.stringify(dataMater)
         })
         .then(response => {
